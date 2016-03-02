@@ -1,0 +1,1406 @@
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			0
+numofMf:			
+lenghtofVariates:		
+inputVectorLength:		0
+numofInVecTr:			0
+numofInVecCh:			0
+numberofEpoch:			0
+threshold:			0
+numofRule:			1
+Rang of a:			
+Range of b:			
+numver of core used:		0
+lambda for RLs:			0
+This is mf params:
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.693484 0.236224 
+0 0 0.574103 0.165408 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.758226 0.0776622 
+0 0 0.420773 0.266685 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.641655 0.237583 
+0 0 0.712451 0.143647 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.680823 0.195615 
+0 0 0.103402 0.0670037 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.560857 0.0167247 
+0 0 0.26439 0.130585 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.63686 0.0979871 
+0 0 0.638072 0.319675 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.664275 0.17159 
+0 0 0.515568 0.359746 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.600899 0.305512 
+0 0 0.813983 0.180706 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.322256 0.0342492 
+0 0 0.758882 0.209924 
+
+
+******************************************************
+numVaraite:			1
+numofMf:			2 
+lenghtofVariates:		18 
+inputVectorLength:		19
+numofInVecTr:			13410
+numofInVecCh:			6688
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+Rang of a:			0 0 
+Range of b:			0 0 
+numver of core used:		2
+lambda for RLs:			0.01
+This is mf params:
+0 0 0.728813 0.0143558 
+0 0 0.676785 0.299509 
+
+

@@ -1,0 +1,23 @@
+count=0
+for mf1 in 1 2 3 4
+	do
+	for lam in 0.0001 0.001 0.01 0.1 1 10
+		do 
+		for aR2 in 10 100 
+			do
+			for bR2 in 10 100 200
+				do
+				for th in 0.0001 0.0010.002
+					do
+			
+
+./ANCFIS_ELM -Nv 1 -Nout 1 -Nmf $mf1  -Lv 18 -NTr 13410 -NCh 6688 -trFN "data.trn" -chFN "data.chk" -ep 100 -th $th -aR 0 $aR2 -bR 0 $bR2 -Ncore 2 -lam $lam
+count=$(($count+1))
+echo
+echo "count=$count"
+done
+	done
+		done
+			done
+				done
+					
