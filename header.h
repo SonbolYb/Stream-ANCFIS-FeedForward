@@ -33,7 +33,27 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+ #include <fftw3.h>
 
+/*
+#include "commandLine.h"
+#include "Delay.h"
+#include "Dimension.h"
+#include "InputStream.h"
+#include "mfGrade.h"
+#include "timeSeries.h"
+#include"inputVector.h"
+#include"AncfisNet.h"
+#include"firingStrength.h"
+#include"AncfisChecking.h"
+#include "InputStream.h"
+#include"DelayVector.h"
+
+#include "MFParam.h"
+#include "GetDelayDImension.h"
+#include "BuildNet.h"
+#include "BuildANCFIS.h"
+*/
 
 extern "C"{
 	void check_alloc(void *pnt);

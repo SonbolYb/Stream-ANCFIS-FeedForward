@@ -7,9 +7,9 @@
 
 #include "BuildANCFIS.h"
 using namespace std;
-BuildANCFIS::BuildANCFIS() {
+BuildANCFIS::BuildANCFIS():commandLine(){
 	// TODO Auto-generated constructor stub
-
+//,inputOrigin(NULL),surodata(NULL),delayVectors(NULL),newDV(NULL),mfParam(NULL),dimension(NULL),delay(NULL),newData(NULL),finalWeight(NULL)
 }
 
 BuildANCFIS::~BuildANCFIS() {
@@ -22,17 +22,17 @@ void BuildANCFIS::findWeight(){
 
 		inputOrigin=InS.getOrigWindowN();
 		findDV();
-		findMF();
-		buildNet.build(delayVectors, mfParam);
+		findMFParam();
+		finalWeight=buildNet.build(delayVectors, mfParam);
 
 
 
 	}
-	if(InS.numpassedInput >per10){	//for new data coming
+	if(InS.numpassedInput >= per10){	//for new data coming
 
 		newData=InS.getNewDataN();
 	//	DV.addNewDV(newData);
-		newDV=DV.getNewDV();
+		newDV=DV.getNewDV(newData,delay,dimension);
 		buildNet.updataWeight(newDV);
 
 	}
@@ -40,31 +40,35 @@ void BuildANCFIS::findWeight(){
 
 void BuildANCFIS::findDV(){
 
-//TODO: we do not need getDelayDimension class. Delete it.
+	//TODO: we do not need getDelayDimension class. Delete it.
 	/*DDim.findDDim(inputOrigin);
 	delay=DDim.getDelay();
 	dimension=DDim.getDimension();*/
 	//DV.findDV(inputOrigin,delay,dimension);
+
 	delay=del.getDelay(inputOrigin);
+
 	dimension=dim.getDim(inputOrigin,delay);
-	//delayVectors=DV.getDV(inputOrigin,delay,dimension);
+	delayVectors=DV.getDV(inputOrigin,delay,dimension);
+
 }
-void BuildANCFIS::findMF(){
+void BuildANCFIS::findMFParam(){
 
 	surodata=InS.getSurWindowN();
-//	mfPar.findMfparam(surodata);
-	mfParam=mfPar.getMf();
+	//	mfPar.findMfparam(surodata);
+	mfParam=mfPar.getMfparam(surodata);
 }
 
 std::vector<std::vector<double>> * BuildANCFIS::getFinalWeight(){
+	findWeight();
+	return(finalWeight);
+}
+int BuildANCFIS:: getDimension(){
 
 }
-	int BuildANCFIS:: getDimension(){
+int BuildANCFIS::getDelay(){
 
-	}
-	int BuildANCFIS::getDelay(){
+}
+std::vector<double>* BuildANCFIS::getMf(){
 
-	}
-	std::vector<double>* BuildANCFIS::getMf(){
-
-	}
+}

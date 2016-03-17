@@ -6,9 +6,10 @@
  */
 #include "InputStream.h"
 #include "DelayVector.h"
+
 using namespace std;
 
-DelayVector::DelayVector():duration(numVariate){
+DelayVector::DelayVector():pOrigWindow(NULL),input(NULL),duration(numVariate),delV(1),delVDim(1),dimension(NULL),delay(NULL),output(1){
 	// TODO Auto-generated constructor stub
 
 }
@@ -17,10 +18,10 @@ DelayVector::~DelayVector() {
 	// TODO Auto-generated destructor stub
 }
 
-void DelayVector::getInput(){
+/*void DelayVector::getInput(){
 	//pOrigWindow=inS.getOrigWindow();
 
-}
+}*/
 
 /*******************************************************************
 
@@ -33,18 +34,14 @@ void DelayVector::getInput(){
  *******************************************************************/
 
 /******************************************************************/
-void DelayVector::getDelayVector(){
+/*void DelayVector::getDelayVector(){
+
+}*/
+std::vector<double>* DelayVector::getNewDV(vector<double>* newData, std::vector<int>* del, std::vector<int>* dim){ //newdata is a vector of size of numofvariable becuase eachtime for each variable a new data is coming
 
 }
-std::vector<double>* DelayVector::getNewDV(){
 
-}
-void DelayVector::addNewDV(std::vector<double>*){
 
-}
-void DelayVector::findDV(std::vector<std::vector<double>> *, int, int){
-
-}
 vector<vector<double>>* DelayVector::getDV(vector<vector<double>> * inpt,vector<int>* del, vector<int>* dim){
 	delay=del;
 	dimension=dim;
@@ -58,13 +55,16 @@ vector<vector<double>>* DelayVector::getDV(vector<vector<double>> * inpt,vector<
 }
 
 vector<vector<double>>* DelayVector::getDVforDim(vector<vector<double>> * inpt,vector<int>* del, vector<int>* dim){
+
 	delay=del;
 	dimension=dim;
 	input=inpt;
 	findDur();
 	resizeDVforDim();
 	makeDVforDim();
-	return (&delV);
+	return (&delVDim);
+
+
 
 
 }
@@ -75,14 +75,17 @@ void DelayVector::findDur(){
 
 	}
 	maxDur=*max_element(duration.begin(),duration.end());
-	cout <<endl<<"this is dur= "<<maxDur<<endl;
+	//cout <<endl<<"this is dur= "<<maxDur<<endl;
 	size=((*input)[0]).size()-maxDur;
+	if(size <0){
+		size=0;
+	}
 	int sum=0;
 	for (auto i:*dimension){
 		sum+=i;
 	}
 	sumDim=sum;
-	cout << "dim "<<sumDim<<" size "<<size<<endl;
+//	cout << "dim "<<sumDim<<" size "<<size<<endl;
 
 
 }
@@ -97,10 +100,10 @@ void DelayVector::resizeDV(){
 	}
 }
 void DelayVector::resizeDVforDim(){
-	delV.resize(size);
+	delVDim.resize(size);
 	output.resize(size);
 	for(int i=0; i <size;i++){
-		delV[i].resize(sumDim);
+		delVDim[i].resize(sumDim);
 		output[i].resize(numVariate);
 	}
 }
@@ -108,7 +111,7 @@ void DelayVector::makeDV(){
 
 	int k=0;
 	int n=0;
-
+cout <<endl<<"maxDur= "<<maxDur<<"size= "<<size<<endl;
 	for (int i=maxDur; i<size+maxDur;i++){
 
 		n=0;
@@ -117,7 +120,7 @@ void DelayVector::makeDV(){
 				//cout << (*input)[l][0];
 				//cout << (*input)[l][2];
 				//cout <<" this"<<i-(*delay)[l]*(j-1)-1;
-				delV[k][n]=(*input)[l][i-(*delay)[l]*(j-1)-2];
+				delV[k][n]=(*input)[l][i-(*delay)[l]*(j)-1];
 
 				//	cout <<delV[k][n];
 				n++;
@@ -140,6 +143,7 @@ void DelayVector::makeDVforDim(){ //It is just for use in the dimension class. B
 	int k=0;
 	int n=0;
 	int h=0;
+
 	for (int i=maxDur; i<size+maxDur;i++){
 
 		n=0;
@@ -148,7 +152,7 @@ void DelayVector::makeDVforDim(){ //It is just for use in the dimension class. B
 				//cout << (*input)[l][0];
 				//cout << (*input)[l][2];
 				//cout <<" this"<<i-(*delay)[l]*(j-1)-1;
-				delV[k][n]=(*input)[l][i-(*delay)[l]*(j-1)-2];
+				delVDim[k][n]=(*input)[l][i-(*delay)[l]*(j)-1];
 
 				//	cout <<delV[k][n];
 				n++;
@@ -169,6 +173,10 @@ void DelayVector::makeDVforDim(){ //It is just for use in the dimension class. B
 
 vector<vector<double>> * DelayVector::getOutputforDim(){
 	return (&output);
+}
+
+bool DelayVector::compare(double a,double b){
+	return(a);
 }
 void DV_test(){
 	InputStream inS;
@@ -196,9 +204,9 @@ void DV_test(){
 		cout <<endl;
 	}
 	cout <<"this is delay vector2"<<endl;
-		for (int i=0;i <40;i++){
-			cout <<*(v1+i)<<" ";
-		}
+	for (int i=0;i <40;i++){
+		cout <<*(v1+i)<<" ";
+	}
 
 	//	flann::Matrix_ dataset1(10,4);
 	//flann::Matrix<double> data1(5);
@@ -208,7 +216,7 @@ void DV_test(){
 	query=flann::Matrix<double>(new double [1*4],1,4);
 	int nn=3;
 
-	flann::Matrix<double> *dd=&dataset;
+	//flann::Matrix<double> *dd=&dataset;
 
 
 	for (int i=0; i< 10;i++){
@@ -216,7 +224,7 @@ void DV_test(){
 			dataset[i][j]=(*result)[i][j];
 		}
 	}
-	double *v=&((*result)[0][0]);
+	//double *v=&((*result)[0][0]);
 	for (int j=0;j<10;j++){
 		for(int i=0; i<4;i++){
 			query[0][i]=(*result)[j][i];
@@ -236,9 +244,9 @@ void DV_test(){
 		index.buildIndex();
 
 		index.knnSearch(query,indices,dists,nn,flann::SearchParams(128));
-	//	allIndices[j]=indices[0];
+		//	allIndices[j]=indices[0];
 
-		for (int i=0 ; i< query.rows;i++){
+		for (unsigned int i=0 ; i< query.rows;i++){
 			for (int k=0; k<nn;k++){
 				/*cout << indices[i][j]<< " ";
 				cout <<allIndices[i][j]<<" ";*/
@@ -264,5 +272,83 @@ void DV_test(){
 
 	delete[] dataset.ptr();
 	delete[] query.ptr();
+
+
+	//fftw_complex  *out;
+	fftw_plan p;
+	vector<vector<double>> * inp=inS.getOrigWindowN();
+	cout << "size "<<(*inp)[1].size();
+	vector<double> inp2=(*inp)[0];
+	double * inp1=&(inp2[0]);
+	cout <<"this is input "<< *inp1<<endl;
+	//TODO: Change N based on input size
+	//int N=16;
+	int N;
+	int n1=(*inp)[1].size();
+	float n2=log2(n1);
+	cout << "n1"<<n1<<"n2"<<n2<<endl;
+	if(floor(n2)==n2){
+		N=n1;
+	}
+	else{
+		N=pow(2,floor(n2)+1);
+	}
+	cout << "this is N "<<N<<endl;
+	N=n1;
+	cout << "this is N "<<N<<endl;
+	fftw_complex  *out=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*floor(N/2+1));//TODO: Add N/2
+	p=fftw_plan_dft_r2c_1d(N,inp1,out,FFTW_ESTIMATE);
+	fftw_execute(p);
+
+	vector<double> abs(floor(N/2+1));
+	vector<double> power(floor(N/2+1));
+
+	cout<<"this is out of fourier"<<endl;
+	for (int i=0; i<floor(N/2+1);i++){
+		double sum=0;
+		int j=0;
+		for ( j=0; j<2;j++){
+			sum+=pow(out[i][j],2);
+			cout <<out[i][j]<< " ";
+		}
+		//abs[i]=(sum)/N;
+		abs[i]=(sum);
+	}
+	cout <<endl;
+	for (int i=0; i<floor(N/2+1);i++){
+
+		cout <<abs[i]<< " ";
+		//	cout <<out[i][2]<< " ";
+
+	}
+
+
+	//Find greatest power
+	vector<int> index (floor(N/2+1));
+	for (int i=0; i<floor(N/2+1); i++){
+		index[i]=i;
+	}
+	sort(index.begin(),index.end(),[&abs](size_t i1,size_t i2){return abs[i1]>abs[i2]; });
+	//sort(abs.begin(),abs.end(),DV.compare); //I cannot use the sort because it is frequency and order is important
+	/*vector<vector<int>>::iterator row;
+		vector<int>::iterator col;
+
+		sort(out.begin(),out.end());//,DV.compare);*/
+	//vector<int>::iterator result=max_element(begin(abs),end(abs));
+
+	int numofMF=2;
+	cout<<endl<<"this is greatest power"<<endl;
+	//Ignore the first frequency as it is zero frequency and it is summation of all the data.
+	for (int i=0;i<numofMF;i++){
+		//cout << abs[15-1-i] <<" ";
+		cout << index[i+1] << " ";
+		cout << abs[index[i+1]]<<" ";
+		//Then we can make MF by using the abs
+	}
+
+
+	fftw_destroy_plan(p);
+
+	fftw_free(out);
 
 }

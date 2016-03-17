@@ -7,9 +7,12 @@
 
 #ifndef GETDELAYDIMENSION_H_
 #define GETDELAYDIMENSION_H_
-#include "header.h"
-#include "Delay.h"
 #include "Dimension.h"
+#include "Delay.h"
+#include "header.h"
+//#include "Delay.h"
+//#include "Dimension.h"
+//class Delay;
 class GetDelayDImension : public commandLine{
 public:
 	GetDelayDImension();
@@ -19,7 +22,7 @@ public:
 
 		virtual ~GetDelayDImension();
 private:
-	Delay del;
+	Delay * del;
 	Dimension dim;
 	std::vector<std::vector<double>> * input;
 	std::vector<double> * delay;

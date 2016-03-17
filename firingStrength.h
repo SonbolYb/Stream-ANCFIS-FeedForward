@@ -17,6 +17,7 @@ private:
 	mfGrade mf;
 	//std::vector<double> fS;
 	std::unique_ptr<std::vector<double>> pFS;
+	std::vector<double> pFSDP;
 	//std::vector<std::shared_ptr<std::vector<std::complex<double> >>> mfG;
 	std::vector<std::unique_ptr<std::vector<std::complex<double> >>> mfG;
 	std::shared_ptr<std::vector<std::vector<int>>>  rule;
@@ -30,12 +31,13 @@ private:
 	void dotP();
 	void normalize();
 	double dotOper(std::complex<double> a,std::complex<double> b);
-	void getFinalFs();
+	void getFinalFs(std::vector<double> * const);
+	void conseq(std::vector<double> * const);
 
 	public:
 	firingStrength();
 
-	std::unique_ptr<std::vector<double>> cal_firingStrenght(std::vector<double> * const);
+	std::unique_ptr<std::vector<double>> cal_firingStrenght(std::vector<double> * const,int,std::vector<std::vector<std::vector<double>>>*);
 	friend void FS_test(firingStrength &);
 };
 void FS_test(firingStrength &);

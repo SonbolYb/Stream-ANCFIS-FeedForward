@@ -52,6 +52,9 @@ protected:
 	static long corrlength;
 	static int dmax;
 	static int numSetDim;
+	static double forget;
+	static int numWeight;
+	static int LengthSurrodata;
 private:
 
 	std::vector<std::vector<int>> rule;

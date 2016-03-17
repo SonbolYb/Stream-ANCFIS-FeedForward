@@ -28,14 +28,21 @@ private:
 	std::vector<std::unique_ptr<std::vector<double>>> pW_new;
 
 
-	std::vector<std::vector<double>> errorEpoch;
-	std::vector<double> aveErrorTrn;
-	std::vector<double> bestError;
+	std::vector<std::vector<double>> errorEpochLastdata;	//Error of the last input vector for each epoch
+	//std::vector<double> bestErrorLastdata;
+	double bestErrorLastdata=0;
+	std::vector<double> aveErrorLastdata;
+	std::vector<double> aveErrorEpoch;
+	double bestaveFinaAlter=0;
 	double aveBest;
 	int epochBest;
-
-
+	std::vector<std::vector<double>>* vectorTrainBestEpoch;
 	std::vector<std::vector<double>>  bestW;
+	double aveFinalMain=0.0;	//average error of training for one epoch
+	double aveFinalalter=0.0;
+	std::vector<std::vector<std::vector<double>>> trainingErrorAll; //for training error of all the input vectors in all the epochs
+	int itera=0;
+
 	//std::vector<std::vector<double>* >   rbestW;
 	//std::vector<std::vector<std::vector<double>>*> bestM;
 
@@ -61,9 +68,8 @@ private:
 public:
 	double Cal_VVS(std::vector<double> &,std::unique_ptr<std::vector<double>>&);
 	inputVecWeight();
-	void calculateWeight(const std::vector<double> &);
-	void calErrorRMSE(int epoch);
-	void calErrorMAE(int epoch);
+	void calculateWeight(const std::vector<double> &,int,std::vector<std::vector<std::vector<double>>> *);
+	void calError(int epoch);
 	double getAveBest();
 	std::vector<std::vector<double>> * getWBest();
 	//std::vector<std::vector<double>*> * rgetWBest();
@@ -71,6 +77,7 @@ public:
 
 	friend void inputWeight_test1(inputVecWeight &);
 	friend void calError_test(inputVecWeight &,int);
+	void calErrorTr(int epoch);
 
 
 

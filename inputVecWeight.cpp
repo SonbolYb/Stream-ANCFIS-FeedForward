@@ -36,12 +36,14 @@ pM_old and pW_old are initialized to their initial values.
 	W(0)=0
 
  *******************************************************************/
-inputVecWeight::inputVecWeight():commandLine(),input(NULL),target(NULL),rpH(pH),pM_new(numOutput),pM_old(numOutput),G(numOutput,vector<double>(numRule)),
+inputVecWeight::inputVecWeight():commandLine(),input(NULL),target(NULL),rpH(pH),pM_new(numOutput),pM_old(numOutput),G(numOutput,vector<double>(numWeight)),
 		alpha(numOutput,0), pW_old(numOutput),pW_new(numOutput),
-		bestError(numOutput,initError),aveBest(initError),epochBest(0),bestW(numOutput, vector<double>(numRule)){
+		aveBest(initError),epochBest(0),bestW(numOutput, vector<double>(numWeight)),
+		trainingErrorAll(numEpoch,vector<vector<double>> (numOfInVecTraining,vector<double>(numOutput)))
+{
 	//errorEpoch(numEpoch,vector<double>(numOutput)),aveErrorTrn(numEpoch),
 	for(int i=0;i<numOutput;i++){
-		pW_old[i]=unique_ptr <vector<double>> (new vector<double> (numRule, 0));
+		pW_old[i]=unique_ptr <vector<double>> (new vector<double> (numWeight, 0));
 	}
 	identityM();
 
@@ -64,10 +66,10 @@ void inputVecWeight::identityM(){
 
 	for(int i=0; i< numOutput;i++){
 		//		unique_ptr<vector<vector<double>>> mat(new vector<vector<double>> (numRule, vector<double> (numRule)));
-		mat.reset(new vector<vector<double>> (numRule, vector<double> (numRule)));
+		mat.reset(new vector<vector<double>> (numWeight, vector<double> (numWeight)));
 
-		for(int j=0; j<numRule;j++){
-			for(int k=0; k<numRule;k++){
+		for(int j=0; j<numWeight;j++){
+			for(int k=0; k<numWeight;k++){
 				if (j==k){
 					(*mat)[j][k]=(1/lambdaRLS);
 				}
@@ -77,7 +79,9 @@ void inputVecWeight::identityM(){
 			}
 		}
 		pM_old[i]=move(mat);
+
 	}
+
 }
 /*******************************************************************/
 /*******************************************************************
@@ -106,17 +110,31 @@ Postconditions:	1.An object of firing strength is instantiate in the function fo
 Invariant:
  *******************************************************************/
 
-void inputVecWeight::calculateWeight(const vector<double> & inputVec){
+void inputVecWeight::calculateWeight(const vector<double> & inputVec, int iter,vector<vector<vector<double>>> *MFparams){
+	itera=iter;
 
 	inputV.readData(inputVec);
 	target=inputV.readTarget();
 	input=inputV.readInput();
+
 	//vector<double> &rinput=*(input);
 	firingStrength fS;
 	//pH=fS.cal_firingStrenght(rinput);
-	pH=fS.cal_firingStrenght(input);
+	pH=fS.cal_firingStrenght(input,iter,MFparams);
+	/*cout<<"fs in CalculateWieght= "<<endl;
+	for(auto i:*pH){
+		cout<<i<<" ";
+	}
+	cout<<endl;*/
 	//FS_test(fS);
 	RLS();
+	/*for(int nV=0; nV<numVariate;nV++){
+	for(auto i:*(pM_old[nV])){
+				for(auto j:i)
+					cout<<j<<" ";
+				cout<<endl;
+			}
+	}*/
 	Replace_Old_New();
 
 }
@@ -135,7 +153,7 @@ PreConditions:
 Postconditions:
 Invariant:
  *******************************************************************/
-void inputVecWeight::RLS(){
+void inputVecWeight::RLS(){	//TODO: change this one
 
 	CalPn();
 	CalGn();
@@ -170,7 +188,7 @@ void inputVecWeight::Replace_Old_New(){
 }
 
 /*******************************************************************
-calErrorRMSE()
+calError()
 Use:				Calculate error of the training set in each epoch and obtain the average of error by (e.g. for 3 variates:
 						E=(e1)^2+(e2)^2+(e3)^2 	==> 	E_ave=sqrt(E/numVariate(=3))
 					Each time save weight of the best epoch in terms of error. The best weight is used as weights of system for checking set.
@@ -180,32 +198,35 @@ PreConditions:		pW_old, rpH, target are valid and have values of the last inputv
 Postconditions:		bestError, aveBest and bestW may change if the condition is satisfied (aveErr <= aveBest)
 Invariant:			numOutput, pW_old, rpH, target
  *******************************************************************/
-void inputVecWeight::calErrorRMSE(int ep){
+void inputVecWeight::calError(int ep){
 
 	double aveErr=0;
 	vector<double> errorEpoch1 (numOutput,initError);
 	for (int nV=0;nV<numOutput;nV++){
 		double v=0;
-		//double norm=0;
 		vector<double> &rb=(*pW_old[nV]);
 		v=((*target)[nV]-Cal_VVS(rb,rpH));
 		//	errorEpoch[ep][nV]=sqrt(0.5*pow(v,2)+0.5*lambdaRLS*norm);
-		errorEpoch1[nV]=v;
+		errorEpoch1[nV]=abs(v);
 		aveErr+=pow(v,2);
 	}
-	errorEpoch.push_back(errorEpoch1);
-	/*	for (int nV=0;nV<numOutput;nV++){
+	errorEpochLastdata.push_back(errorEpoch1);
 
-			errorEpoch[ep][nV]=abs(alpha[nV]);
-			aveErr+=errorEpoch[ep][nV];
-		}*/
 	aveErr=sqrt(aveErr/numOutput);
-	aveErrorTrn.push_back(aveErr);
+	aveErrorLastdata.push_back(aveErr);
+	aveFinalalter=aveFinalalter/numOfInVecTraining;
+	aveFinalMain=sqrt(aveFinalMain/(numOfInVecTraining*numVariate));
+	aveErrorEpoch.push_back(aveFinalMain);
 
-	if(aveErr <= aveBest){
+	//aveBest=aveFinalMain;
+
+	if(aveFinalMain <= aveBest){
 		epochBest=ep;
-		bestError=(errorEpoch[ep]);
-		aveBest=aveErr;
+		bestErrorLastdata=aveErr;
+		aveBest=aveFinalMain;
+		bestaveFinaAlter=aveFinalalter;
+
+		vectorTrainBestEpoch=&(trainingErrorAll[epochBest]); //TODO: It should be a pointer
 
 		for (int nV=0;nV<numOutput;nV++){
 
@@ -216,53 +237,21 @@ void inputVecWeight::calErrorRMSE(int ep){
 	}
 }
 /*******************************************************************/
-/*******************************************************************
-calErrorMAE()
-Use:				Calculate error of the training set in each epoch and obtain the average of error by (e.g. for 3 variates:
-						E=abs(e1)+abs(e2)+abs(e3)==> 	E_ave=(E/numVariate(=3))
-					Each time save weight of the best epoch in terms of error. The best weight is used as weights of system for checking set.
-Out:				Weights are used in building system for checking set.
-Status:				Public and called in AncfisNet after each epoch
-PreConditions:		pW_old, rpH, target are valid and have values of the last inputvector in the training set
-Postconditions:		bestError, aveBest and bestW may change if the condition is satisfied (aveErr <= aveBest)
-Invariant:			numOutput, pW_old, rpH, target
- *******************************************************************/
-void inputVecWeight::calErrorMAE(int ep){
+void inputVecWeight::calErrorTr(int ep){
 
 	double aveErr=0;
-	vector<double> errorEpoch1 (numOutput,initError);
 	for (int nV=0;nV<numOutput;nV++){
 		double v=0;
-		//double norm=0;
 		vector<double> &rb=(*pW_old[nV]);
 		v=((*target)[nV]-Cal_VVS(rb,rpH));
-		//	errorEpoch[ep][nV]=sqrt(0.5*pow(v,2)+0.5*lambdaRLS*norm);
-		errorEpoch1[nV]=v;
-		aveErr+=abs(v);
+		aveErr+=pow(v,2);
+		trainingErrorAll[ep][itera][nV]=v;
+
 	}
-	errorEpoch.push_back(errorEpoch1);
-	/*	for (int nV=0;nV<numOutput;nV++){
 
-			errorEpoch[ep][nV]=abs(alpha[nV]);
-			aveErr+=errorEpoch[ep][nV];
-		}*/
-	aveErr=(aveErr/numOutput);
-	aveErrorTrn.push_back(aveErr);
-
-	if(aveErr <= aveBest){
-		epochBest=ep;
-		bestError=(errorEpoch[ep]);
-		aveBest=aveErr;
-
-		for (int nV=0;nV<numOutput;nV++){
-
-			bestW[nV]=(*pW_old[nV]);
-			/*//We cannot have rbestW because Pw_old going out of scope by coming new input vector so the pointers pointing to somewhere unknown so rbestW.
-				rbestW[nV]=(pW_old[nV]).get();*/
-		}
-	}
+	aveFinalalter+=sqrt(aveErr/numOutput);
+	aveFinalMain+=aveErr;
 }
-/*******************************************************************/
 /*******************************************************************
 saveParams()
 Use:	It saves the params of the best weights obtained through epochs. The weights are used in checking set.
@@ -278,7 +267,16 @@ void inputVecWeight::saveParams(int epochPass){
 	//	for(auto i:(bestError)){
 	//		cout<<i<<" ";
 	//	}
-	cout<<"this is bestError= "<<aveBest<<endl;
+	cout<<"this is bestError Trn= "<<aveBest<<endl;
+	cout<<"this is the best final ater Trn= "<<bestaveFinaAlter<<endl;
+	//cout<<"error of all the training"<<endl;
+	/*for (auto i:*vectorTrainBestEpoch){
+		for (auto j:i){
+			cout << j<<" ";
+		}
+	}*/
+	cout <<endl<<"this is error of last data Trn="<<bestErrorLastdata<<endl;
+
 	//	cout<<endl<<"this is W of best"<<endl;
 
 	//	for(auto i:bestW ){
@@ -308,11 +306,15 @@ void inputVecWeight::saveParams(int epochPass){
 	}
 	myfile<<endl<<"epochPassed:\t\t\t"<<epochPass;
 	myfile<<endl<<"EpochBest_Trn:\t\t\t"<<epochBest;
-	myfile<<endl<<"ErrorVectorBest_Trn:\t\t";
+	/*myfile<<endl<<"ErrorVectorBest_Trn:\t\t";
 	for(auto i:(bestError)){
 		myfile<<i<<" ";
-	}
+	}*/
+	myfile<<endl<<"AveErrorLastdata:\t\t"<<bestErrorLastdata;
+	myfile<<endl<<"AveErrorBestAlter_Trn:\t\t"<<bestaveFinaAlter;
 	myfile<<endl<<"AveErrorBest_Trn:\t\t"<<aveBest;
+
+
 
 	fstream myfile3;
 	myfile3.exceptions(ifstream::failbit|ifstream::badbit);
@@ -338,20 +340,37 @@ void inputVecWeight::saveParams(int epochPass){
 	}
 	myfile2<<"******************************************************"<<endl;
 	myfile2<<endl<<"TrainError:"<<endl;
-	for(auto i: aveErrorTrn){
+	for(auto i: aveErrorEpoch){
 		myfile2<<i<<" ";
 	}
 	myfile2<<endl;
-	myfile2<<endl<<"TrainErrorVec"<<endl;
+	/*myfile2<<endl<<"TrainErrorVec"<<endl;
 	for(auto i:errorEpoch){
 		for(auto j:i){
 			myfile2<<j<<" ";
 		}
 		myfile2<<endl;
-	}
+	}*/
 
 	myfile2<<"******************************************************"<<endl;
 	myfile2.close();
+
+	fstream myfile5;
+	try{
+		myfile5.open("TrainingErrorofBestEpoch.txt",ios::app|ios::out);
+	}
+	catch (fstream::failure &e){
+		cerr << "Exception opening/reading/closing file\n";
+	}
+	myfile5 <<"******************************************************"<<endl;
+	myfile5<<endl<<"trainingErrorofBestEpoch"<<endl;
+	for (auto i:*vectorTrainBestEpoch){
+			for (auto j:i){
+				myfile5 << j<<" ";
+			}
+			myfile5<<endl;
+		}
+	myfile5.close();
 	fstream myfile4;
 	try{
 		myfile4.open("ChkError.txt",ios::app|ios::out);
@@ -408,6 +427,8 @@ Cal_VVS:	Ht(n)*Cal_VM=Ht(n)*p(n-1)*H(n)
 Cal_MtoS:	num/denum
 Cal_Msub:	p(n)
 
+As this one used for online learning, we use a forget coefficient in RLS equation:
+p(n)=1/forget*(p(n-1)-num/(denum+forget))
 
  *******************************************************************/
 void inputVecWeight::CalPn(){
@@ -416,10 +437,11 @@ void inputVecWeight::CalPn(){
 
 	for(int nV=0; nV<numOutput;nV++){
 
-		vector<double> a(numRule,0);
-		vector<double> b(numRule,0);
-		vector<vector<double>> c(numRule,vector<double> (numRule,0));
-		vector<vector<double>> e(numRule,vector<double> (numRule,0));
+
+		vector<double> a(numWeight,0);
+		vector<double> b(numWeight,0);
+		vector<vector<double>> c(numWeight,vector<double> (numWeight,0));
+		vector<vector<double>> e(numWeight,vector<double> (numWeight,0));
 
 		vector<double> &ra=a;
 		vector<double> &rb=b;
@@ -431,15 +453,21 @@ void inputVecWeight::CalPn(){
 		unique_ptr<vector<vector<double>>> & rpM=pM_old[nV];
 		unique_ptr<vector<vector<double>>> & rpMN=pM_new[nV];
 		double denum=0;
+/*for(auto i:*(pM_old[nV])){
+	for(auto j:i){
+		cout<<j<<" ";
+	}
+}*/
 
 		if (pM_old[nV] && pH){
 			Cal_MV(rpM,rpH,ra);
 			Cal_VM(rpH,rpM,rb);
 			Cal_VVM(ra,rb,rc);
 			d=Cal_VVS(rb,rpH);
-			denum=d+1;
+			denum=d+forget;
 			Cal_MtoS(rc,denum,re);
 			Cal_Msub(rpM,re,rpMN);
+
 		}
 		else{
 			cout<<endl<<"Error in pointer handling 1"<<endl;
@@ -519,7 +547,7 @@ Invariant:
 void inputVecWeight::CalW(){
 
 	for(int nV=0;nV<numOutput;nV++){
-		vector<double>  mul(numRule,0);
+		vector<double>  mul(numWeight,0);
 		vector<double>&  rmul=mul;
 		unique_ptr<vector<double>>& rWold=pW_old[nV];
 		unique_ptr<vector<double>>& rWnew=pW_new[nV];
@@ -557,47 +585,60 @@ Note:
 
  *******************************************************************/
 void inputVecWeight::Cal_Vadd(unique_ptr<vector<double>>& rWold,vector<double> &rmul,unique_ptr<vector<double>>& rWnew){
-	mutex lck;
-	unique_ptr<vector<double>> rout (new vector<double> (numRule));
-	int numThread=numCore;
-	int rows=numRule/numThread;
-	int extras=numRule%numThread;
-	int start=0;
-	int end=rows;
 
-	vector<thread> matrix;
-	for (int t=0; t<numThread;t++){
+	unique_ptr<vector<double>> rout (new vector<double> (numWeight));
 
-		if (t==(numThread-1)){
-			end+=extras;
-		}
-		matrix.push_back(thread([start,end,&rWold,&rmul,&rout,this](){
-			for(int i=start; i<end;i++){
+	if(numCore>1){
+		mutex lck;
+		int numThread=numCore;
+		int rows=numWeight/numThread;
+		int extras=numWeight%numThread;
+		int start=0;
+		int end=rows;
 
-				try{
-					(*rout).at(i)=0;
-				}
-				catch(const std::out_of_range& oor){
-					std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
-				}
-				//lck.lock();
-				(*rout)[i]=(*rWold)[i]+rmul[i];
-				//lck.unlock();
+		vector<thread> matrix;
+		for (int t=0; t<numThread;t++){
 
-
-
-
+			if (t==(numThread-1)){
+				end+=extras;
 			}
+			matrix.push_back(thread([start,end,&rWold,&rmul,&rout,this](){
+				for(int i=start; i<end;i++){
 
-		}));
-		start=end;
-		end+=rows;
+					try{
+						(*rout).at(i)=0;
+					}
+					catch(const std::out_of_range& oor){
+						std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
+					}
+					//lck.lock();
+					(*rout)[i]=(*rWold)[i]+rmul[i];
+					//lck.unlock();
+
+
+
+
+				}
+
+			}));
+			start=end;
+			end+=rows;
+		}
+
+		for (thread &t:matrix){
+			t.join();
+		}
+		rWnew=move(rout);
+	}
+	else{
+		for (int i=0 ; i < (numWeight); i++){
+			//(*rout).at(i)=0;
+			(*rout)[i]=(*rWold)[i]+rmul[i];
+		}
+		rWnew=move(rout);
 	}
 
-	for (thread &t:matrix){
-		t.join();
-	}
-	rWnew=move(rout);
+
 
 }
 /*******************************************************************/
@@ -621,45 +662,56 @@ Note:
  *******************************************************************/
 void inputVecWeight::Cal_MV(unique_ptr<vector<vector<double>>>&rpM,unique_ptr<vector<double>>&rpH,vector<double> &a){
 
-	mutex lck;
-	int numThread=numCore;
-	int rows=numRule/numThread;
-	int extras=numRule%numThread;
-	int start=0;
-	int end=rows;
-	vector<thread> matrix;
+	if (numCore>1){
+		mutex lck;
+		int numThread=numCore;
+		int rows=numWeight/numThread;
+		int extras=numWeight%numThread;
+		int start=0;
+		int end=rows;
+		vector<thread> matrix;
 
-	for (int t=0; t<numThread;t++){
-		if (t==(numThread-1)){
-			end+=extras;
-		}
-		matrix.push_back(thread([start,end,&rpM,&rpH,&a,&lck](){
-			for(int i=start; i<end;i++){
-
-				try{
-					a.at(i)=0;
-
-				}
-				catch(const std::out_of_range& oor){
-					std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
-				}
-				for (int j=0; j<numRule; j++){
-
-					//	lck.lock();
-					a[i]+=(*rpM)[i][j]*(*rpH)[j];
-					//	lck.unlock();
-
-				}
+		for (int t=0; t<numThread;t++){
+			if (t==(numThread-1)){
+				end+=extras;
 			}
+			matrix.push_back(thread([start,end,&rpM,&rpH,&a,&lck](){
+				for(int i=start; i<end;i++){
 
-		}));
-		start=end;
-		end+=rows;
+					try{
+						a.at(i)=0;
+
+					}
+					catch(const std::out_of_range& oor){
+						std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
+					}
+					for (int j=0; j<numWeight; j++){
+
+						//	lck.lock();
+						a[i]+=(*rpM)[i][j]*(*rpH)[j];
+						//	lck.unlock();
+
+					}
+				}
+
+			}));
+			start=end;
+			end+=rows;
+		}
+
+		for (thread &t:matrix){
+			t.join();
+		}
+	}
+	else{
+		for(int i=0 ; i <(numWeight);i++){
+			a.at(i)=0;
+			for(int j=0; j<(numWeight);j++){
+				a[i]+=(*rpM)[i][j]*(*rpH)[j];
+			}
+		}
 	}
 
-	for (thread &t:matrix){
-		t.join();
-	}
 }
 
 /*******************************************************************/
@@ -678,49 +730,61 @@ Note:
 	So each thread is responsible for calculation of some column.
  *******************************************************************/
 void inputVecWeight::Cal_VM(unique_ptr<vector<double>>&rpH,unique_ptr<vector<vector<double>>>&rpM,vector<double> &b){
-	mutex lck;
-	int numThread=numCore;
-	int cols=numRule/numThread;
-	int extras=numRule%numThread;
-	int start=0;
-	int end=cols;
-	vector<thread> matrix;
+	if(numCore>1){
+		mutex lck;
+		int numThread=numCore;
+		int cols=numWeight/numThread;
+		int extras=numWeight%numThread;
+		int start=0;
+		int end=cols;
+		vector<thread> matrix;
 
-	for (int t=0; t<numThread;t++){
-		if (t==(numThread-1)){
-			end+=extras;
-		}
-		matrix.push_back(thread([start,end,&rpH,&rpM,&b,&lck](){
-
-			for(int i=start; i<end;i++){
-				//double result=0;
-				try{
-					//C[i][j]=0;
-					b.at(i)=0;
-
-				}
-				catch(const std::out_of_range& oor){
-					std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
-				}
-				for (int j=0; j<numRule; j++){
-					//	lck.lock();
-
-					b[i]+=(*rpH)[j]*(*rpM)[j][i];
-
-					//	lck.unlock();
-				}
-
-
+		for (int t=0; t<numThread;t++){
+			if (t==(numThread-1)){
+				end+=extras;
 			}
+			matrix.push_back(thread([start,end,&rpH,&rpM,&b,&lck](){
 
-		}));
-		start=end;
-		end+=cols;
+				for(int i=start; i<end;i++){
+					//double result=0;
+					try{
+						//C[i][j]=0;
+						b.at(i)=0;
+
+					}
+					catch(const std::out_of_range& oor){
+						std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
+					}
+					for (int j=0; j<numWeight; j++){
+						//	lck.lock();
+
+						b[i]+=(*rpH)[j]*(*rpM)[j][i];
+
+						//	lck.unlock();
+					}
+
+
+				}
+
+			}));
+			start=end;
+			end+=cols;
+		}
+
+		for (thread &t:matrix){
+			t.join();
+		}
+
+	}
+	else{
+		for (int i=0 ; i <(numWeight);i++){
+			b.at(i)=0;
+			for (int j=0; j<(numWeight);j++){
+				b[i]+=(*rpH)[j]*(*rpM)[j][i];
+			}
+		}
 	}
 
-	for (thread &t:matrix){
-		t.join();
-	}
 
 }
 /*******************************************************************/
@@ -738,49 +802,59 @@ Note:
  *******************************************************************/
 void inputVecWeight::Cal_VVM(vector<double> &a,vector<double> &b, vector<std::vector<double>> &C){
 
-	mutex lck;
-	int numThread=numCore;
-	int rows=numRule/numThread;
-	int extras=numRule%numThread;
-	int start=0;
-	int end=rows;
-	vector<thread> matrix;
+	if (numCore>1){
+		mutex lck;
+		int numThread=numCore;
+		int rows=numWeight/numThread;
+		int extras=numWeight%numThread;
+		int start=0;
+		int end=rows;
+		vector<thread> matrix;
 
-	for (int t=0; t<numThread;t++){
-		if (t==(numThread-1)){
-			end+=extras;
-		}
-		matrix.push_back(thread([start,end,&a,&b,&C,&lck](){
-			for(int i=start; i<end;i++){
-				for (int j=0; j<numRule; j++){
-					try{
-						//C[i][j]=0;
-						C.at(i).at(j)=0;
+		for (int t=0; t<numThread;t++){
+			if (t==(numThread-1)){
+				end+=extras;
+			}
+			matrix.push_back(thread([start,end,&a,&b,&C,&lck](){
+				for(int i=start; i<end;i++){
+					for (int j=0; j<numWeight; j++){
+						try{
+							//C[i][j]=0;
+							C.at(i).at(j)=0;
+
+						}
+						catch(const std::out_of_range& oor){
+							std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
+						}
+
+
+						//	lck.lock();
+						//C[i][j]+=a[i]*b[j];
+						C[i][j]=a[i]*b[j];
+						//	lck.unlock();
 
 					}
-					catch(const std::out_of_range& oor){
-						std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
-					}
 
-
-					//	lck.lock();
-					//C[i][j]+=a[i]*b[j];
-					C[i][j]=a[i]*b[j];
-					//	lck.unlock();
 
 				}
 
+			}));
+			start=end;
+			end+=rows;
+		}
 
+		for (thread &t:matrix){
+			t.join();
+		}
+	}
+	else{
+		for (int i=0 ; i < (numWeight);i++){
+			for (int j=0; j<(numWeight);j++){
+				C[i][j]=a[i]*b[j];
 			}
-
-		}));
-		start=end;
-		end+=rows;
+		}
 	}
 
-	for (thread &t:matrix){
-		t.join();
-	}
 
 
 }
@@ -800,7 +874,7 @@ Invariant:
 double inputVecWeight::Cal_VVS(std::vector<double> & a,unique_ptr<vector<double>>&rpH){
 	double result=0;
 
-	for(int i=0;i< numRule;i++){
+	for(int i=0;i< numWeight;i++){
 		result+=a[i]*(*rpH)[i];
 	}
 
@@ -845,54 +919,66 @@ Note:
  *******************************************************************/
 void inputVecWeight::Cal_Msub(unique_ptr<vector<vector<double>>> & rpM,vector<vector<double>> &B,unique_ptr<vector<vector<double>>> &rpMN){
 
-	unique_ptr<vector<vector<double>>> pmNew (new vector<vector<double>> (numRule, vector<double> (numRule)));
+	unique_ptr<vector<vector<double>>> pmNew (new vector<vector<double>> (numWeight, vector<double> (numWeight)));
+	if (numCore>1){
+		mutex lck;
+		int numThread=numCore;
+		int rows=numWeight/numThread;
+		int extras=numWeight%numThread;
+		int start=0;
+		int end=rows;
+		vector<thread> matrix;
+		for (int t=0; t<numThread;t++){
+			if (t==(numThread-1)){
+				end+=extras;
+			}
+			matrix.push_back(thread([start,end,&rpM,&B,&pmNew,&lck](){
+				for(int i=start; i<end;i++){
+					//double result=0;
 
-	mutex lck;
-	int numThread=numCore;
-	int rows=numRule/numThread;
-	int extras=numRule%numThread;
-	int start=0;
-	int end=rows;
-	vector<thread> matrix;
-	for (int t=0; t<numThread;t++){
-		if (t==(numThread-1)){
-			end+=extras;
-		}
-		matrix.push_back(thread([start,end,&rpM,&B,&pmNew,&lck](){
-			for(int i=start; i<end;i++){
-				//double result=0;
+					for (int j=0; j<numWeight; j++){
+						try{
+							//C[i][j]=0;
+							(*pmNew).at(i).at(j)=0;
+							//	(*pmNew)[i][j]=0;
 
-				for (int j=0; j<numRule; j++){
-					try{
-						//C[i][j]=0;
-						(*pmNew).at(i).at(j)=0;
-						//	(*pmNew)[i][j]=0;
+						}
+						catch(const std::out_of_range& oor){
+							std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
+						}
+
+						//	(*pM_new[nV])[i][j]=move((*pM_old[nV])[i][j]-B[i][j]);
+						//	lck.lock();
+						(*pmNew)[i][j]=(1/forget)*((*rpM)[i][j]-B[i][j]);
+						//	lck.unlock();
+
 
 					}
-					catch(const std::out_of_range& oor){
-						std::cerr <<'\n'<< "Out of Range error:Output matrix is out of range" << oor.what() << '\n';
-					}
-
-					//	(*pM_new[nV])[i][j]=move((*pM_old[nV])[i][j]-B[i][j]);
-					//	lck.lock();
-					(*pmNew)[i][j]=(*rpM)[i][j]-B[i][j];
-					//	lck.unlock();
 
 
 				}
 
+			}));
+			start=end;
+			end+=rows;
+		}
 
+		for (thread &t:matrix){
+			t.join();
+		}
+		rpMN=(move(pmNew));
+	}
+	else{
+		for (int i=0; i<(numWeight);i++){
+
+			for (int j=0; j<(numWeight);j++){
+				(*pmNew).at(i).at(j)=0;
+				(*pmNew)[i][j]=(1/forget)*((*rpM)[i][j]-B[i][j]);
 			}
-
-		}));
-		start=end;
-		end+=rows;
+		}
+		rpMN=(move(pmNew));
 	}
 
-	for (thread &t:matrix){
-		t.join();
-	}
-	rpMN=(move(pmNew));
 
 }
 
@@ -926,7 +1012,7 @@ void inputWeight_test1(inputVecWeight & inpW){
 /*******************************************************************/
 void calError_test(inputVecWeight &inpW, int ep){
 
-	cout<<"this is error of all epochs"<<endl;
+	/*cout<<"this is error of all epochs"<<endl;
 
 	for(int i=0;i<=ep;i++){
 
@@ -934,14 +1020,14 @@ void calError_test(inputVecWeight &inpW, int ep){
 			cout<<j<<" ";
 		}
 		cout<<endl;
-	}
+	}*/
 
 	cout<<endl<<"this is avebest"<<inpW.aveBest<<endl;
 
-	cout<<endl<<"this is bestError"<<endl;
+	/*cout<<endl<<"this is bestError"<<endl;
 	for(auto i:inpW.bestError){
 		cout<<i<<" ";
-	}
+	}*/
 
 	cout<<endl<<"this is W of best"<<endl;
 	for(int nv=0;nv<3;nv++){

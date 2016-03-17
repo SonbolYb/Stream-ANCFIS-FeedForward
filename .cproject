@@ -25,7 +25,9 @@
 								<option id="gnu.c.compiler.option.dialect.std.1874133293" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.c11" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.files.2129048255" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="gnu.c.compiler.option.include.paths.690594723" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4"/>
 									<listOptionValue builtIn="false" value="/home/sonbol/flann-1.8.4-src/src/cpp"/>
+									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4/.libs"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.330525087" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -38,6 +40,8 @@
 								</option>
 								<option id="gnu.cpp.compiler.option.include.paths.2136052788" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/sonbol/flann-1.8.4-src/src/cpp"/>
+									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4"/>
+									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4/.libs"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1601707310" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -45,9 +49,12 @@
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1666257639" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
 								<option id="gnu.cpp.link.option.libs.2086469907" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="ddtsa"/>
+									<listOptionValue builtIn="false" value="fftw3"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1993513450" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/sonbol/Tisean_3.0.1/source_c/routines"/>
+									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4"/>
+									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4/.libs"/>
 									<listOptionValue builtIn="false" value="/home/sonbol/flann-1.8.4-src"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1586185209" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">

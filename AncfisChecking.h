@@ -29,16 +29,16 @@ private:
 	std::unique_ptr<std::vector<double>> & rpH;
 	std::vector<std::vector<double>> checkError;
 	std::vector<double> aveError;
-	double finalChError;
+	double finalChErroralter=0;
+	double finalChErrorMain=0;
 	std::vector<std::vector<double>> *weightTrn;
 
 
 public:
 
 	AncfisChecking();
-	void outputRMSE (std::vector<std::vector<double>>*);
-	void outputMAE (std::vector<std::vector<double>>*);
-	void buildNet(std::vector<double> &);
+	void output (std::vector<std::vector<double>>*);
+	void buildNet(std::vector<double> &,int);
 	void saveParams();
 	friend void output_test(AncfisChecking &);
 };

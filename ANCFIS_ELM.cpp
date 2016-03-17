@@ -23,9 +23,12 @@
 
 #include <iostream>
 #include "header.h"
-#include "mfGrade.h"
 
 #include "commandLine.h"
+#include "Delay.h"
+#include "Dimension.h"
+#include "InputStream.h"
+#include "mfGrade.h"
 #include "timeSeries.h"
 #include"inputVector.h"
 #include"AncfisNet.h"
@@ -33,10 +36,10 @@
 #include"AncfisChecking.h"
 #include "InputStream.h"
 #include"DelayVector.h"
-#include "Delay.h"
+#include "MFParam.h"
+#include "GetDelayDImension.h"
+#include "BuildNet.h"
 #include "BuildANCFIS.h"
-#include "Dimension.h"
-
 
 
 
@@ -47,6 +50,7 @@ using namespace std;
 //void unitTest2(timeSeries );
 
 int main(int argc, char * argv[]) {
+	//TODO: test MF params
 	setbuf(stdin,NULL);
 	setbuf(stdout,NULL);
 	const clock_t begin=clock();
@@ -63,18 +67,26 @@ int main(int argc, char * argv[]) {
 	//	commandLine_test();
 
 
-	InputStream inS;
-	testInputStream();
+	//InputStream inS;
+//	testInputStream();
 	vector <int> delay {2,2};
-	DimTest(inS.getOrigWindowN(),&delay);
-	DV_test();
-	testDelay();
-
+	//DimTest(inS.getOrigWindowN(),&delay);
+	//DV_test();
+	//testDelay();
+//	mfparamtest();
 	BuildANCFIS Ancfis;
+
 	finalWeight=Ancfis.getFinalWeight();
+	cout << "this is final out weight"<<endl;
+	for (auto i:(*finalWeight)){
+		for (auto j:i){
+			cout << j<< " ";
+		}
+	}
+	/*finalWeight=Ancfis.getFinalWeight();
 	finalDim=Ancfis.getDimension();
 	finalDelay=Ancfis.getDelay();
-	finalMf=Ancfis.getMf();
+	finalMf=Ancfis.getMf();*/
 
 	/*	InputStream inS;
 		inS.read1stInput();

@@ -17,7 +17,7 @@ class Delay: public commandLine {
 public:
 	Delay();
 	virtual ~Delay();
-	std::vector<int>* getDelay(std::vector<std::vector<double>> *);
+	std::vector<int>* getDelay( const std::vector<std::vector<double>> * );
 	std::vector<int> delays; 	//A vector of delay for multivariate time series
 
 private:
@@ -32,7 +32,7 @@ private:
 	//TODO: It should go to the commandline
 //	long corrlength=20;
 	unsigned long length=per10;
-	std::vector<std::vector<double>> *pOrigWindow;
+	std::vector<std::vector<double>> pOrigWindow;
 
 
 

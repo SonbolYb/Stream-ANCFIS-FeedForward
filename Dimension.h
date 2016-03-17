@@ -25,7 +25,7 @@ public:
 private:
 	std::vector<std::vector<double>> * input;
 	std::vector<int> * delay;
-	int KNear=4;
+	int KNear=3;
 	std::vector<std::vector<int>> vectordim;
 	std::vector<std::vector<double>>* delayVec;
 	int NNboxwidth=0;

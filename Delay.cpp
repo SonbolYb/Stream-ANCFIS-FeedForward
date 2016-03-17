@@ -69,7 +69,7 @@ void Delay::mutual(){ 	//TODO: work with one variate but at the end make it for 
 
 	for(int j=0; j< numVariate;j++){
 
-	double *series=&(((*pOrigWindow)[j])[0]);
+	double *series=(&(((pOrigWindow)[j])[0]));
 	long tau,i;
 	  double min,interval,shannon;
 	  FILE *file;
@@ -144,8 +144,10 @@ void Delay::calDelay(){
 /*******************************************************************
 
  *******************************************************************/
-vector<int>*  Delay::getDelay(vector<vector<double>>* inp){
-	pOrigWindow=inp;
+vector<int>*  Delay::getDelay(const vector<vector<double>>* inp){
+	vector<vector<double>> in=*inp;
+	//TODO: Make change in a way that we do not dereference inp into pOrigWindow. The reason that we did was that this class was changing inp
+	pOrigWindow=(*inp);
 	calDelay();
 	return(&delays);
 }

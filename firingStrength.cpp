@@ -19,7 +19,7 @@ fsNorm:		Vector having normalized firing strength
 SumNorm:	Save sum of denum of equation 24.
 sumDP:		save the sum in euqation 25.
  *******************************************************************/
-firingStrength::firingStrength():commandLine(),pFS(new vector<double> (numRule)),mfG(numVariate),fsRaw(numRule),fsNorm(numRule),SumNorm(0),SumDP(0,0) {
+firingStrength::firingStrength():commandLine(),pFS(new vector<double> (numWeight)),mfG(numVariate),fsRaw(numRule),fsNorm(numRule),SumNorm(0),SumDP(0,0),pFSDP(numRule) {
 	// TODO Auto-generated constructor stub
 }
 
@@ -35,12 +35,12 @@ PreConditions:		input vector and mfG and rule are valid
 Postconditions:		pointer to the firing strength (pFS) is valid.
 Invariant:
  *******************************************************************/
-unique_ptr<vector<double>> firingStrength::cal_firingStrenght( vector<double> * const input){
+unique_ptr<vector<double>> firingStrength::cal_firingStrenght( vector<double> * const input, int iter,vector<vector<vector<double>>>* MFparams){
 
-	mfG=mf.MemFungrade(input);
+	mfG=mf.MemFungrade(input, iter,MFparams);
 	//mfGrade_test(mf);
 	rule=ruleStruct();
-	getFinalFs();
+	getFinalFs(input);
 	return(move(pFS));
 
 
@@ -58,10 +58,11 @@ PreConditions:
 Postconditions:
 Invariant:
  *******************************************************************/
-void firingStrength::getFinalFs(){
+void firingStrength::getFinalFs(vector<double> * const input){
 	getRawFS();
 	normalize();
 	dotP();
+	conseq(input);
 	/*fsNorm=normalize(fsRaw);
 		fS=dotProd(fsNorm);*/
 }
@@ -175,9 +176,37 @@ void firingStrength::dotP(){	//eq.25
 	for(auto i:fsNorm){
 		SumDP+=i;
 	}
+	complex<double> SumDP1 (1,0);		//TODO: We use it when we want to change the dot product function
 	for(auto i:fsNorm){
-		(*pFS)[j]=dotOper(i,SumDP);
+		pFSDP[j]=dotOper(i,SumDP);
 		j++;
+	}
+}
+/*******************************************************************/
+/*******************************************************************
+conseq
+
+Use:
+Out:
+Status:
+PreConditions:
+Postconditions:
+Invariant:
+ *******************************************************************/
+void firingStrength::conseq(std::vector<double> * const input){ 		//TODO: it is for univariate. Make it for multivariat
+	double sumInV=0.0;
+	int k=0;
+	/*for (auto i:*input){
+		sumInV+=i;
+	}*/
+	for (auto j: pFSDP){		//sum(inv)*firing strength
+		for (auto i:*input){
+			(*pFS)[k]=j*i;
+						  k++;
+		}
+		(*pFS)[k]=j;			//It is for the constant variable
+		k++;
+
 	}
 }
 /*******************************************************************/
@@ -198,6 +227,7 @@ double firingStrength::dotOper(complex<double> a,complex<double> b){
 }
 
 /*******************************************************************/
+
 void FS_test(firingStrength &fs){
 
 	cout<<endl<<"this is mfs"<<endl;
@@ -235,7 +265,7 @@ void FS_test(firingStrength &fs){
 			cout<<" "<<i;
 		}
 		cout<<endl<<"weightSum "<< fs.SumDP;
-		cout<< endl<<"this is final= "<<endl;
+		//cout<< endl<<"this is final= "<<endl;
 
 }
 /*void FS_test(std::vector<double> * input){

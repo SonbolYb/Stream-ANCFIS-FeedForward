@@ -41,8 +41,18 @@ PreConditions:		inputVector and pNormalize are valid
 Postconditions:		pNormalize is moved to firingStrength class
 Invariant:
  *******************************************************************/
-vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(vector<double>* const inputVector){
-	convolutionFn(inputVector);
+vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(vector<double>* const inputVector, int iter, vector<vector<vector<double>>> *MFparam){
+	iteration=iter;
+	/*cout<<"mf params in mfGrade"<<endl;
+	for(auto i:*MFparam){
+		for (auto j:i){
+			for (auto k:j){
+				cout << k<< " ";
+			}
+			cout<<endl;
+		}
+	}*/
+	convolutionFn(inputVector,MFparam);
 	elliotFn();
 	return (move(pNormalize));
 }
@@ -89,7 +99,7 @@ The function works as:
 					 convSumn=f(n)g(1)+f(n)g(2)+...+f(n).g(n)
 				0.convSum=convsum1+convSum2+...+convSumn
  *******************************************************************/
-void  mfGrade::convolutionFn(vector<double>* const inputVector){
+void  mfGrade::convolutionFn(vector<double>* const inputVector,std::vector<std::vector<std::vector<double>>>* MFparam){
 
 	auto beginV=inputVector->begin();
 	auto endV=inputVector->begin();
@@ -113,19 +123,43 @@ void  mfGrade::convolutionFn(vector<double>* const inputVector){
 		//3.
 		for(int j=0; j < numOfMF[i]; j++){
 
-			double t;
+			int indexFrq=(*MFparam)[i][j][0];
+			double f_real=(*MFparam)[i][j][1];
+			double f_imag=(*MFparam)[i][j][2];
+			//cout<<endl<<"index= "<<indexFrq<<" freal= "<<f_real<<" f_image= "<<f_imag<<endl;
+			//double mf=0;
+			/*
+			 * int indexFrq=MFparam[i][j][0];
+			 * double f_real=MFparam[i][j][1];
+			 * double f_imag=MFparam[i][j][2];
+			 * MF=f_real*cos(2*pi*indexFrq*k/LengthSurrodata))-f_image*sin(2*pi*indexFrq*k/LengthSurrodata)
+			 * */
+			double t=0;
 			double teta;
 			double r=0;
+			/*double d=(*pSinMfParam_allVar[i])[j][3];
+			double a=(*pSinMfParam_allVar[i])[j][0];
+			double b=(*pSinMfParam_allVar[i])[j][1];
+			double c=(*pSinMfParam_allVar[i])[j][2];*/
 			complex <double> convSum (0,0);
 			//	t=2*PI/lengthOfVariate[i];
-			t=2*M_PI/lengthOfVariate[i];
+		//	t=2*M_PI/lengthOfVariate[i];
+			t=2*M_PI*indexFrq/LengthSurrodata;
+			//cout<<" t= "<<t<<endl;
 			//3.1.
 			for_each(beginV,endV,[&](double data){						//Eq 19
 
 				for (int k=0;k<lengthOfVariate[i];k++){
-					teta=t*k;											//Eq 14
+
+					//TODO: not sure if we need iteration here
+					teta=t*(k+iteration);
+
+					r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
+							//TODO: it is been changes						//Eq 14
 					//r=d*sin(a*teta+b)+c;								//Eq 13
-					r=(*pSinMfParam_allVar[i])[j][3]*sin((*pSinMfParam_allVar[i])[j][0]*teta+(*pSinMfParam_allVar[i])[j][1])+(*pSinMfParam_allVar[i])[j][2];
+					//r=(*pSinMfParam_allVar[i])[j][3]*sin((*pSinMfParam_allVar[i])[j][0]*teta+(*pSinMfParam_allVar[i])[j][1])+(*pSinMfParam_allVar[i])[j][2];
+					//r=d*sin(a*teta+b)+c;
+					//TODO: not sure if we need to get polar in this way. Not sure if teta is working here
 					complex<double> out (r*cos(teta), r*sin(teta));		//Eq 15-16
 					convSum=out*data+convSum;
 					/*

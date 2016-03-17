@@ -25,28 +25,33 @@ InputStream::~InputStream() {
  *******************************************************************/
 void InputStream::readOrigWindow(){
 
-	fstream input;
-	input.exceptions(ifstream::failbit|ifstream::badbit);
-	try{
-		input.open(TrainFile1,ios::in);
-	}
-	catch(fstream::failure &e){
-		cerr << "Exception opening/reading/closing file1\n";
-	}
-	//TODO: This line does not work with CSV files. It works just with delim of space. Make it work for csv with ; as delim
-
-	//TODO: Change everything to i and j instead of j and i
-
-	for (int i=0; i<per10;i++){
-		for(int j=0; j< numVariate; j++){
-			input >> origWindow[j][i];
-
-		}
-	}
 
 
+		fstream input;
+			input.exceptions(ifstream::failbit|ifstream::badbit);
+			try{
+				input.open(TrainFile1,ios::in);
+			}
+			catch(fstream::failure &e){
+				cerr << "Exception opening/reading/closing file1\n";
+			}
+			//TODO: This line does not work with CSV files. It works just with delim of space. Make it work for csv with ; as delim
 
-	numpassedInput=per10;
+			//TODO: Change everything to i and j instead of j and i
+
+			for (int i=0; i<per10;i++){
+				for(int j=0; j< numVariate; j++){
+					input >> origWindow[j][i];
+
+				}
+			}
+
+
+
+			numpassedInput=per10;
+
+
+
 
 }
 /******************************************************************/
@@ -111,7 +116,10 @@ return(&newdataN);
 void InputStream::readSurData(){
 	//TODO: we should be sure that readOrigWindow called before readSurData otherwise, we have to call readOrigWindow here as well which just take more time
 	//to read the data from file again
-	//SreadOrigWindow();
+	//readOrigWindow();
+	/*if(origWindow.empty()){
+		readOrigWindow();
+	}*/
 	endtoend();
 
 	//TODO: We can do more modification here. For example consider the cases that the length of end to end is equal to the length of one of the variate
@@ -173,6 +181,13 @@ vector<vector<double>> * InputStream::getOrigWindowN(){
 
 
 	vector<vector<double>> * pOrigWindowN= &origWindowN;
+	for (auto i:* pOrigWindowN){
+		for(auto j:i){
+			cout << j<<" ";
+		}
+
+			}
+			cout<<endl;
 
 	return (pOrigWindowN);
 }
@@ -207,6 +222,10 @@ vector<vector<double>> * InputStream::getSurWindowN(){
 void InputStream::normalize(const vector<vector <double>>& vec,vector<vector <double>> &vec2){
 	for (int i=0; i <numVariate;i++){
 		vector<double> vec1=vec[i];
+		for (auto i:vec1){
+			cout << i<<" ";
+		}
+		cout<<endl;
 		 max[i]=*max_element(vec1.begin(), vec1.end());
 		 min[i]=*min_element(vec1.begin(),vec1.end());
 		//	cout <<"max"<<" "<<max<<" "<<"min"<<" "<<min<<endl;
@@ -215,6 +234,10 @@ void InputStream::normalize(const vector<vector <double>>& vec,vector<vector <do
 			vec2[i][m]=(j-min[i])/(max[i]-min[i]);
 			m++;
 		}
+		for (auto j:vec2[i]){
+					cout << j<<" ";
+				}
+				cout<<endl;
 
 	}
 

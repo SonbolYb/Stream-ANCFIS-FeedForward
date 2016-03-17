@@ -27,42 +27,59 @@ vector<int>* Dimension::getDim(vector<vector<double>> *inp,vector<int> * del){
 }
 
 void Dimension::findDimKDD(){
-
+	//cout<<"hello"<<endl;
+//	cout <<per10<<endl;
+//	cout<<numSetDim<<endl;
 	vectorDim(); //fill vectordim
 	for(int i=0; i< numSetDim; i++){	//for different sets of dimension
-
+		/*for(auto l:vectordim[i]){
+				cout<<l<<" ";
+			}
+			cout<<endl;*/
 		delayVec=DV.getDVforDim(input,delay,&(vectordim[i]));
+
 		int sum=0;
-		cout <<"this is vectorDim";
+		//cout <<"this is vectorDim";
 		for (auto j:vectordim[i]){
 			sum+=j;
-			cout << j<< " ";
+		//	cout << j<< " ";
 		}
-		cout << endl;
+	//	cout << endl;
 		NNboxwidth=sum;
 		NNboxHeight=DV.getsize();
 		//TODO: start from here
-		if(NNboxHeight > 2*KNear){
+
+		if(NNboxHeight > KNear+1){
+			AllIndices=new int *[NNboxHeight];
+			for(int i=0; i <NNboxHeight;i++){
+				AllIndices[i]=new int [KNear+1];
+			}
+			find3kd();
+			predict1step();
+			errorDV[i]=errRMSE;	//errRMSE is coming from predict1step and it gives error of a given set of dimension
 
 		}
+		else{
+			errorDV[i]=1000;
+		//	cout<<errorDV[i]<<endl;
+		}
+	//	cout<<i<<endl;
 		//TODO:Initialize all Indices here.
 		/*AllIndices.resize(NNboxHeight);
 		for(auto i:AllIndices){
 			i.resize(4);
 		}*/
-		AllIndices=new int *[NNboxHeight];
-		for(int i=0; i <NNboxHeight;i++){
-			AllIndices[i]=new int [KNear+1];
-		}
-		find3kd();
-		predict1step();
-		errorDV[i]=errRMSE;	//errRMSE is coming from predict1step and it gives error of a given set of dimension
+
+
 		//Find 3 nearest neighbors of each delay vector
 		//find one step ahead prediction for each variate in the three neighbors
 		//save results
 	}
+
 	findminError();
 	dimension=vectordim[indexofMin];
+
+
 
 
 
@@ -87,7 +104,7 @@ void Dimension::find3kd(){
 			query[0][i]=(*delayVec)[j][i];
 		}
 
-		cout<<query.rows;
+		//cout<<query.rows;
 		flann::Matrix<int> indices(new int[query.rows*(KNear+1)], query.rows, KNear+1);
 		flann::Matrix<double> dists(new double[query.rows*(KNear+1)],query.rows,KNear+1);
 		flann::Index<flann::L2<double>> index(dataset,flann::KDTreeIndexParams(4));
@@ -95,9 +112,10 @@ void Dimension::find3kd(){
 		index.knnSearch(query,indices,dists,KNear+1,flann::SearchParams(128));
 		//TODO:Save indices for all of the delay vectords
 		//TODO:where we need to delete All Indices?
-		for (int i=0; i<query.rows;i++){
+		for (unsigned int i=0; i<query.rows;i++){
 			for (int k=0; k<KNear+1;k++){
 				AllIndices[j][k]=indices[i][k];
+				cout<<AllIndices[j][k]<<" ";
 			}
 		}
 		delete[] indices.ptr();
@@ -134,9 +152,9 @@ void Dimension::predict1step(){
 			for (int i=1; i<KNear+1;i++){
 
 				int kNIndice=AllIndices[k][i];
-				cout <<mypoint<<"   "<<kNIndice<<"   ";
+			//	cout <<mypoint<<"   "<<kNIndice<<"   ";
 				sum+=abs((*output)[mypoint][j]-(*output)[kNIndice][j]);
-				cout <<(*output)[mypoint][j]<<"   "<<(*output)[kNIndice][j]<<"   ";
+			//	cout <<(*output)[mypoint][j]<<"   "<<(*output)[kNIndice][j]<<"   ";
 
 			}
 
@@ -169,7 +187,7 @@ void Dimension::predict1step(){
 }
 void Dimension::findminError(){
 	auto min=min_element(begin(errorDV),end(errorDV));
- indexofMin=distance(begin(errorDV),min);
+	indexofMin=distance(begin(errorDV),min);
 
 }
 void Dimension::vectorDim(){	//Give us different set of dimension that we want to test for KDD approach
@@ -182,8 +200,10 @@ void Dimension::vectorDim(){	//Give us different set of dimension that we want t
 			for (int j=0; j<dmax;j++){
 				for (int k=0;k<N;k++){
 					vectordim[r][c]=j+1;
+
 					r++;
 				}
+
 			}
 		}
 		c++;
@@ -192,15 +212,15 @@ void Dimension::vectorDim(){	//Give us different set of dimension that we want t
 }
 
 void DimTest(vector<vector<double>>* input,vector<int>* delay){
-Dimension dd;
-vector<int>*dim;
-dim=dd.getDim(input,delay);
+	Dimension dd;
+	vector<int>*dim;
+	dim=dd.getDim(input,delay);
 
-cout << "this is dim\n";
-for (auto i:*dim){
-	cout <<i<< " ";
-}
-cout <<endl;
+	cout << "this is dim\n";
+	for (auto i:*dim){
+		cout <<i<< " ";
+	}
+	cout <<endl;
 
 
 }

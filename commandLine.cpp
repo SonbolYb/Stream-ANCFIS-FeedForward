@@ -45,6 +45,10 @@ int commandLine::per10;
 long commandLine::corrlength;
 int commandLine::dmax;
 int commandLine::numSetDim;
+double commandLine::forget;
+int commandLine::numWeight;
+int commandLine::LengthSurrodata;
+
 
 
 /*******************************************************************
@@ -175,6 +179,10 @@ void commandLine::saveComLine(int argC,char * argV[]){
 								corrlength=atoi(argV[i+1]);
 								i++;
 							}
+		if(strcmp(argV[i],"-fr")==0){
+				forget=atof(argV[i+1]);
+				i++;
+			}
 		/*if(strcmp(argV[i],"-dmax")==0){
 										dmax=atoi(argV[i+1]);
 										i++;
@@ -229,7 +237,7 @@ void commandLine::calculateOthers(){
 	per10=TrainSize*0.1;
 	dmax=per10/2;	//cannot be arbitrary. It depends on the size of the per10
 	numSetDim=pow(dmax,numVariate);
-
+	numWeight=numRule*inputlength+numRule;
 //	numSetDim=dmax*numVariate;
 }
 /******************************************************************/

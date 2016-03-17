@@ -57,14 +57,14 @@ std::vector<std::vector<double>>* AncfisNet::Cal_outputWeight(){
 
 			vector<double> & inputVec=(*trainMatrix)[indexInV]; //No Copy happens here.
 			//	inputWeight_test1(rinputVectorWeight);
-			inputVectorWeight.calculateWeight(inputVec);
+		//	inputVectorWeight.calculateWeight(inputVec);
 			//inputVector_test((*trainMatrix)[indexInV]);
 			//cout<<"this is new"<<endl;
 		//	inputWeight_test1(rinputVectorWeight);
 		}
 
 		//Change to calErrorMAE if you want to work with RMSE
-		inputVectorWeight.calErrorMAE(epoch);
+		//inputVectorWeight.calErrorMAE(epoch);
 		//	calError_test(inputVectorWeight,epoch);
 		//checkCondition();
 		if ((epoch==(numEpoch-1)) || (inputVectorWeight.getAveBest() <= threshold)){
