@@ -19,7 +19,7 @@ fsNorm:		Vector having normalized firing strength
 SumNorm:	Save sum of denum of equation 24.
 sumDP:		save the sum in euqation 25.
  *******************************************************************/
-firingStrength::firingStrength():commandLine(),pFS(new vector<double> (numWeight)),mfG(numVariate),fsRaw(numRule),fsNorm(numRule),SumNorm(0),SumDP(0,0),pFSDP(numRule) {
+firingStrength::firingStrength():commandLine(),mfG(numVariate),fsRaw(numRule),fsNorm(numRule),SumNorm(0),SumDP(0,0),pFSDP(numRule) {
 	// TODO Auto-generated constructor stub
 }
 
@@ -35,10 +35,15 @@ PreConditions:		input vector and mfG and rule are valid
 Postconditions:		pointer to the firing strength (pFS) is valid.
 Invariant:
  *******************************************************************/
-unique_ptr<vector<double>> firingStrength::cal_firingStrenght( vector<double> * const input, int iter,vector<vector<vector<double>>>* MFparams){
+unique_ptr<vector<double>> firingStrength::cal_firingStrenght( vector<double> * const input, int iter,vector<vector<vector<double>>>* MFparams,vector<int> *dim,int lengthSurodata){
 
-	mfG=mf.MemFungrade(input, iter,MFparams);
-	//mfGrade_test(mf);
+	int sumDim=0;
+	for (auto i:*dim){
+		sumDim+=i;
+	}
+	int numWeight=numRule+sumDim*numRule;
+	pFS.reset(new vector<double> (numWeight));
+	mfG=mf.MemFungrade(input, iter,MFparams,dim,lengthSurodata);
 	rule=ruleStruct();
 	getFinalFs(input);
 	return(move(pFS));
@@ -63,6 +68,22 @@ void firingStrength::getFinalFs(vector<double> * const input){
 	normalize();
 	dotP();
 	conseq(input);
+	/*cout<<endl<<"RawFs from getFinalFs"<<endl;
+	for(auto i:fsRaw){
+		cout<<i<<" ";
+	}
+	cout<<endl<<"normFS"<<endl;
+	for (auto i:fsNorm){
+		cout<<i<<" ";
+	}
+	cout<<endl<<"dotp"<<endl;
+	for(auto i:pFSDP){
+		cout<<i<<" ";
+	}
+	cout<<endl<<"conse"<<endl;
+	for(auto i:*pFS){
+		cout<<i<<" ";
+	}*/
 	/*fsNorm=normalize(fsRaw);
 		fS=dotProd(fsNorm);*/
 }
@@ -194,17 +215,20 @@ Postconditions:
 Invariant:
  *******************************************************************/
 void firingStrength::conseq(std::vector<double> * const input){ 		//TODO: it is for univariate. Make it for multivariat
-	double sumInV=0.0;
+
 	int k=0;
 	/*for (auto i:*input){
 		sumInV+=i;
 	}*/
+
 	for (auto j: pFSDP){		//sum(inv)*firing strength
 		for (auto i:*input){
 			(*pFS)[k]=j*i;
+
 						  k++;
 		}
 		(*pFS)[k]=j;			//It is for the constant variable
+
 		k++;
 
 	}

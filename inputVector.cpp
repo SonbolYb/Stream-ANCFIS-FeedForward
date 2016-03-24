@@ -14,7 +14,7 @@ inputVector ()
 input:		A vector to input data in an input vector
 target:		A vector to target data in an input vector
  *******************************************************************/
-inputVector::inputVector(): commandLine(),input(inputlength),target(targetlength){
+inputVector::inputVector(): commandLine(),input(1),target(numVariate){
 
 
 }
@@ -31,18 +31,28 @@ PreConditions:
 Postconditions:
 Invariant:
  *******************************************************************/
-void inputVector::readData(const std::vector<double>& datapoints){
-
+void inputVector::readData(const std::vector<double>& datapoints, vector<int>* dim){
+	/*cout<<"inputVec from readData"<<endl;
+	for(auto i:datapoints){
+		cout<<i<<" ";
+	}*/
+	int inputV=0;
+		for(auto i:*dim){
+			inputV+=i;
+		}
+	inputVL=inputV;
+	input.resize(inputVL);
+	cout<<endl;
 	int j=0;
 	int k=0;
-	int lengthCounter_target=lengthOfVariate[0];
+	int lengthCounter_target=(*dim)[0];
 
-	for (int i=0 ; i < inputVectorLength;i++){
-
+	for (int i=0 ; i < inputVL;i++){
+	//	cout<<"datapoint"<<datapoints[i];
 		if(i==(lengthCounter_target)){
 			target[j]=datapoints[i];
 			j++;
-			lengthCounter_target=lengthCounter_target+lengthOfVariate[j]+1;
+			lengthCounter_target=lengthCounter_target+(*dim)[j]+1;
 
 		}
 		else{
@@ -120,7 +130,8 @@ void inputVector_test(vector<double>  tt){
 
 	inputVector t1;
 	vector<double> & ptt=tt;
-	t1.readData(ptt);
+	//TODO: make it work
+	//t1.readData(ptt);
 
 		cout <<endl;
 		cout <<"input"<<endl;

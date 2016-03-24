@@ -21,7 +21,8 @@ public:
 	DelayVector();
 	virtual ~DelayVector();
 	//void getDelayVector();
-	std::vector<double>* getNewDV(std::vector<double>*, std::vector<int>*, std::vector<int>*);
+	std::vector<double>* getNewDV(std::vector<std::vector<double>>*, std::vector<int>*, std::vector<int>*,std::vector<int>*);
+	std::vector<std::vector<double>>* getNewDelayVecs(std::vector<std::vector<double>>*, std::vector<int>*, std::vector<int>*,std::vector<int>*);
 
 	int getsize();
 
@@ -32,6 +33,7 @@ public:
 	std::vector<std::vector<double>>* getDVforDim(std::vector<std::vector<double>> *, std::vector<int>*, std::vector<int>*);
 	std::vector<std::vector<double>>* getOutputforDim();
 	bool compare(double,double);
+	int getLengthDVSet();
 private:
 	//void delay();
 	//void dimension();
@@ -45,6 +47,10 @@ private:
 	void resizeDV();
 	void resizeDVforDim();
 	void addNewDV(std::vector<double>*);
+  void findNewDV(std::vector<int>*);
+	void replaceNewDV();
+
+
 
 /*	extern "C"{
 	void mutual();
@@ -63,6 +69,12 @@ private:
 	int size=0;
 	int sumDim=0;
 	std::vector<std::vector<double>> output;
+	std::vector<double> delayVecNew;
+	std::vector<double>* headDV;
+	std::vector<double>*endDV;
+	int headInxDV=0;
+	int endInxDV=0;
+	int LengthDVSet=0;
 	friend void  DV_test();
 
 

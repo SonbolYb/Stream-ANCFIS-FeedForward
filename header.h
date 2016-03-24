@@ -34,6 +34,9 @@
 #include <stdio.h>
 #include <stdlib.h>
  #include <fftw3.h>
+#include<list>
+#include<queue>
+#include<deque>
 
 /*
 #include "commandLine.h"

@@ -12,15 +12,17 @@
 #include "inputVector.h"
 #include "firingStrength.h"
 #include "commandLine.h"
-#include "timeSeries.h"
+#include "InputStream.h"
 #include "inputVecWeight.h"
+#include "DelayVector.h"
 
 class AncfisChecking: public commandLine {
 
 private:
-	timeSeries checking;
+	InputStream checking;
 	inputVector inputV;
 	inputVecWeight inVW;
+	DelayVector DV;
 
 	std::vector<std::vector<double>>* checkMatrix;
 	std::vector<double> * input;
@@ -32,13 +34,17 @@ private:
 	double finalChErroralter=0;
 	double finalChErrorMain=0;
 	std::vector<std::vector<double>> *weightTrn;
+	std::vector<std::vector<double>>* checkingDV;
+	int numOfInVecChecking=0;
+	int numWeight=0;
+	std::vector<int>* dimension;
 
 
 public:
 
 	AncfisChecking();
-	void output (std::vector<std::vector<double>>*);
-	void buildNet(std::vector<double> &,int);
+	void output (std::vector<std::vector<double>>*,std::vector<int> *,std::vector<int>*,std::vector<std::vector<std::vector<double>>> *);
+	void buildNet(std::vector<double> &,int,std::vector<std::vector<std::vector<double>>> *);
 	void saveParams();
 	friend void output_test(AncfisChecking &);
 };

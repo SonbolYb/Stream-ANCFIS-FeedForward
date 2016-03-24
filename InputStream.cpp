@@ -10,9 +10,10 @@ using namespace std;
 /*******************************************************************
 
  *******************************************************************/
-//TODO: this number should be defined as a variable
-InputStream::InputStream():commandLine(),origWindowS(per10),origWindow(numVariate, vector<double>(per10)),origWindowN(numVariate, vector<double>(per10)),surWindow(numVariate),
-		surWindowN(numVariate),newdata(numVariate),newdataN(numVariate),max(numVariate),min(numVariate) {
+InputStream::InputStream():commandLine(),origWindow(numVariate, vector<double>(per10)),
+		origWindowN(numVariate, vector<double>(per10)),surWindow(numVariate),
+		surWindowN(numVariate),newdata(numVariate),newdataN(numVariate),
+		checking(numVariate,vector<double> (CheckSize)),checkingN(numVariate,vector<double> (CheckSize)),max(numVariate),min(numVariate),head(NULL),end(NULL) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -20,39 +21,191 @@ InputStream::InputStream():commandLine(),origWindowS(per10),origWindow(numVariat
 InputStream::~InputStream() {
 	// TODO Auto-generated destructor stub
 }
+/******************************************************************/
+bool InputStream::EndofFile(){
+	return(endoffile);
+}
 /*******************************************************************
+readOrigWindow():
 
+First, 10% of data is considered as the first window
+Then, add a new data to the origWindow and delete the the oldest data.
+To do that, we need to have to pointers as head and end to know where
+the new data should be added and from where the oldest data is deleted
+We have implemented a circular array.
  *******************************************************************/
 void InputStream::readOrigWindow(){
 
-
+	if(numpassedInput==0){
 
 		fstream input;
-			input.exceptions(ifstream::failbit|ifstream::badbit);
-			try{
-				input.open(TrainFile1,ios::in);
-			}
-			catch(fstream::failure &e){
-				cerr << "Exception opening/reading/closing file1\n";
-			}
-			//TODO: This line does not work with CSV files. It works just with delim of space. Make it work for csv with ; as delim
+		input.exceptions(ifstream::failbit|ifstream::badbit);
+		try{
+			input.open(TrainFile1,ios::in);
+		}
+		catch(fstream::failure &e){
+			cerr << "Exception opening/reading/closing file1\n";
+		}
+		//TODO: This line does not work with CSV files. It works just with delim of space. Make it work for csv with ; as delim
 
-			//TODO: Change everything to i and j instead of j and i
-
-			for (int i=0; i<per10;i++){
-				for(int j=0; j< numVariate; j++){
-					input >> origWindow[j][i];
-
+		/*Put per10 of data to the origWindow*/
+		for (int i=0; i<per10;i++){
+			for(int j=0; j< numVariate; j++){
+				float data=0;
+				if(!input.eof()){
+					input >> data;
+					origWindow[j][i]=data;
+				}
+				else{
+					endoffile=true;
 				}
 			}
 
+		}
+		/*determine head and end pointers to be used in adding new data and deleting the oldest one*/
+		numpassedInput=per10;	/*As we are getting the first per10 (10%) data, number of input passed is equal=10% at the end of the loop*/
+		auto head1=origWindow[0].begin();
+		auto end1=origWindow[0].end()-1;
+		head=&(*head1);
+		end=&(*end1);
+		headInx=head1-origWindow[0].begin();
+		endInx=end1-origWindow[0].begin();
+
+	}
+	else{
+		/*Different conditions for making a circular array
+		 * __ __ __ __ __
+		 *  h |  |  |  |e
+		 * __ __ __ __ __
+		 *
+		 * */
+
+		if( endInx==(per10-1) &&headInx==0){
+			end=head;
+			head=head+1;
+			endInx=0;
+			headInx++;
+			*end=newdata[0]; //The first variate is filled here
+			for(int nV=1;nV<numVariate;nV++){ /*other variates are filled*/
+				origWindow[nV][endInx]=newdata[nV];
+			}
+
+		}
+				/*
+				 * __ __ __ __ __
+				 *  |  |  | e |h
+				 * __ __ __ __ __
+				 *
+				 * */
+		else if(headInx==(per10-1)&& endInx==(per10-2)){
+			end=head;
+			head=&(*origWindow[0].begin());
+			endInx++;
+			headInx=0;
+			*end=newdata[0];
+			for(int nV=1;nV<numVariate;nV++){
+				origWindow[nV][endInx]=newdata[nV];
+			}
 
 
-			numpassedInput=per10;
 
+		}
+		else{
+			end=head;
+			head=head+1;
+			endInx++;
+			headInx++;
+			*end=newdata[0];
+			for(int nV=1;nV<numVariate;nV++){
+				origWindow[nV][endInx]=newdata[nV];
+			}
+		}
+		/*
+		cout<<"this is new data"<<endl;
+		for(auto i:newdata){
+			cout<<i<<" "<<endl;
+		}
+		cout<<endl <<"this is new input after new data"<<endl;
+		for(auto &i:origWindowL){
+			for(auto j:i){
+				cout << j<<" ";
+			}
+		}
+		cout<<endl;*/
+		//	cout<<"headInx= "<<headInx<<" endInx= "<<endInx<<endl;
+		/*	cout<<"this is input"<<endl;
+		for(auto i:origWindow){
+			for(auto j:i){
+				cout<<j <<" ";
+			}
+			cout<<endl;
+		}
+		 */
 
+	}
 
+}
+/*******************************************************************
+getCheckingN():
 
+Read checking data from checking file and normalize them
+ *******************************************************************/
+vector<vector<double>>* InputStream::getCheckingN(){
+	fstream input;
+	input.exceptions(ifstream::failbit|ifstream::badbit);
+	try{
+		input.open(CheckFile1,ios::in);
+	}
+	catch(fstream::failure &e){
+		cerr << "Exception opening/reading/closing file1\n";
+	}
+	for (int i=0; i<CheckSize;i++){
+		for(int j=0; j< numVariate; j++){
+			input >> checking[j][i];
+		}
+	}
+	vector<vector<double>> &p=checking;
+	vector<vector<double>> &p1=checkingN;
+	normalize(p,p1);
+	return(&checkingN);
+}
+/*******************************************************************
+getChecking():
+
+Read checking data from checking file
+ *******************************************************************/
+vector<vector<double>>* InputStream::getChecking(){
+	fstream input;
+	input.exceptions(ifstream::failbit|ifstream::badbit);
+	try{
+		input.open(CheckFile1,ios::in);
+	}
+	catch(fstream::failure &e){
+		cerr << "Exception opening/reading/closing file1\n";
+	}
+	for (int i=0; i<CheckSize;i++){
+		for(int j=0; j< numVariate; j++){
+			float data=0;
+			input >> data;
+			checking[j][i]=data;
+		}
+	}
+	return(&checking);
+}
+/******************************************************************/
+
+vector<int>* InputStream::getHeadEndInx(){
+	headEndInx={headInx,endInx};
+	return(&headEndInx);
+}
+/******************************************************************/
+std::vector<std::vector<double>> * InputStream::moveWindowbyOneNormal(){
+	readNewData();
+	return(getOrigWindowN());
+}
+std::vector<std::vector<double>> * InputStream::moveWindowbyOne(){
+	readNewData();
+	return(getOrigWindow());
 }
 /******************************************************************/
 void InputStream::readOrigWindowN(){
@@ -72,41 +225,17 @@ void InputStream::readNewData(){
 	GotoLine(input,numpassedInput);
 
 	for (int i=0; i<numVariate;i++){
-		input >> newdata[i];
+		if(!input.eof()){
+			input >> newdata[i];
+
+		}
+		else{
+			endoffile=true;
+		}
+
+
 	}
 
-
-}
-/******************************************************************/
-/*******************************************************************
-
- *******************************************************************/
-//TODO:NewdataN is based on max and min of the original window. Is it right to keep it as this or we should define and update the normalization some how?
-void InputStream::readNewDataN(){
-	readNewData();
-	for(int i=0; i<numVariate;i++){
-
-		newdataN[i]=(newdata[i]-min[i])/(max[i]-min[i]);
-	}
-
-
-}
-/******************************************************************/
-/*******************************************************************
-
- *******************************************************************/
-vector<double>* InputStream::getNewData(){
-readNewData();
-return(&newdata);
-
-}
-/******************************************************************/
-/*******************************************************************
-
- *******************************************************************/
-vector<double>* InputStream::getNewDataN(){
-readNewDataN();
-return(&newdataN);
 
 }
 /******************************************************************/
@@ -144,9 +273,10 @@ void InputStream::readSurData(){
 
  *******************************************************************/
 void InputStream::readSurDataN(){
-	readSurData();
+	//TODO: we need to be sure that readOrigWindowN is called once before calling this function.
+
 	//readOrigWindowN();
-	//endtoend();
+	endtoend();
 	//TODO: We can do more modification here. For example consider the cases that the length of end to end is equal to the length of one of the variate
 	for (int i=0; i< numVariate;i++){
 		surWindowN[i].resize(endtoendLength);
@@ -161,7 +291,6 @@ void InputStream::readSurDataN(){
 	}
 }
 /******************************************************************/
-
 /*******************************************************************
 
  *******************************************************************/
@@ -181,13 +310,13 @@ vector<vector<double>> * InputStream::getOrigWindowN(){
 
 
 	vector<vector<double>> * pOrigWindowN= &origWindowN;
-	for (auto i:* pOrigWindowN){
+	/*for (auto i:* pOrigWindowN){
 		for(auto j:i){
 			cout << j<<" ";
 		}
 
-			}
-			cout<<endl;
+	}
+	cout<<endl;*/
 
 	return (pOrigWindowN);
 }
@@ -218,26 +347,44 @@ vector<vector<double>> * InputStream::getSurWindowN(){
 /*******************************************************************
 
  *******************************************************************/
+vector<double>* InputStream::getNewData(){
+	readNewData();
+	return(&newdata);
+
+}
+/******************************************************************/
+/*******************************************************************
+
+ *******************************************************************/
+//TODO: it is not working becasue we do not assign newdataN anywhere. I need to work on newdataN.
+/*vector<double>* InputStream::getNewDataN(){
+	//readNewDataN();
+	return(&newdataN);
+
+}*/
+/*******************************************************************
+
+ *******************************************************************/
 //TODO:Check the file
 void InputStream::normalize(const vector<vector <double>>& vec,vector<vector <double>> &vec2){
 	for (int i=0; i <numVariate;i++){
 		vector<double> vec1=vec[i];
-		for (auto i:vec1){
+		/*for (auto i:vec1){
 			cout << i<<" ";
 		}
-		cout<<endl;
-		 max[i]=*max_element(vec1.begin(), vec1.end());
-		 min[i]=*min_element(vec1.begin(),vec1.end());
+		cout<<endl;*/
+		max[i]=*max_element(vec1.begin(), vec1.end());
+		min[i]=*min_element(vec1.begin(),vec1.end());
 		//	cout <<"max"<<" "<<max<<" "<<"min"<<" "<<min<<endl;
 		int m=0;
 		for (auto j:vec1){
 			vec2[i][m]=(j-min[i])/(max[i]-min[i]);
 			m++;
 		}
-		for (auto j:vec2[i]){
-					cout << j<<" ";
-				}
-				cout<<endl;
+		/*for (auto j:vec2[i]){
+			cout << j<<" ";
+		}
+		cout<<endl;*/
 
 	}
 
@@ -260,7 +407,7 @@ void InputStream::endtoend(){
 	int leng=0.0;
 	double offset=0.0;
 	double lost=0.0;
-	double ejump, ejump1;
+	double ejump,ejump1;
 	double *pejump=&ejump;
 	double eslip,eslip1;
 	double *peslip=&eslip;
@@ -381,7 +528,7 @@ void testInputStream(){
 	//inS.readOrigWindow();
 	//inS.readOrigWindowN();
 	//inS.readSurData();
-//	inS.readSurDataN();
+	//	inS.readSurDataN();
 
 	inS.endtoend();
 	cout << "This is original window"<<endl;

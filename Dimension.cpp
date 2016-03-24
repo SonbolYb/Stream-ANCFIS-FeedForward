@@ -8,7 +8,7 @@
 #include "Dimension.h"
 using namespace std;
 //using namespace flann;
-Dimension::Dimension(): dimension(numVariate),input(NULL),delay(NULL),vectordim(numSetDim, vector<int> (numVariate)),delayVec(NULL),AllIndices(NULL),errorDV(numSetDim) {
+Dimension::Dimension(): dimension(numVariate),input(NULL),delay(NULL),vectordim(numSetDim, vector<int> (numVariate)),delayVec(NULL),AllIndices(NULL),errorDV(numSetDim),lengthofVar(numVariate) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -20,12 +20,27 @@ Dimension::~Dimension() {
 vector<int>* Dimension::getDim(vector<vector<double>> *inp,vector<int> * del){
 	input=inp;
 	delay=del;
-
+int sumDim=0;
 	findDimKDD();
+	for(auto i:dimension){
+	lengthofVar.push_back(i);
+			cout<<"dim="<<i<<endl;
+			sumDim+=i;
+	}
+	inputVL=sumDim;
+	numWeight=numRule*inputVL+numRule;
 	return (&dimension);
 
 }
-
+int Dimension::getNumWeight(){
+	return(numWeight);
+}
+int Dimension::getInputVL(){
+	return(inputVL);
+}
+vector<int>* Dimension::getLengthofVar(){
+	return(&lengthofVar);
+}
 void Dimension::findDimKDD(){
 	//cout<<"hello"<<endl;
 //	cout <<per10<<endl;

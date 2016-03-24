@@ -42,11 +42,15 @@ private:
 	double aveFinalalter=0.0;
 	std::vector<std::vector<std::vector<double>>> trainingErrorAll; //for training error of all the input vectors in all the epochs
 	int itera=0;
+	double ErrorStream=initError;
+	int numWeight=0;
+	int LengthDVSet=0;
 
 	//std::vector<std::vector<double>* >   rbestW;
 	//std::vector<std::vector<std::vector<double>>*> bestM;
 
 	//firingStrength fS;
+	void resetVectors();
 	void identityM();
 	void RLS();
 
@@ -68,7 +72,7 @@ private:
 public:
 	double Cal_VVS(std::vector<double> &,std::unique_ptr<std::vector<double>>&);
 	inputVecWeight();
-	void calculateWeight(const std::vector<double> &,int,std::vector<std::vector<std::vector<double>>> *);
+	void calculateWeight(const std::vector<double> &,int,std::vector<std::vector<std::vector<double>>> *,std::vector<int>*,int,int);
 	void calError(int epoch);
 	double getAveBest();
 	std::vector<std::vector<double>> * getWBest();
@@ -78,6 +82,8 @@ public:
 	friend void inputWeight_test1(inputVecWeight &);
 	friend void calError_test(inputVecWeight &,int);
 	void calErrorTr(int epoch);
+	void resetValueforUpdateWeight();
+	void calErrorStream();
 
 
 

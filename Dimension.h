@@ -21,6 +21,9 @@ public:
 	std::vector<int> dimension;
 	std::vector<int>* getDim(std::vector<std::vector<double>> *, std::vector<int>*);
 	DelayVector DV;
+	int getNumWeight();
+	int getInputVL();
+	std::vector<int>* getLengthofVar();
 	virtual ~Dimension();
 private:
 	std::vector<std::vector<double>> * input;
@@ -34,6 +37,10 @@ private:
 	double errRMSE=0;
 	std::vector<double> errorDV;
 	int indexofMin=-1;
+	int numWeight=0;
+	int inputVL=0;
+	std::vector<int> lengthofVar;
+
 	void findDimKDD();
 	void vectorDim();
 	void find3kd();

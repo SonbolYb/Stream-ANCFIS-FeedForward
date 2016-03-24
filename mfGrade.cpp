@@ -26,7 +26,7 @@ The reason that we have a vector of unique_ptr is that, we know about the number
 variable is different and we save it in a vector numOfMF. So, what we can do here is that e.g. for convolution, define a vector to the # of variable where each item
 in the vector is a unique_ptr to the mfs of one variable. So, we do not worry about that # of mf is different
  *******************************************************************/
-mfGrade::mfGrade():commandLine(),pConvolution(numVariate),pNormalize(numVariate){
+mfGrade::mfGrade():commandLine(),pConvolution(numVariate),pNormalize(numVariate),lengthofVar(numVariate){
 
 }
 /*******************************************************************
@@ -41,8 +41,9 @@ PreConditions:		inputVector and pNormalize are valid
 Postconditions:		pNormalize is moved to firingStrength class
 Invariant:
  *******************************************************************/
-vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(vector<double>* const inputVector, int iter, vector<vector<vector<double>>> *MFparam){
+vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(vector<double>* const inputVector, int iter, vector<vector<vector<double>>> *MFparam,vector<int>* dim,int lengthSurod){
 	iteration=iter;
+	lengthSurodata=lengthSurod;
 	/*cout<<"mf params in mfGrade"<<endl;
 	for(auto i:*MFparam){
 		for (auto j:i){
@@ -52,8 +53,27 @@ vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(vector<double
 			cout<<endl;
 		}
 	}*/
+	int j=0;
+	for(auto i:*dim){
+		lengthofVar[j]=i;
+		j++;
+	}
 	convolutionFn(inputVector,MFparam);
+	/*cout<<endl<<"convolution"<<endl;
+	for(auto &i:pConvolution){
+		for(auto j:*i){
+			cout<< j<< " ";
+		}
+	}
+	cout<<endl;*/
 	elliotFn();
+	/*cout<<endl<<"normalize from mfGrade"<<endl;
+		for(auto &i:pNormalize){
+			for(auto j:*i){
+				cout<< j<< " ";
+			}
+		}
+		cout<<endl;*/
 	return (move(pNormalize));
 }
 
@@ -109,13 +129,13 @@ void  mfGrade::convolutionFn(vector<double>* const inputVector,std::vector<std::
 
 		//1.
 		if (i==0){
-			endV=beginV+lengthOfVariate[i];
+			endV=beginV+lengthofVar[i];
 		}
 		else{
 			beginV=endV;
-			endV=beginV+lengthOfVariate[i];
+			endV=beginV+lengthofVar[i];
 		}
-		//	cout<<endl<<"begin="<<*(beginV)<<endl<<"endl="<<*(endV)<<endl;
+	//	cout<<endl<<"begin="<<*(beginV)<<endl<<"endl="<<*(endV)<<endl<<"lV"<<lengthofVar[i]<<endl;;
 
 		//2.
 		unique_ptr<vector<complex<double>>> pmFEachVar(new vector<complex<double>>(numOfMF[i]));
@@ -143,33 +163,34 @@ void  mfGrade::convolutionFn(vector<double>* const inputVector,std::vector<std::
 			double c=(*pSinMfParam_allVar[i])[j][2];*/
 			complex <double> convSum (0,0);
 			//	t=2*PI/lengthOfVariate[i];
-		//	t=2*M_PI/lengthOfVariate[i];
-			t=2*M_PI*indexFrq/LengthSurrodata;
-			//cout<<" t= "<<t<<endl;
+			//	t=2*M_PI/lengthOfVariate[i];
+			t=2*M_PI*indexFrq/lengthSurodata;
+		//	cout<<" t= "<<t<<endl;
 			//3.1.
 			for_each(beginV,endV,[&](double data){						//Eq 19
 
-				for (int k=0;k<lengthOfVariate[i];k++){
+				for (int k=0;k<lengthofVar[i];k++){
 
 					//TODO: not sure if we need iteration here
 					teta=t*(k+iteration);
 
 					r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
-							//TODO: it is been changes						//Eq 14
+					//TODO: it is been changes						//Eq 14
 					//r=d*sin(a*teta+b)+c;								//Eq 13
 					//r=(*pSinMfParam_allVar[i])[j][3]*sin((*pSinMfParam_allVar[i])[j][0]*teta+(*pSinMfParam_allVar[i])[j][1])+(*pSinMfParam_allVar[i])[j][2];
 					//r=d*sin(a*teta+b)+c;
 					//TODO: not sure if we need to get polar in this way. Not sure if teta is working here
+
 					complex<double> out (r*cos(teta), r*sin(teta));		//Eq 15-16
 					convSum=out*data+convSum;
-					/*
-					cout<<"var= "<<i<<endl;
+					/*cout<<"var= "<<i<<endl;
 					cout << "data= "<<data<<endl;
 					cout<<"k= "<<k<<endl;
 					cout <<"teta= "<<teta<<endl;
 					cout << "r= "<<r<<endl;
 					cout << "out= "<<out<<endl;
-					cout<<"conSum= "<<convSum<<endl;*/
+					cout<<"conSum= "<<convSum<<endl;
+*/
 				}
 			});
 

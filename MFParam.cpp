@@ -37,11 +37,11 @@ std::vector<vector<vector<double>>> * MFParam::getMfparam(std::vector<std::vecto
 void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 	int row=((*input)[0].size())/2+1;
 	//TODO: this variable is defined in commandline but I should change it to be added in MFparam because it is kind of global here
-	LengthSurrodata=row;
-	cout<< "lengthSurrdata"<<LengthSurrodata<<endl;
+	int	LengthSurrodata=row;
+
 
 	for (int i=0 ; i<numVariate;i++){
-		prms[i].resize(row);
+		prms[i].resize(LengthSurrodata);
 	}
 	//(row, vector<pair<double,double>>(numVariate));//1 is for amplitude and 1 for phase
 

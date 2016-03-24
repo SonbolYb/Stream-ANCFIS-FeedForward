@@ -17,8 +17,8 @@ target:						A pointer to targets of an input vector
 checkError:					A 2D vector saving error of each input vector for each variable
 aveError:					A vector saving average error over all the variables in each input vector
  *******************************************************************/
-AncfisChecking::AncfisChecking():commandLine(),checkMatrix(NULL), input(NULL),target(NULL),rpH(pH),checkError(numOfInVecChecking,vector<double>(numOutput)),
-		aveError(numOfInVecChecking,0),weightTrn(NULL){
+AncfisChecking::AncfisChecking():commandLine(),checkMatrix(NULL), input(NULL),target(NULL),rpH(pH),checkError(1),
+		aveError(1),weightTrn(NULL),checkingDV(NULL){
 
 }
 /******************************************************************/
@@ -40,20 +40,32 @@ Note:
 	3. Getting the final error by RMSE
  *******************************************************************/
 
-void AncfisChecking::output(vector<vector<double>> *weight){
-
+void AncfisChecking::output(vector<vector<double>> *weight,vector<int>* delay, vector<int>* dim,vector<vector<vector<double>>>* mfParam){
+dimension=dim;
+	int sumDim=0;
+	for(auto i:*dimension){
+		sumDim+=i;
+	}
+numWeight=numRule*sumDim+numRule;
 	weightTrn=weight;
 	//1.
-	checkMatrix=checking.getChecking();
-
+	checkMatrix=checking.getCheckingN();
+	checkingDV=DV.getDV(checkMatrix,delay,dimension);
 	double aveFinal=0;
 	double aveFinalalter=0;
-
+	numOfInVecChecking=checkingDV->size();
+	aveError.resize(numOfInVecChecking);
+	checkError.resize(numOfInVecChecking);
+	int j=0;
+	for(auto i:checkError){
+		checkError[j].resize(numOutput);
+		j++;
+	}
 	//2.
-	for(int indexInV=0; indexInV <numOfInVecChecking; indexInV++){
+	for( int indexInV=0; indexInV < numOfInVecChecking; indexInV++){
 	//2.1.
-		vector<double> & inputVec=(*checkMatrix)[indexInV];
-		buildNet(inputVec,indexInV);
+		vector<double> & inputVec=(*checkingDV)[indexInV];
+		buildNet(inputVec,indexInV,mfParam);
 
 		double ave=0;
 	//2.2
@@ -84,12 +96,13 @@ PreConditions:		inputVec is valid
 Postconditions:		input, target and pH and rpH (reference to pH) are filled
 Invariant:
  *******************************************************************/
-void AncfisChecking::buildNet(vector<double> & inputVec, int iter){
-	inputV.readData(inputVec);
+void AncfisChecking::buildNet(vector<double> & inputVec, int iter,vector<vector<vector<double>>> * mfParam){
+	inputV.readData(inputVec,dimension);
 	input=inputV.readInput();
 	target=inputV.readTarget();
 	firingStrength fS;
-	//pH=fS.cal_firingStrenght(input,iter);
+	//TODO:fix it
+	pH=fS.cal_firingStrenght(input,iter,mfParam,dimension,2);
 }
 /******************************************************************/
 /*******************************************************************
@@ -162,6 +175,7 @@ void AncfisChecking::saveParams(){
 	}
 	myfile4 <<"******************************************************"<<endl;
 	myfile4.close();
+	cout<<endl<<"this is final error chk=  "<<finalChErrorMain<<endl;
 }
 /******************************************************************/
 void output_test(AncfisChecking & AnChk){

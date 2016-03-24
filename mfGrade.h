@@ -21,10 +21,12 @@ private:
 	void convolutionFn(std::vector<double>* const inputVector,std::vector<std::vector<std::vector<double>>>*); //one input vector comes to convolution (one by one)
 	void elliotFn();//Returning normalized mf by Elliot function. Limited to a unit disk
 	int iteration=0;
+	std::vector<int> lengthofVar;
+	int lengthSurodata=0;
 
 public:
 	mfGrade();
-	std::vector<std::unique_ptr<std::vector<std::complex<double> >>> MemFungrade( std::vector<double> * const inputVector, int,std::vector<std::vector<std::vector<double>>>*);
+	std::vector<std::unique_ptr<std::vector<std::complex<double> >>> MemFungrade( std::vector<double> * const inputVector, int,std::vector<std::vector<std::vector<double>>>*,std::vector<int>*,int);
 
 	//friend void mfGrade_test(const std::vector<double> &);
 //	friend void mfGrade_test(std::vector<double> *);

@@ -29,6 +29,8 @@
 									<listOptionValue builtIn="false" value="/home/sonbol/flann-1.8.4-src/src/cpp"/>
 									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4/.libs"/>
 								</option>
+								<option id="gnu.c.compiler.option.misc.other.1596984428" name="Other flags" superClass="gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0   " valueType="string"/>
+								<option id="gnu.c.compiler.option.warnings.toerrors.266222541" name="Warnings as errors (-Werror)" superClass="gnu.c.compiler.option.warnings.toerrors" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.330525087" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.906160175" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
@@ -43,6 +45,7 @@
 									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4"/>
 									<listOptionValue builtIn="false" value="/home/sonbol/fftw-3.3.4/.libs"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.1707728750" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 " valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1601707310" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1526579921" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>

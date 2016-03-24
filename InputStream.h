@@ -22,10 +22,13 @@ public:
 	//TODO: write this two methods
 	std::vector<double>* getNewData();
 	std::vector<double>* getNewDataN();
+	std::vector<std::vector<double>> * moveWindowbyOneNormal();
+	std::vector<std::vector<double>> * moveWindowbyOne();
+	std::vector<int> * getHeadEndInx();
+	bool EndofFile();
+	std::vector<std::vector<double>> * getCheckingN();
+	std::vector<std::vector<double>> * getChecking();
 
-
-	std::vector<double> origWindowS;	//For univariate case
-	std::vector<double> surWindowS;
 	std::vector<std::vector<double>> origWindow;
 	std::vector<std::vector<double>> origWindowN;
 	std::vector<std::vector<double>> surWindow;
@@ -34,13 +37,15 @@ public:
 	std::vector<double> newdata;
 	std::vector<double> newdataN;
 	int numpassedInput=0;
+	bool endoffile=false;
+	std::vector<std::vector<double>> checking;
+	std::vector<std::vector<double>> checkingN;
 
 private:
 	void readOrigWindow();		//read the first 10% of data
 	void readNewData();
 	void readSurData();			//Reading surogate data
 	void endtoend();
-	void readNewDataN();
 	void readSurDataN();
 	void readOrigWindowN();
 	int nless(int);
@@ -49,8 +54,15 @@ private:
 	double sjump(int, std::vector<double>);
 	void normalize(const std::vector<std::vector<double>> &,std::vector<std::vector<double>>&);
 	int endtoendLength=0;
+
 	std::vector<double> max;
 	std::vector<double> min;
+
+	double * head;
+	double* end;
+	int headInx=0;
+	int endInx=0;
+	std::vector<int> headEndInx;
 	std::fstream& GotoLine(std::fstream& file, unsigned int num);
 	//int per10=35;
 

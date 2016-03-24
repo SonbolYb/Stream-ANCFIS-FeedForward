@@ -16,12 +16,12 @@ BuildNet::~BuildNet() {
 	// TODO Auto-generated destructor stub
 }
 //TODO: It could be my code from ANCFIS-ELM
-vector<vector<double>>* BuildNet:: build(std::vector<std::vector<double>> * delayvector, std::vector<vector<vector<double>>>* MFparam){
+vector<vector<double>>* BuildNet:: build(std::vector<std::vector<double>> * delayvector, std::vector<vector<vector<double>>>* MFparam,vector<int>* dim,int lengthSurodata,int LengthDVSet){
 	//For a number of epoch, we get the output weight with this delay vector
 	//Then we have the final weight.
 	//TODO: Check if the size of delay vector is correct
+
 	int sizeDV=delayvector->size();
-	cout<<" size DV= "<< sizeDV<<endl;
 	int epochPass=0;
 	for (int epoch=0; epoch <numEpoch;epoch++ ){
 		//TODO: shuffle
@@ -32,7 +32,7 @@ vector<vector<double>>* BuildNet:: build(std::vector<std::vector<double>> * dela
 
 		for (int indexInV=0;indexInV<sizeDV;indexInV++){
 			vector<double> & inputVec=(*delayvector)[indexInV];
-			inputVectorWeight.calculateWeight(inputVec,indexInV,MFparam);	//indexinV goes as iteration for membership function
+			inputVectorWeight.calculateWeight(inputVec,indexInV,MFparam,dim,lengthSurodata,LengthDVSet);	//indexinV goes as iteration for membership function
 			inputVectorWeight.calErrorTr(epoch);
 
 		}
@@ -46,11 +46,18 @@ vector<vector<double>>* BuildNet:: build(std::vector<std::vector<double>> * dela
 
 	}
 	inputVectorWeight.saveParams(epochPass);
-
+	inputVectorWeight.resetValueforUpdateWeight();
 
 	return(inputVectorWeight.getWBest());
 }
-void BuildNet::updataWeight(std::vector<double>*){
+vector<vector<double>>* BuildNet::updataWeight(std::vector<double>* NewDelayVector,std::vector<vector<vector<double>>>* MFparam, vector<int>*dim, int lengthSurodata, int lengthDVSet){
+	vector<double> & NewDV=(*NewDelayVector);
+	inputVectorWeight.resetValueforUpdateWeight();
+	inputVectorWeight.calculateWeight(NewDV,0,MFparam,dim,lengthSurodata,lengthDVSet);
+	//inputVectorWeight.calErrorTr(0);
+	inputVectorWeight.calErrorStream();
+	//inputVectorWeight.saveParams(0);
+	return(inputVectorWeight.getWBest());
 
 }
 void BuildNet::shuffleDV(std::vector<std::vector<double>> * delV){

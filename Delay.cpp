@@ -7,9 +7,9 @@
 
 #include "Delay.h"
 using namespace std;
-Delay::Delay():commandLine(),delays(numVariate),mutualArray(numVariate, vector<double>(corrlength)),array(NULL),h1(NULL),h11(NULL),h2(NULL),pOrigWindow(NULL) {
+Delay::Delay():commandLine(),delays(numVariate),mutualArray(numVariate, vector<double>(corrlength)),array(NULL),h1(NULL),h11(NULL),h2(NULL),
+		pOrigWindow(numVariate,vector<double> (per10)) {
 	// TODO Auto-generated constructor stub
-
 
 }
 
@@ -20,7 +20,7 @@ Delay::~Delay() {
 
 
 /*******************************************************************
-
+make_cond_entropy: it is used from Tisean
  *******************************************************************/
 double Delay::make_cond_entropy(long t){
 	long i,j,hi,hii,count=0;
@@ -61,9 +61,28 @@ double Delay::make_cond_entropy(long t){
 	return cond_ent;
 }
 /******************************************************************/
-
 /*******************************************************************
 
+ *******************************************************************/
+vector<int>*  Delay::getDelay(const vector<vector<double>>* inp){
+	vector<vector<double>> in=*inp;
+	//TODO: Make change in a way that we do not dereference inp into pOrigWindow. The reason that we did was that this class was changing inp
+	pOrigWindow=(*inp);
+	calDelay();
+	return(&delays);
+}
+/******************************************************************/
+/*******************************************************************
+
+ *******************************************************************/
+void Delay::calDelay(){
+	//getInput();
+	mutual();
+	findDelay();
+}
+/******************************************************************/
+/*******************************************************************
+mutual: It is from Tisean
  *******************************************************************/
 void Delay::mutual(){ 	//TODO: work with one variate but at the end make it for multivariat. In multivariate, we need to separate variate and consider them separately
 
@@ -132,38 +151,21 @@ void Delay::findDelay(){
 
 }
 /******************************************************************/
-/*******************************************************************
 
- *******************************************************************/
-void Delay::calDelay(){
-	//getInput();
-	mutual();
-	findDelay();
-}
-/******************************************************************/
-/*******************************************************************
 
- *******************************************************************/
-vector<int>*  Delay::getDelay(const vector<vector<double>>* inp){
-	vector<vector<double>> in=*inp;
-	//TODO: Make change in a way that we do not dereference inp into pOrigWindow. The reason that we did was that this class was changing inp
-	pOrigWindow=(*inp);
-	calDelay();
-	return(&delays);
-}
-/******************************************************************/
 
 /*******************************************************************
 
  *******************************************************************/
 void testDelay(){
+/*#include "InputStream.h"
 	Delay dl;
 	//dl.calDelay();
 InputStream inS;
 //dl.getDelay(inS.getOrigWindow());
 	for (auto i:*(dl.getDelay(inS.getOrigWindowN()))){
 			cout << "delays" <<i << endl;
-		}
+		}*/
 
 }
 /******************************************************************/

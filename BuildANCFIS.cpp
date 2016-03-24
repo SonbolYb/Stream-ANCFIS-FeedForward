@@ -7,9 +7,8 @@
 
 #include "BuildANCFIS.h"
 using namespace std;
-BuildANCFIS::BuildANCFIS():commandLine(){
-	// TODO Auto-generated constructor stub
-//,inputOrigin(NULL),surodata(NULL),delayVectors(NULL),newDV(NULL),mfParam(NULL),dimension(NULL),delay(NULL),newData(NULL),finalWeight(NULL)
+BuildANCFIS::BuildANCFIS():commandLine(),inputOrigin(NULL),surodata(NULL),delayVectors(NULL),newDV(NULL),mfParam(NULL),dimension(NULL),
+		delay(NULL),newData(NULL),finalWeight(NULL){
 }
 
 BuildANCFIS::~BuildANCFIS() {
@@ -17,45 +16,85 @@ BuildANCFIS::~BuildANCFIS() {
 }
 
 void BuildANCFIS::findWeight(){
-
-	if (InS.numpassedInput==0){	//For origin Window
+int numWeight=0;
+	/*It simulate the stream data becuase here we have a file that we want pass data one by one*/
+	while(!InS.EndofFile()){
+		/*Original window*/
+	if (InS.numpassedInput==0){
 
 		inputOrigin=InS.getOrigWindowN();
 		findDV();
 		findMFParam();
-		finalWeight=buildNet.build(delayVectors, mfParam);
-
-
+		finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
 
 	}
 	if(InS.numpassedInput >= per10){	//for new data coming
-
-		newData=InS.getNewDataN();
+//TODO: by coming new data points min and max can be different which change normalization and can change the all input
+		//newData=InS.getNewDataN();
+		inputOrigin=InS.moveWindowbyOneNormal();
+		/*cout<<"this is input by move"<<endl;
+		for(auto i:*inputOrigin){
+			for (auto j:i){
+				cout <<j <<" ";
+			}
+			cout<<endl;
+		}
+		cout<<endl;*/
 	//	DV.addNewDV(newData);
-		newDV=DV.getNewDV(newData,delay,dimension);
-		buildNet.updataWeight(newDV);
+		vector<int> * headEndInx=InS.getHeadEndInx();
+		/*cout << "this is headEndInx"<<endl;
+		for(auto i:*headEndInx){
+			cout<<i<<" ";
+		}*/
+		newDV=DV.getNewDV(inputOrigin,delay,dimension,headEndInx);
+		/*cout<<"this is new DV"<<endl;
+		for(auto i:*newDV){
+			cout<<i <<" ";
+		}*/
+		delayVectors=DV.getNewDelayVecs(inputOrigin,delay,dimension,headEndInx);
+		/*cout<<endl<<"this is delayVectors2"<<endl;
+		for(auto i:*delayVectors){
+			for(auto j:i){
+				cout<<j<<" ";
+			}
+			cout<<endl;
+		}
+		cout<<endl;*/
+		//TODO: Ask Scott which one we should use
+	//finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
+		finalWeight=buildNet.updataWeight(newDV,mfParam,dimension,LengthSurodata,LengthDVSet);
 
 	}
 }
+}
+/*******************************************************************
+findDV:
 
+It has calls to Delay and Dimension class to find delay and dimension.
+Then use delay and dimension in DelayVector class to obtain delayvectors
+ *******************************************************************/
 void BuildANCFIS::findDV(){
 
-	//TODO: we do not need getDelayDimension class. Delete it.
-	/*DDim.findDDim(inputOrigin);
-	delay=DDim.getDelay();
-	dimension=DDim.getDimension();*/
-	//DV.findDV(inputOrigin,delay,dimension);
-
 	delay=del.getDelay(inputOrigin);
-
 	dimension=dim.getDim(inputOrigin,delay);
 	delayVectors=DV.getDV(inputOrigin,delay,dimension);
+	LengthDVSet=DV.getLengthDVSet();
+
+	cout<<endl<<"this is delayVectors1 in findDV"<<endl;
+			for(auto i:*delayVectors){
+				for(auto j:i){
+					cout<<j<<" ";
+				}
+				cout<<endl;
+			}
+			cout<<endl;
 
 }
 void BuildANCFIS::findMFParam(){
 
 	surodata=InS.getSurWindowN();
 	//	mfPar.findMfparam(surodata);
+	LengthSurodata=((*surodata)[0].size())/2+1;
 	mfParam=mfPar.getMfparam(surodata);
 }
 
@@ -63,12 +102,14 @@ std::vector<std::vector<double>> * BuildANCFIS::getFinalWeight(){
 	findWeight();
 	return(finalWeight);
 }
-int BuildANCFIS:: getDimension(){
+vector<int>* BuildANCFIS:: getDimension(){
+return(dimension);
+}
+vector<int>*  BuildANCFIS::getDelay(){
+	return(delay);
 
 }
-int BuildANCFIS::getDelay(){
-
-}
-std::vector<double>* BuildANCFIS::getMf(){
+vector<vector<vector<double>>>*  BuildANCFIS::getMf(){
+	return(mfParam);
 
 }

@@ -10,7 +10,6 @@
 #include "Dimension.h"
 #include "header.h"
 #include "BuildNet.h"
-#include "GetDelayDImension.h"
 #include "MFParam.h"
 #include "DelayVector.h"
 #include "Delay.h"
@@ -24,9 +23,9 @@ public:
 
 	BuildANCFIS();
 	std::vector<std::vector<double>> * getFinalWeight();
-	int getDimension();
-	int getDelay();
-	std::vector<double>* getMf();
+	std::vector<int>* getDimension();
+	std::vector<int>* getDelay();
+	std::vector<std::vector<std::vector<double>>>* getMf();
 	virtual ~BuildANCFIS();
 private:
 	void findWeight();
@@ -37,7 +36,6 @@ private:
 	Delay del;
 	MFParam mfPar;
 	Dimension dim;
-	GetDelayDImension DDim;
 	BuildNet buildNet;
 	int numPassInV=0;
 	std::vector<std::vector<double>> * inputOrigin;
@@ -49,6 +47,8 @@ private:
 	std::vector<int>* delay;
 	std::vector<double>* newData;
 	std::vector<std::vector<double>> * finalWeight;
+	int LengthSurodata=0;
+	int LengthDVSet=0;
 
 
 };

@@ -20,6 +20,7 @@ private:
 
 	std::vector<double> input;
 	std::vector<double> target;
+	int inputVL=0;
 /*	std::vector<double> & pinput;
 	std::vector<double> & ptarget;*/
 public:
@@ -28,7 +29,7 @@ public:
 	inputVector();
 	std::vector<double> * const readInput();
 	std::vector<double>* const readTarget();
-	void readData(const std::vector<double>&);
+	void readData(const std::vector<double>&,std::vector<int>*);
 	friend void inputVector_test(std::vector<double> );
 	/*	std::vector<double> & readInput();
 		std::vector<double>& readTarget();*/

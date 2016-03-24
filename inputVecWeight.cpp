@@ -36,16 +36,12 @@ pM_old and pW_old are initialized to their initial values.
 	W(0)=0
 
  *******************************************************************/
-inputVecWeight::inputVecWeight():commandLine(),input(NULL),target(NULL),rpH(pH),pM_new(numOutput),pM_old(numOutput),G(numOutput,vector<double>(numWeight)),
+inputVecWeight::inputVecWeight():commandLine(),input(NULL),target(NULL),rpH(pH),pM_new(numOutput),pM_old(numOutput),G(numOutput,vector<double>(1)),
 		alpha(numOutput,0), pW_old(numOutput),pW_new(numOutput),
-		aveBest(initError),epochBest(0),bestW(numOutput, vector<double>(numWeight)),
-		trainingErrorAll(numEpoch,vector<vector<double>> (numOfInVecTraining,vector<double>(numOutput)))
+		aveBest(initError),epochBest(0),vectorTrainBestEpoch(NULL),bestW(numOutput, vector<double>(1)),
+		trainingErrorAll(numEpoch,vector<vector<double>> (LengthDVSet,vector<double>(numOutput)))
 {
 	//errorEpoch(numEpoch,vector<double>(numOutput)),aveErrorTrn(numEpoch),
-	for(int i=0;i<numOutput;i++){
-		pW_old[i]=unique_ptr <vector<double>> (new vector<double> (numWeight, 0));
-	}
-	identityM();
 
 
 }
@@ -66,6 +62,8 @@ void inputVecWeight::identityM(){
 
 	for(int i=0; i< numOutput;i++){
 		//		unique_ptr<vector<vector<double>>> mat(new vector<vector<double>> (numRule, vector<double> (numRule)));
+
+
 		mat.reset(new vector<vector<double>> (numWeight, vector<double> (numWeight)));
 
 		for(int j=0; j<numWeight;j++){
@@ -78,8 +76,25 @@ void inputVecWeight::identityM(){
 				}
 			}
 		}
-		pM_old[i]=move(mat);
 
+		pM_old[i]=move(mat);
+		mat.reset(nullptr);
+	//	pM_new[i]=unique_ptr<vector<vector<double>>> (new vector<vector<double>> (numWeight, vector<double> (numWeight,1)));
+
+	}
+
+}
+/*******************************************************************/
+void inputVecWeight::resetValueforUpdateWeight(){
+	epochBest=0;
+	aveBest=initError;
+	bestErrorLastdata=initError;
+	aveBest=initError;
+	bestaveFinaAlter=initError;
+
+	for (int nV=0;nV<numOutput;nV++){
+		//TODO: important: we put the best w of the previous window as old weight of the current window
+		*(pW_old[nV])=bestW[nV];
 	}
 
 }
@@ -110,35 +125,64 @@ Postconditions:	1.An object of firing strength is instantiate in the function fo
 Invariant:
  *******************************************************************/
 
-void inputVecWeight::calculateWeight(const vector<double> & inputVec, int iter,vector<vector<vector<double>>> *MFparams){
+void inputVecWeight::calculateWeight(const vector<double> & inputVec, int iter,vector<vector<vector<double>>> *MFparams,vector<int>* dim,int lengthSurodata,int lengthDVSet){
+	int inputVL=0;
+	for(auto i:*dim){
+		inputVL+=i;
+	}
+	numWeight=numRule+numRule*inputVL;
+	LengthDVSet=lengthDVSet;
+	//cout<<endl<<"inputVL from calculateWeight= "<<inputVL<<endl;
+	resetVectors();
 	itera=iter;
-
-	inputV.readData(inputVec);
+	inputV.readData(inputVec,dim);
 	target=inputV.readTarget();
 	input=inputV.readInput();
 
 	//vector<double> &rinput=*(input);
 	firingStrength fS;
 	//pH=fS.cal_firingStrenght(rinput);
-	pH=fS.cal_firingStrenght(input,iter,MFparams);
+	pH=fS.cal_firingStrenght(input,iter,MFparams,dim,lengthSurodata);
 	/*cout<<"fs in CalculateWieght= "<<endl;
 	for(auto i:*pH){
 		cout<<i<<" ";
 	}
 	cout<<endl;*/
 	//FS_test(fS);
+
 	RLS();
-	/*for(int nV=0; nV<numVariate;nV++){
-	for(auto i:*(pM_old[nV])){
+	//for(int nV=0; nV<numVariate;nV++){
+	/*for(auto i:*(pM_old[nV])){
 				for(auto j:i)
 					cout<<j<<" ";
 				cout<<endl;
 			}
 	}*/
 	Replace_Old_New();
+//	cout<<endl<<"really why"<<endl;
+	/*for(auto i:*(pM_old[nV])){
+					for(auto j:i)
+						cout<<j<<" ";
+					cout<<endl;
+				}*/
+		//}
 
 }
 /*******************************************************************/
+void inputVecWeight::resetVectors(){
+
+
+	for(int i=0;i<numOutput;i++){
+
+		G[i].resize(numWeight);
+		bestW[i].resize(numWeight);
+		pW_old[i]=unique_ptr <vector<double>> (new vector<double> (numWeight, 0));
+	//	pW_new[i]=unique_ptr <vector<double>> (new vector<double> (numWeight, 0));
+		//pM_new[i]=unique_ptr<vector<vector<double>>> (new vector<vector<double>> (numWeight, vector<double> (numWeight,1)));
+
+	}
+	identityM();
+}
 /*******************************************************************
 RLS()
 
@@ -161,7 +205,28 @@ void inputVecWeight::RLS(){	//TODO: change this one
 	CalW();
 
 }
+/*******************************************************************/
+void inputVecWeight::calErrorStream(){
 
+	double aveErr=0;
+	vector<double> errorEpoch1 (numOutput,initError);
+	for (int nV=0;nV<numOutput;nV++){
+		double v=0;
+		vector<double> &rb=(*pW_old[nV]);
+		v=((*target)[nV]-Cal_VVS(rb,rpH));
+		//	errorEpoch[ep][nV]=sqrt(0.5*pow(v,2)+0.5*lambdaRLS*norm);
+		errorEpoch1[nV]=abs(v);
+		aveErr+=pow(v,2);
+	}
+	ErrorStream=sqrt(aveErr/numOutput);
+	cout<<endl<<"this is error stream= "<<ErrorStream<<endl;
+	for (int nV=0;nV<numOutput;nV++){
+
+		bestW[nV]=(*pW_old[nV]);
+		/*//We cannot have rbestW because Pw_old going out of scope by coming new input vector so the pointers pointing to somewhere unknown so rbestW.
+						rbestW[nV]=(pW_old[nV]).get();*/
+	}
+}
 /*******************************************************************/
 
 /*******************************************************************
@@ -181,10 +246,66 @@ Invariant:
  *******************************************************************/
 void inputVecWeight::Replace_Old_New(){
 
+
+
+
+	/*for(auto i:pM_new){
+		for(auto j:*i){
+			cout<< j<< " ";
+		}
+	}*/
+
 	for (int nV=0; nV<numOutput; nV++){
-		pM_old[nV]=move(pM_new[nV]);
-		pW_old[nV]=move(pW_new[nV]);
+		/*cout<<endl<< "pmnew"<<endl;
+
+		for(auto i:*(pM_new[nV])){
+			for(auto j:i){
+				cout<<j<<" ";
+			}
+		}
+		cout<< endl<<"pmold"<<endl;
+
+		for(auto i:*(pM_old[nV])){
+			for(auto j:i){
+				cout<<j<<" ";
+			}
+		}
+
+		cout<< endl<<"pwnew"<<endl;
+		for(auto i:*(pW_new[nV])){
+			cout<<i<<" ";
+		}
+		cout<<endl<< "pwold"<<endl;
+		for(auto i:*(pW_old[nV])){
+			cout<<i<<" ";
+		}*/
+		/*pW_old[nV]=move(pW_new[nV]);
+		pM_old[nV]=move(pM_new[nV]);*/
+		*(pW_old[nV])=*(pW_new[nV]);
+		*(pM_old[nV])=*(pM_new[nV]);
+
+
+	/*	cout<<endl<< "pwold"<<endl;
+		for(auto i:*(pW_old[nV])){
+			cout<<i<<" ";
+		}*/
+
+		//pW_old[nV]=move(pW_new[nV]);
+		//pM_old[nV]=move(pM_new[nV]);
+	//	cout<<endl<<" pmoldSize  "<<(pM_old[nV])->size()<<" pmnew  "<< pM_new[nV]->size()<<endl;
+
+		//pM_old[nV].reset((pM_new[nV]).release());
+/*
+		cout<< endl<<"pmold"<<endl;
+		for(auto i:*(pM_old[nV])){
+			for(auto j:i){
+				cout<<j<<" ";
+			}
+		}*/
+		/*pW_new[nV].reset(nullptr);
+			pM_new[nV].reset(nullptr);*/
 	}
+
 }
 
 /*******************************************************************
@@ -214,8 +335,8 @@ void inputVecWeight::calError(int ep){
 
 	aveErr=sqrt(aveErr/numOutput);
 	aveErrorLastdata.push_back(aveErr);
-	aveFinalalter=aveFinalalter/numOfInVecTraining;
-	aveFinalMain=sqrt(aveFinalMain/(numOfInVecTraining*numVariate));
+	aveFinalalter=aveFinalalter/LengthDVSet;
+	aveFinalMain=sqrt(aveFinalMain/(LengthDVSet*numVariate));
 	aveErrorEpoch.push_back(aveFinalMain);
 
 	//aveBest=aveFinalMain;
@@ -365,11 +486,11 @@ void inputVecWeight::saveParams(int epochPass){
 	myfile5 <<"******************************************************"<<endl;
 	myfile5<<endl<<"trainingErrorofBestEpoch"<<endl;
 	for (auto i:*vectorTrainBestEpoch){
-			for (auto j:i){
-				myfile5 << j<<" ";
-			}
-			myfile5<<endl;
+		for (auto j:i){
+			myfile5 << j<<" ";
 		}
+		myfile5<<endl;
+	}
 	myfile5.close();
 	fstream myfile4;
 	try{
@@ -453,11 +574,6 @@ void inputVecWeight::CalPn(){
 		unique_ptr<vector<vector<double>>> & rpM=pM_old[nV];
 		unique_ptr<vector<vector<double>>> & rpMN=pM_new[nV];
 		double denum=0;
-/*for(auto i:*(pM_old[nV])){
-	for(auto j:i){
-		cout<<j<<" ";
-	}
-}*/
 
 		if (pM_old[nV] && pH){
 			Cal_MV(rpM,rpH,ra);
@@ -629,6 +745,7 @@ void inputVecWeight::Cal_Vadd(unique_ptr<vector<double>>& rWold,vector<double> &
 			t.join();
 		}
 		rWnew=move(rout);
+		rout.reset(nullptr);
 	}
 	else{
 		for (int i=0 ; i < (numWeight); i++){
@@ -636,6 +753,7 @@ void inputVecWeight::Cal_Vadd(unique_ptr<vector<double>>& rWold,vector<double> &
 			(*rout)[i]=(*rWold)[i]+rmul[i];
 		}
 		rWnew=move(rout);
+		rout.reset(nullptr);
 	}
 
 
@@ -675,7 +793,7 @@ void inputVecWeight::Cal_MV(unique_ptr<vector<vector<double>>>&rpM,unique_ptr<ve
 			if (t==(numThread-1)){
 				end+=extras;
 			}
-			matrix.push_back(thread([start,end,&rpM,&rpH,&a,&lck](){
+			matrix.push_back(thread([start,end,&rpM,&rpH,&a,&lck,this](){
 				for(int i=start; i<end;i++){
 
 					try{
@@ -743,7 +861,7 @@ void inputVecWeight::Cal_VM(unique_ptr<vector<double>>&rpH,unique_ptr<vector<vec
 			if (t==(numThread-1)){
 				end+=extras;
 			}
-			matrix.push_back(thread([start,end,&rpH,&rpM,&b,&lck](){
+			matrix.push_back(thread([start,end,&rpH,&rpM,&b,&lck,this](){
 
 				for(int i=start; i<end;i++){
 					//double result=0;
@@ -815,7 +933,7 @@ void inputVecWeight::Cal_VVM(vector<double> &a,vector<double> &b, vector<std::ve
 			if (t==(numThread-1)){
 				end+=extras;
 			}
-			matrix.push_back(thread([start,end,&a,&b,&C,&lck](){
+			matrix.push_back(thread([start,end,&a,&b,&C,&lck,this](){
 				for(int i=start; i<end;i++){
 					for (int j=0; j<numWeight; j++){
 						try{
@@ -932,7 +1050,7 @@ void inputVecWeight::Cal_Msub(unique_ptr<vector<vector<double>>> & rpM,vector<ve
 			if (t==(numThread-1)){
 				end+=extras;
 			}
-			matrix.push_back(thread([start,end,&rpM,&B,&pmNew,&lck](){
+			matrix.push_back(thread([start,end,&rpM,&B,&pmNew,&lck,this](){
 				for(int i=start; i<end;i++){
 					//double result=0;
 
@@ -967,16 +1085,21 @@ void inputVecWeight::Cal_Msub(unique_ptr<vector<vector<double>>> & rpM,vector<ve
 			t.join();
 		}
 		rpMN=(move(pmNew));
+		pmNew.reset(nullptr);
 	}
 	else{
+
 		for (int i=0; i<(numWeight);i++){
 
 			for (int j=0; j<(numWeight);j++){
 				(*pmNew).at(i).at(j)=0;
+
 				(*pmNew)[i][j]=(1/forget)*((*rpM)[i][j]-B[i][j]);
+
 			}
 		}
 		rpMN=(move(pmNew));
+		pmNew.reset(nullptr);
 	}
 
 
