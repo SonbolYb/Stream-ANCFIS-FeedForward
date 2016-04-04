@@ -9,25 +9,29 @@
 #define DIMENSION_H_
 #include"header.h"
 #include "DelayVector.h"
-#include <flann/flann.hpp>
+/*#include <flann/flann.hpp>
+
 #include <flann/algorithms/dist.h>
 #include <flann/algorithms/kdtree_index.h>
 #include <flann/util/params.h>
+*/
 
 
-class Dimension:public commandLine {
+class Dimension:public DelayVector {
 public:
 	Dimension();
-	std::vector<int> dimension;
+	std::vector<int> dim;
 	std::vector<int>* getDim(std::vector<std::vector<double>> *, std::vector<int>*);
-	DelayVector DV;
+	//DelayVector DV;
 	int getNumWeight();
 	int getInputVL();
 	std::vector<int>* getLengthofVar();
+	std::vector<std::vector<double>>* getDV(std::vector<std::vector<double>> *, std::vector<int>*, std::vector<int>*);
+		std::vector<std::vector<double>>* getOutput();
 	virtual ~Dimension();
 private:
-	std::vector<std::vector<double>> * input;
-	std::vector<int> * delay;
+	//std::vector<std::vector<double>> * input;
+	std::vector<int> * del;
 	int KNear=3;
 	std::vector<std::vector<int>> vectordim;
 	std::vector<std::vector<double>>* delayVec;
@@ -41,11 +45,16 @@ private:
 	int inputVL=0;
 	std::vector<int> lengthofVar;
 
+
 	void findDimKDD();
 	void vectorDim();
 	void find3kd();
 	void predict1step();
 	void findminError();
+
+
+	void makeDV();
+	void resizeDV();
 	friend void DimTest(std::vector<std::vector<double>>*,std::vector<int>* );
 
 };

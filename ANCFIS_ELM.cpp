@@ -31,7 +31,6 @@
 #include"inputVector.h"
 #include"firingStrength.h"
 #include"AncfisChecking.h"
-#include "InputStream.h"
 #include"DelayVector.h"
 #include "MFParam.h"
 #include "BuildNet.h"
@@ -40,7 +39,6 @@
 using namespace std;
 
 int main(int argc, char * argv[]) {
-	//TODO: test MF params
 	setbuf(stdin,NULL);
 	setbuf(stdout,NULL);
 	const clock_t begin=clock();
@@ -53,17 +51,19 @@ int main(int argc, char * argv[]) {
 	BuildANCFIS Ancfis;
 
 	finalWeight=Ancfis.getFinalWeight();
-	cout << "this is final out weight"<<endl;
+	cout << endl<<"this is final out weight"<<endl;
 	for (auto i:(*finalWeight)){
 		for (auto j:i){
 			cout << j<< " ";
 		}
+		cout<<endl;
 	}
 	vector<int>* finalDim=Ancfis.getDimension();
 	vector<int>* finalDelay=Ancfis.getDelay();
 	vector<vector<vector<double>>>* finalMf=Ancfis.getMf();
+	int lengthSurodata=Ancfis.getLengthSurodata();
 	AncfisChecking checking;
-	checking.output(finalWeight,finalDelay,finalDim,finalMf);
+	checking.output(finalWeight,finalDelay,finalDim,finalMf,lengthSurodata);
 	//	commandLine_test();
 		//InputStream inS;
 	//	testInputStream();
@@ -71,7 +71,7 @@ int main(int argc, char * argv[]) {
 		//DV_test();
 		//testDelay();
 	//	mfparamtest();
-	std::cout << float( clock () - begin ) /  CLOCKS_PER_SEC;
-		return 0;
+	std::cout <<"time= "<< float( clock () - begin ) /  CLOCKS_PER_SEC;
+		return(0);
 }
 

@@ -26,11 +26,13 @@ public:
 	std::vector<int>* getDimension();
 	std::vector<int>* getDelay();
 	std::vector<std::vector<std::vector<double>>>* getMf();
+	int getLengthSurodata();
 	virtual ~BuildANCFIS();
 private:
 	void findWeight();
 	void findDV();
 	void findMFParam();
+	void saveDDMF();
 	InputStream InS;
 	DelayVector DV;
 	Delay del;

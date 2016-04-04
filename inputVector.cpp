@@ -14,9 +14,14 @@ inputVector ()
 input:		A vector to input data in an input vector
 target:		A vector to target data in an input vector
  *******************************************************************/
-inputVector::inputVector(): commandLine(),input(1),target(numVariate){
+inputVector::inputVector(): commandLine(){
 
+//cout<<"inputVector1"<<endl;
 
+}
+
+inputVector::~inputVector(){
+//	cout<<"inputVector2"<<endl;
 }
 /******************************************************************/
 /*******************************************************************
@@ -41,22 +46,26 @@ void inputVector::readData(const std::vector<double>& datapoints, vector<int>* d
 			inputV+=i;
 		}
 	inputVL=inputV;
-	input.resize(inputVL);
-	cout<<endl;
+	input.reset(new vector<double> (inputVL));
+	target.reset(new vector<double> (numVariate));
+
 	int j=0;
 	int k=0;
 	int lengthCounter_target=(*dim)[0];
 
-	for (int i=0 ; i < inputVL;i++){
+	for (int i=0 ; i < inputVL+numVariate;i++){
 	//	cout<<"datapoint"<<datapoints[i];
 		if(i==(lengthCounter_target)){
-			target[j]=datapoints[i];
+			(*target)[j]=datapoints[i];
 			j++;
+			if(j<numVariate){
 			lengthCounter_target=lengthCounter_target+(*dim)[j]+1;
+			}
+
 
 		}
 		else{
-			input[k]=datapoints[i];
+			(*input)[k]=datapoints[i];
 			k++;
 		}
 	}
@@ -75,23 +84,25 @@ PreConditions:		input is not empty
 Postconditions:
 Invariant:
  *******************************************************************/
-vector<double>* const  inputVector::readInput() {
+unique_ptr<std::vector<double>>&  inputVector::readInput() {
+
+	return((input));
 
 	//To check if all the element of the input is not zero
-	vector<double> copyVector(input.size(),0);
+	//vector<double> copyVector(input.size(),0);
 
-	vector<double>* inp= & input;
-	if (!input.empty()){
+	//vector<double>* inp= & input;
+	/*if (!input.empty()){
 		return(inp);
-	}
+	}*/
 	/*else if (input==copyVector){
 		cout << "Warning:"<<endl<<"All the element of the input is zero"<<endl;
 		return(inp);
 	}*/
-	else{
+	/*else{
 		cout << "You probably have not saved the input vector. Save it first by instantiating time series class and then continue"<<endl;
 		exit(1);
-	}
+	}*/
 }
 /******************************************************************/
 /*******************************************************************
@@ -106,26 +117,27 @@ PreConditions:		target is not empty
 Postconditions:
 Invariant:
  *******************************************************************/
-vector<double>*const inputVector::readTarget(){
+unique_ptr<std::vector<double>> & inputVector::readTarget(){
+	return((target));
 
 	//TO check if all the element of the target is zero
-	vector<double> copyVector(target.size(),0);
+	/*vector<double> copyVector(target.size(),0);
 	vector<double>* tar=&target;
 	if (! target.empty()){
 		return(tar);
 	}
-	/*else if(target==copyVector){
+	else if(target==copyVector){
 		cout << "Warning:"<<endl<<"All the element of the target is zero"<<endl;
 		return(tar);
-	}*/
+	}
 	else{
 		cout << "You probably have not saved the input vector. Save it first by instantiating time series class and then continue"<<endl;
 		exit(1);
-	}
+	}*/
 }
 /******************************************************************/
 
-void inputVector_test(vector<double>  tt){
+/*void inputVector_test(vector<double>  tt){
 
 
 	inputVector t1;
@@ -149,13 +161,13 @@ void inputVector_test(vector<double>  tt){
 		 for(auto i: *(t1.readInput())){
 			 cout<<" "<<i;
 		 }
-		/*for(auto i =((t1.readInput())->begin(); i!=(t1.readInput())->end(),i++){
+		for(auto i =((t1.readInput())->begin(); i!=(t1.readInput())->end(),i++){
 			cout<< *i;
-		}*/
+		}
 
 
 		 cout << endl;
-}/******************************************************************/
+}*****************************************************************/
 /*inputVector::inputVector(double * data): commandLine(),datapoints(data),input(inputlength),target(targetlength){
 
 	readData();

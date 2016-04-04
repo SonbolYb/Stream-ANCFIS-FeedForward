@@ -21,6 +21,11 @@ sumDP:		save the sum in euqation 25.
  *******************************************************************/
 firingStrength::firingStrength():commandLine(),mfG(numVariate),fsRaw(numRule),fsNorm(numRule),SumNorm(0),SumDP(0,0),pFSDP(numRule) {
 	// TODO Auto-generated constructor stub
+	//cout<<"firingStrength1"<<endl;
+}
+
+firingStrength::~firingStrength(){
+//	cout<<"firingStrength2"<<endl;
 }
 
 /*******************************************************************
@@ -35,7 +40,7 @@ PreConditions:		input vector and mfG and rule are valid
 Postconditions:		pointer to the firing strength (pFS) is valid.
 Invariant:
  *******************************************************************/
-unique_ptr<vector<double>> firingStrength::cal_firingStrenght( vector<double> * const input, int iter,vector<vector<vector<double>>>* MFparams,vector<int> *dim,int lengthSurodata){
+unique_ptr<vector<double>> firingStrength::cal_firingStrenght( unique_ptr<std::vector<double>> const & input, int iter,vector<vector<vector<double>>>* MFparams,vector<int> *dim,int lengthSurodata){
 
 	int sumDim=0;
 	for (auto i:*dim){
@@ -44,6 +49,7 @@ unique_ptr<vector<double>> firingStrength::cal_firingStrenght( vector<double> * 
 	int numWeight=numRule+sumDim*numRule;
 	pFS.reset(new vector<double> (numWeight));
 	mfG=mf.MemFungrade(input, iter,MFparams,dim,lengthSurodata);
+	rule.reset();
 	rule=ruleStruct();
 	getFinalFs(input);
 	return(move(pFS));
@@ -63,7 +69,7 @@ PreConditions:
 Postconditions:
 Invariant:
  *******************************************************************/
-void firingStrength::getFinalFs(vector<double> * const input){
+void firingStrength::getFinalFs(unique_ptr<std::vector<double>> const & input){
 	getRawFS();
 	normalize();
 	dotP();
@@ -214,7 +220,7 @@ PreConditions:
 Postconditions:
 Invariant:
  *******************************************************************/
-void firingStrength::conseq(std::vector<double> * const input){ 		//TODO: it is for univariate. Make it for multivariat
+void firingStrength::conseq(unique_ptr<std::vector<double>> const & input){
 
 	int k=0;
 	/*for (auto i:*input){

@@ -9,14 +9,16 @@
 using namespace std;
 BuildANCFIS::BuildANCFIS():commandLine(),inputOrigin(NULL),surodata(NULL),delayVectors(NULL),newDV(NULL),mfParam(NULL),dimension(NULL),
 		delay(NULL),newData(NULL),finalWeight(NULL){
+//	cout<<"BuildAncfis1"<<endl;
 }
 
 BuildANCFIS::~BuildANCFIS() {
 	// TODO Auto-generated destructor stub
+//	cout<<"BuildAncfis2"<<endl;
 }
 
 void BuildANCFIS::findWeight(){
-int numWeight=0;
+
 	/*It simulate the stream data becuase here we have a file that we want pass data one by one*/
 	while(!InS.EndofFile()){
 		/*Original window*/
@@ -26,6 +28,7 @@ int numWeight=0;
 		findDV();
 		findMFParam();
 		finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
+
 
 	}
 	if(InS.numpassedInput >= per10){	//for new data coming
@@ -66,6 +69,8 @@ int numWeight=0;
 
 	}
 }
+buildNet.getStreamParam();
+
 }
 /*******************************************************************
 findDV:
@@ -80,14 +85,14 @@ void BuildANCFIS::findDV(){
 	delayVectors=DV.getDV(inputOrigin,delay,dimension);
 	LengthDVSet=DV.getLengthDVSet();
 
-	cout<<endl<<"this is delayVectors1 in findDV"<<endl;
+	/*cout<<endl<<"this is delayVectors1 in findDV"<<endl;
 			for(auto i:*delayVectors){
 				for(auto j:i){
 					cout<<j<<" ";
 				}
 				cout<<endl;
 			}
-			cout<<endl;
+			cout<<endl;*/
 
 }
 void BuildANCFIS::findMFParam(){
@@ -96,8 +101,59 @@ void BuildANCFIS::findMFParam(){
 	//	mfPar.findMfparam(surodata);
 	LengthSurodata=((*surodata)[0].size())/2+1;
 	mfParam=mfPar.getMfparam(surodata);
+	saveDDMF();
 }
+void BuildANCFIS::saveDDMF(){
+	cout<<endl<<"this is Delay"<<endl;
+	for(auto i:*delay){
+		cout<<i<<" ";
+	}
+	cout<<endl<<"this is Dimension"<<endl;
+	for(auto i:*dimension){
+		cout<<i<<" ";
+	}
+	cout<<endl<<"this is MF params"<<endl;
+	for(auto i:* mfParam){
+		for(auto j:i){
+			for(auto k:j){
+				cout<<k<<" ";
+			}
 
+		}
+	}
+	cout<<endl;
+	fstream myfile;
+
+		//throw exception if the file cannot be opened
+		myfile.exceptions(ifstream::failbit|ifstream::badbit);
+		try{
+			myfile.open("FinalParams.txt",ios::app|ios::out);
+		}
+		catch(fstream::failure &e){
+			cerr << "Exception opening/reading/closing file\n";
+		}
+		myfile<<"----------Results----------"<<endl;
+		myfile<<endl<<"Delay:"<<endl;
+		for(auto i:*delay){
+				myfile<<i<<" ";
+			}
+		myfile<<endl<<"Dimension"<<endl;
+		for(auto i:*dimension){
+				myfile<<i<<" ";
+			}
+		myfile<<endl<<"MfParams"<<endl;
+		for(auto i:*mfParam){
+				for(auto j:i){
+					for(auto k:j){
+						myfile<<k<<" ";
+					}
+
+				}
+				myfile<<endl;
+			}
+			myfile<<endl;
+
+}
 std::vector<std::vector<double>> * BuildANCFIS::getFinalWeight(){
 	findWeight();
 	return(finalWeight);
@@ -112,4 +168,7 @@ vector<int>*  BuildANCFIS::getDelay(){
 vector<vector<vector<double>>>*  BuildANCFIS::getMf(){
 	return(mfParam);
 
+}
+int BuildANCFIS::getLengthSurodata(){
+	return(LengthSurodata);
 }

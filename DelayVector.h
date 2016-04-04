@@ -9,7 +9,6 @@
 #define DELAYVECTOR_H_
 #include "header.h"
 #include "commandLine.h"
-#include "DelayVector.h"
 #include <flann/flann.hpp>
 #include <flann/algorithms/dist.h>
 #include <flann/algorithms/kdtree_index.h>
@@ -29,23 +28,23 @@ public:
 	//InputStream inS;
 	//void getDV(Delay , Dimension );
 	//void findDV(std::vector<std::vector<double>> *, int, int);
-	std::vector<std::vector<double>>* getDV(std::vector<std::vector<double>> *, std::vector<int>*, std::vector<int>*);
-	std::vector<std::vector<double>>* getDVforDim(std::vector<std::vector<double>> *, std::vector<int>*, std::vector<int>*);
-	std::vector<std::vector<double>>* getOutputforDim();
+	virtual std::vector<std::vector<double>>* getDV(std::vector<std::vector<double>> *, std::vector<int>*, std::vector<int>*);
+
+
 	bool compare(double,double);
 	int getLengthDVSet();
-private:
+protected:
 	//void delay();
 	//void dimension();
 
 	void deletOldDV();
 	//void getInput();
-	void findDur();
-	void findDurforDim();
-	void makeDV();
-	void makeDVforDim();
-	void resizeDV();
-	void resizeDVforDim();
+	 void findDur();
+
+	virtual void makeDV();
+
+	virtual void resizeDV();
+
 	void addNewDV(std::vector<double>*);
   void findNewDV(std::vector<int>*);
 	void replaceNewDV();

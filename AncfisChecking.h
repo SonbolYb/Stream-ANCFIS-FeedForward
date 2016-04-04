@@ -25,8 +25,9 @@ private:
 	DelayVector DV;
 
 	std::vector<std::vector<double>>* checkMatrix;
-	std::vector<double> * input;
-	std::vector<double> *target;
+//	std::unique_ptr<std::vector<double>>& input;
+	//std::unique_ptr<std::vector<double>>& target;
+	std::unique_ptr<std::vector<double>> target;
 	std::unique_ptr<std::vector<double>> pH;
 	std::unique_ptr<std::vector<double>> & rpH;
 	std::vector<std::vector<double>> checkError;
@@ -38,12 +39,14 @@ private:
 	int numOfInVecChecking=0;
 	int numWeight=0;
 	std::vector<int>* dimension;
+	int lengthSurdata=0;
 
 
 public:
 
 	AncfisChecking();
-	void output (std::vector<std::vector<double>>*,std::vector<int> *,std::vector<int>*,std::vector<std::vector<std::vector<double>>> *);
+	virtual ~AncfisChecking();
+	void output (std::vector<std::vector<double>>*,std::vector<int> *,std::vector<int>*,std::vector<std::vector<std::vector<double>>> *,int);
 	void buildNet(std::vector<double> &,int,std::vector<std::vector<std::vector<double>>> *);
 	void saveParams();
 	friend void output_test(AncfisChecking &);

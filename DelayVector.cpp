@@ -11,11 +11,12 @@ using namespace std;
 
 DelayVector::DelayVector():pOrigWindow(NULL),input(NULL),duration(numVariate),delV(1),delVDim(1),dimension(NULL),delay(NULL),output(1),delayVecNew(1),headDV(NULL),endDV(NULL){
 	// TODO Auto-generated constructor stub
-
+	//cout<<"DelayVector1"<<endl;
 }
 
 DelayVector::~DelayVector() {
 	// TODO Auto-generated destructor stub
+	//cout<<"DelayVector2"<<endl;
 }
 
 /*void DelayVector::getInput(){
@@ -112,8 +113,8 @@ vector<vector<double>> * DelayVector::getNewDelayVecs(vector<vector<double>>* in
 /******************************************************************/
 void DelayVector::findNewDV(vector<int>* headEndInx){
 	//TODO: use delay and dimension in argument becuase it is safer. It could change maxDur and size of delayVecNew
-		int n=0;
-		/*cout <<endl<<"maxDur= "<<maxDur<<"size= "<<size<<endl;
+	int n=0;
+	/*cout <<endl<<"maxDur= "<<maxDur<<"size= "<<size<<endl;
 		cout<<"dimension"<<endl;
 		for(auto i:*dimension){
 			cout<<i<< " ";
@@ -123,93 +124,97 @@ void DelayVector::findNewDV(vector<int>* headEndInx){
 			cout<<i<<" ";
 		}
 		cout<<endl;*/
-		//int head=(*headEndInx)[0];
-		int end=(*headEndInx)[1];
+	//int head=(*headEndInx)[0];
+	int end=(*headEndInx)[1];
 	delayVecNew.resize(sumDim+numVariate);
-		//TODO something for k. the delay vectors go instead of deleted delay vector
+	//TODO something for k. the delay vectors go instead of deleted delay vector
 
-		for(int l=0;l<numVariate;l++){
-			if(end >=maxDur ){
+	for(int l=0;l<numVariate;l++){
+		if(end >=maxDur ){
+			for (int j=0; j< (*dimension)[l];j++){
+				delayVecNew[n]=(*input)[l][end-(*delay)[l]*(j)-1];
+				n++;
+			}
+		}
+		else{
+			if(end==0){
 				for (int j=0; j< (*dimension)[l];j++){
-					delayVecNew[n]=(*input)[l][end-(*delay)[l]*(j)-1];
+					delayVecNew[n]=(*input)[l][maxDur+size+end-(*delay)[l]*(j)-1];
+
 					n++;
 				}
 			}
-			else{
-				if(end==0){
-					for (int j=0; j< (*dimension)[l];j++){
-						delayVecNew[n]=(*input)[l][maxDur+size+end-(*delay)[l]*(j)-1];
+			else if((end-1) >= (*delay)[l]){
+				int eb=end-(*delay)[l];
 
-						n++;
-					}
-				}
-				else if((end-1) >= (*delay)[l]){
-					int eb=end-(*delay)[l];
-					for(int j=0; j< eb+1;j++){
+				for(int j=0; j< eb+1;j++){
+					if(j<(*dimension)[l]-1){
 						delayVecNew[n]=(*input)[l][end-(*delay)[l]*(j)-1];
 						n++;
 					}
-					if(eb+1!= (*dimension)[l]){
-						for(int j=eb+1;j< (*dimension)[l];j++){
-							delayVecNew[n]=(*input)[l][maxDur+size+end-(*delay)[l]*(j)-1];
-							n++;
-						}
-					}
+
 				}
-				else{
-					delayVecNew[n]=(*input)[l][end-1];
-					n++;
-					for(int j=1;j< ((*dimension)[l]);j++){
+				if(eb+1!= (*dimension)[l]){
+					for(int j=eb+1;j< (*dimension)[l];j++){
 						delayVecNew[n]=(*input)[l][maxDur+size+end-(*delay)[l]*(j)-1];
 						n++;
 					}
-
-
 				}
 			}
-			delayVecNew[n]=(*input)[l][end];
-			n++;
+			else{
+				delayVecNew[n]=(*input)[l][end-1];
+				n++;
+				for(int j=1;j< ((*dimension)[l]);j++){
+					delayVecNew[n]=(*input)[l][maxDur+size+end-(*delay)[l]*(j)-1];
+					n++;
+				}
+
+
+			}
 		}
+		delayVecNew[n]=(*input)[l][end];
+		n++;
+	}
 }
 /******************************************************************/
 void DelayVector::replaceNewDV(){
 
-		auto head1=delV.begin();
-		auto end1=delV.end()-1;
-		headDV=&(*head1);
-		endDV=&(*end1);
-		headInxDV=head1-delV.begin();
-		endInxDV=end1-delV.begin();
+	auto head1=delV.begin();
+	auto end1=delV.end()-1;
+	headDV=&(*head1);
+	endDV=&(*end1);
+	headInxDV=head1-delV.begin();
+	endInxDV=end1-delV.begin();
 
-			if( endInxDV==(size-1) &&headInxDV==0){
-				endDV=headDV;
-				headDV=headDV+1;
+	if( endInxDV==(size-1) &&headInxDV==0){
+		endDV=headDV;
+		headDV=headDV+1;
 
-				endInxDV=0;
-				headInxDV++;
-				*endDV=delayVecNew; //The first variate is filled here
-
-
-			}
-			else if(headInxDV==(size-1)&& endInxDV==(size-2)){
-				endDV=headDV;
-				headDV=&(*delV.begin());
-				endInxDV++;
-				headInxDV=0;
-
-				*endDV=delayVecNew;
+		endInxDV=0;
+		headInxDV++;
+		*endDV=delayVecNew; //The first variate is filled here
 
 
+	}
+	else if(headInxDV==(size-1)&& endInxDV==(size-2)){
+		endDV=headDV;
+		headDV=&(*delV.begin());
+		endInxDV++;
+		headInxDV=0;
 
-			}
-			else{
-				endDV=headDV;
-				headDV=headDV+1;
-				endInxDV++;
-				headInxDV++;
-				*endDV=delayVecNew;
+		*endDV=delayVecNew;
 
-			}
+
+
+	}
+	else{
+		endDV=headDV;
+		headDV=headDV+1;
+		endInxDV++;
+		headInxDV++;
+		*endDV=delayVecNew;
+
+	}
 }
 /******************************************************************/
 vector<vector<double>>* DelayVector::getDV(vector<vector<double>> * inpt,vector<int>* del, vector<int>* dim){
@@ -224,20 +229,7 @@ vector<vector<double>>* DelayVector::getDV(vector<vector<double>> * inpt,vector<
 
 }
 /******************************************************************/
-vector<vector<double>>* DelayVector::getDVforDim(vector<vector<double>> * inpt,vector<int>* del, vector<int>* dim){
 
-	delay=del;
-	dimension=dim;
-	input=inpt;
-	findDur();
-	resizeDVforDim();
-	makeDVforDim();
-	return (&delVDim);
-
-
-
-
-}
 /******************************************************************/
 void DelayVector::findDur(){
 
@@ -277,15 +269,7 @@ void DelayVector::resizeDV(){
 		delV[i].resize(sumDim+numVariate);
 	}
 }
-/******************************************************************/
-void DelayVector::resizeDVforDim(){
-	delVDim.resize(size);
-	output.resize(size);
-	for(int i=0; i <size;i++){
-		delVDim[i].resize(sumDim);
-		output[i].resize(numVariate);
-	}
-}
+
 /******************************************************************/
 void DelayVector::makeDV(){
 
@@ -294,7 +278,6 @@ void DelayVector::makeDV(){
 	//cout <<endl<<"maxDur= "<<maxDur<<"size= "<<size<<endl;
 	//TODO: I believe it should be i<=size+maxDur
 	for (int i=maxDur; i<size+maxDur;i++){
-
 		n=0;
 		for(int l=0;l<numVariate;l++){
 			for (int j=0; j< (*dimension)[l];j++){
@@ -317,52 +300,17 @@ void DelayVector::makeDV(){
 
 
 	}
-
-
-}
-/******************************************************************/
-void DelayVector::makeDVforDim(){ //It is just for use in the dimension class. Because it does not have prediction in the delay vectors
-	int k=0;
-	int n=0;
-	int h=0;
-
-	for (int i=maxDur; i<size+maxDur;i++){
-
-		n=0;
-		for(int l=0;l<numVariate;l++){
-			for (int j=0; j< (*dimension)[l];j++){
-				//cout << (*input)[l][0];
-				//cout << (*input)[l][2];
-				//cout <<" this"<<i-(*delay)[l]*(j-1)-1;
-				delVDim[k][n]=(*input)[l][i-(*delay)[l]*(j)-1];
-
-				//	cout <<delV[k][n];
-				n++;
-
-			}
-			//TODO:not sure just check it the output if it works
-			output[h][l]=(*input)[l][i];
-
-		}
-		h++;
-		k=k+1;
-
-
-	}
+	cout<<"hi"<<endl;
 
 
 }
 
-/******************************************************************/
-vector<vector<double>> * DelayVector::getOutputforDim(){
-	return (&output);
-}
 /******************************************************************/
 bool DelayVector::compare(double a,double b){
 	return(a);
 }
 /******************************************************************/
-void DV_test(){
+/*void DV_test(){
 	InputStream inS;
 	DelayVector DV;
 	int ** allIndices;
@@ -433,7 +381,7 @@ void DV_test(){
 		for (unsigned int i=0 ; i< query.rows;i++){
 			for (int k=0; k<nn;k++){
 				/*cout << indices[i][j]<< " ";
-				cout <<allIndices[i][j]<<" ";*/
+				cout <<allIndices[i][j]<<" ";
 				cout<< *((indices[i])+k)<<" ";
 				allIndices[j][k]=*((indices[i])+k);
 
@@ -514,10 +462,10 @@ void DV_test(){
 	}
 	sort(index.begin(),index.end(),[&abs](size_t i1,size_t i2){return abs[i1]>abs[i2]; });
 	//sort(abs.begin(),abs.end(),DV.compare); //I cannot use the sort because it is frequency and order is important
-	/*vector<vector<int>>::iterator row;
+	vector<vector<int>>::iterator row;
 		vector<int>::iterator col;
 
-		sort(out.begin(),out.end());//,DV.compare);*/
+		sort(out.begin(),out.end());//,DV.compare);
 	//vector<int>::iterator result=max_element(begin(abs),end(abs));
 
 	int numofMF=2;
@@ -535,4 +483,5 @@ void DV_test(){
 
 	fftw_free(out);
 
-}
+}*/
+

@@ -27,7 +27,11 @@ variable is different and we save it in a vector numOfMF. So, what we can do her
 in the vector is a unique_ptr to the mfs of one variable. So, we do not worry about that # of mf is different
  *******************************************************************/
 mfGrade::mfGrade():commandLine(),pConvolution(numVariate),pNormalize(numVariate),lengthofVar(numVariate){
+//cout<<"mfGrad1"<<endl;
+}
 
+mfGrade::~mfGrade(){
+//	cout<<"mfGrad2"<<endl;
 }
 /*******************************************************************
 MemFungrade()
@@ -41,7 +45,7 @@ PreConditions:		inputVector and pNormalize are valid
 Postconditions:		pNormalize is moved to firingStrength class
 Invariant:
  *******************************************************************/
-vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(vector<double>* const inputVector, int iter, vector<vector<vector<double>>> *MFparam,vector<int>* dim,int lengthSurod){
+vector<unique_ptr<vector<complex<double> >>> mfGrade:: MemFungrade(unique_ptr<std::vector<double>> const & inputVector, int iter, vector<vector<vector<double>>> *MFparam,vector<int>* dim,int lengthSurod){
 	iteration=iter;
 	lengthSurodata=lengthSurod;
 	/*cout<<"mf params in mfGrade"<<endl;
@@ -119,7 +123,7 @@ The function works as:
 					 convSumn=f(n)g(1)+f(n)g(2)+...+f(n).g(n)
 				0.convSum=convsum1+convSum2+...+convSumn
  *******************************************************************/
-void  mfGrade::convolutionFn(vector<double>* const inputVector,std::vector<std::vector<std::vector<double>>>* MFparam){
+void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,std::vector<std::vector<std::vector<double>>>* MFparam){
 
 	auto beginV=inputVector->begin();
 	auto endV=inputVector->begin();
@@ -198,6 +202,7 @@ void  mfGrade::convolutionFn(vector<double>* const inputVector,std::vector<std::
 			(*pmFEachVar)[j]=convSum;
 
 		}
+		pConvolution[i].reset();
 		pConvolution[i]=(move(pmFEachVar));
 
 	}
@@ -230,6 +235,7 @@ void mfGrade::elliotFn(){
 				exit(1);
 			}
 		}
+		pNormalize[i].reset();
 		pNormalize[i]=move(pnorm);
 	}
 }

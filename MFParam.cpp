@@ -10,11 +10,12 @@
 using namespace std;
 MFParam::MFParam():commandLine(), prms(numVariate),MFparam(numVariate),MFparam1(numVariate), power(numVariate) {
 	// TODO Auto-generated constructor stub
-
+	//cout<<"mfParam1"<<endl;
 }
 
 MFParam::~MFParam() {
 	// TODO Auto-generated destructor stub
+	//cout<<"mfParam2"<<endl;
 }
 
 
@@ -38,14 +39,36 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 	int row=((*input)[0].size())/2+1;
 	//TODO: this variable is defined in commandline but I should change it to be added in MFparam because it is kind of global here
 	int	LengthSurrodata=row;
+	for (int i=0; i<numOutput;i++){
+		if(row < numOfMF[i]){
+			numOfMF[i]=row-1;
+			cout<<endl<<"number of Membership function is greater than our frequencies, so we have changed it to frequency. The new mfs are"<<endl;
+			cout<<numOfMF[i]<<endl;
 
+		}
+	}
 
+	fstream myfile;
+
+	//throw exception if the file cannot be opened
+	myfile.exceptions(ifstream::failbit|ifstream::badbit);
+	try{
+		myfile.open("FinalParams.txt",ios::app|ios::out);
+	}
+	catch(fstream::failure &e){
+		cerr << "Exception opening/reading/closing file\n";
+	}
+	myfile <<"numofMf:\t\t\t";
+	for(auto i:numOfMF){
+		myfile <<i<<" ";
+	}
+	myfile.close();
 	for (int i=0 ; i<numVariate;i++){
 		prms[i].resize(LengthSurrodata);
 	}
 	//(row, vector<pair<double,double>>(numVariate));//1 is for amplitude and 1 for phase
 
-
+	//TODO: check mf with lengthsuroo
 	for (int i=0; i< numVariate;i++){ //For each variate an independent fourier transform is taken
 
 		fftw_plan pln;
@@ -84,7 +107,7 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 
 		}
 		//using lambda to get the index of max power
-		sort(index.begin(),index.end(),[&ampltd](size_t ii, size_t jj){return ampltd[ii]>ampltd[jj];});
+		sort(index.begin(),index.end(),[&ampltd](size_t ii, size_t jj){return (ampltd[ii]>ampltd[jj]);});
 
 		MFparam[i].resize(numOfMF[i]); //We multiply by 2 because we want to size indexes as well
 		MFparam1[i].resize(numOfMF[i]);
@@ -101,9 +124,12 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 
 		}
 
-		fftw_destroy_plan(pln);
 		fftw_free(out);
+		fftw_destroy_plan(pln);
+
+
 	}
+	fftw_cleanup();
 }
 vector<vector<double>>* MFParam::getPower(){
 

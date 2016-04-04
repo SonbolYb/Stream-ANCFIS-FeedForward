@@ -15,11 +15,12 @@ InputStream::InputStream():commandLine(),origWindow(numVariate, vector<double>(p
 		surWindowN(numVariate),newdata(numVariate),newdataN(numVariate),
 		checking(numVariate,vector<double> (CheckSize)),checkingN(numVariate,vector<double> (CheckSize)),max(numVariate),min(numVariate),head(NULL),end(NULL) {
 	// TODO Auto-generated constructor stub
-
+//cout<<"inputStream1"<<endl;
 }
 /******************************************************************/
 InputStream::~InputStream() {
 	// TODO Auto-generated destructor stub
+	//cout<<"inputStream2"<<endl;
 }
 /******************************************************************/
 bool InputStream::EndofFile(){
@@ -28,7 +29,7 @@ bool InputStream::EndofFile(){
 /*******************************************************************
 readOrigWindow():
 
-First, 10% of data is considered as the first window
+First, per10(10%) of data is considered as the first window
 Then, add a new data to the origWindow and delete the the oldest data.
 To do that, we need to have to pointers as head and end to know where
 the new data should be added and from where the oldest data is deleted
@@ -193,20 +194,40 @@ vector<vector<double>>* InputStream::getChecking(){
 	return(&checking);
 }
 /******************************************************************/
-
+/*******************************************************************
+getHeadEndInx: returns head and end of thecurrent window
+ *******************************************************************/
 vector<int>* InputStream::getHeadEndInx(){
 	headEndInx={headInx,endInx};
 	return(&headEndInx);
 }
 /******************************************************************/
+/*******************************************************************
+moveWindowbyOneNormal: First, we read a new data and then the new
+data is added the Window so we can get the normalization value
+of the new data with considering all the data in the window.
+
+it is normalized case
+ *******************************************************************/
 std::vector<std::vector<double>> * InputStream::moveWindowbyOneNormal(){
 	readNewData();
 	return(getOrigWindowN());
 }
+/*******************************************************************
+moveWindowbyOne: First, we read a new data and then the new
+data is added the Window so we can get the normalization value
+of the new data with considering all the data in the window.
+
+it is non-normalize case
+ *******************************************************************/
 std::vector<std::vector<double>> * InputStream::moveWindowbyOne(){
 	readNewData();
 	return(getOrigWindow());
 }
+/*******************************************************************
+readOrigWindowN: read the normalized vesion of original window
+by using readorigWindow and normalized function
+ *******************************************************************/
 /******************************************************************/
 void InputStream::readOrigWindowN(){
 	readOrigWindow();
@@ -217,6 +238,8 @@ void InputStream::readOrigWindowN(){
 
 }
 /*******************************************************************
+readNewData: it goes to a specific line in the input file based on
+numpassedInput(number of passed input) and read that line
 
  *******************************************************************/
 void InputStream::readNewData(){
@@ -240,7 +263,21 @@ void InputStream::readNewData(){
 }
 /******************************************************************/
 /*******************************************************************
-//TODO: for surogate data, I cur the data from begining because of the code of jump vector<double>::const_iterator first=x[m].begin()+(nj);
+ readSurData: it reads surrogate data for finding Fourier transform
+
+ It first get the length of end to end (that is the length for Fourier
+ transform that we can  be sure that there is no leak in fourier transform
+
+ Then based on the length, we read data from original window. If the length
+ of surrogate is not equal to the original window, we cut the data from
+ beggining of the original data
+The reason that we cut from the begining of the original window is
+ because of the code of jump vector<double>::const_iterator first=x[m].begin()+(nj);
+
+ We have to be sure that readOrigWindow is called before readSurData
+ The reason that we do not call readOrigWindow here again is that
+ it is duplicating reading file from input and mosylt, we read
+ first origin window and then go for surrogate data
  *******************************************************************/
 void InputStream::readSurData(){
 	//TODO: we should be sure that readOrigWindow called before readSurData otherwise, we have to call readOrigWindow here as well which just take more time
@@ -270,7 +307,7 @@ void InputStream::readSurData(){
 }
 /******************************************************************/
 /*******************************************************************
-
+readSurDataN: It is for normalized case.
  *******************************************************************/
 void InputStream::readSurDataN(){
 	//TODO: we need to be sure that readOrigWindowN is called once before calling this function.
@@ -292,17 +329,17 @@ void InputStream::readSurDataN(){
 }
 /******************************************************************/
 /*******************************************************************
-
+getOrigWindow: Retrun original window
  *******************************************************************/
 vector<vector<double>> * InputStream::getOrigWindow(){
 	//	read1stInput();
 	readOrigWindow();
 	vector<vector<double>> * pOrigWindow= &origWindow;
-	return pOrigWindow;
+	return (pOrigWindow);
 }
 /******************************************************************/
 /*******************************************************************
-
+getOrigWindowN: Return normalization of original window
  *******************************************************************/
 vector<vector<double>> * InputStream::getOrigWindowN(){
 	//	read1stInput();
@@ -322,14 +359,13 @@ vector<vector<double>> * InputStream::getOrigWindowN(){
 }
 /*******************************************************************/
 /*******************************************************************
-
  *******************************************************************/
 vector<vector<double>> * InputStream::getSurWindow(){
 	//read1stInput();
 	readSurData();
 
 	vector<vector<double>> * pSurWindow= &surWindow;
-	return pSurWindow;
+	return (pSurWindow);
 }
 /******************************************************************/
 /*******************************************************************
@@ -345,7 +381,7 @@ vector<vector<double>> * InputStream::getSurWindowN(){
 	return (pOrigWindow);
 }
 /*******************************************************************
-
+getNewData:Return new data
  *******************************************************************/
 vector<double>* InputStream::getNewData(){
 	readNewData();
@@ -356,14 +392,9 @@ vector<double>* InputStream::getNewData(){
 /*******************************************************************
 
  *******************************************************************/
-//TODO: it is not working becasue we do not assign newdataN anywhere. I need to work on newdataN.
-/*vector<double>* InputStream::getNewDataN(){
-	//readNewDataN();
-	return(&newdataN);
 
-}*/
 /*******************************************************************
-
+normalize: Normalization function
  *******************************************************************/
 //TODO:Check the file
 void InputStream::normalize(const vector<vector <double>>& vec,vector<vector <double>> &vec2){
@@ -392,7 +423,7 @@ void InputStream::normalize(const vector<vector <double>>& vec,vector<vector <do
 }
 /******************************************************************/
 /*******************************************************************
-Based on Fortran code in Tisean
+endtoend: Based on Fortran code in Tisean
 //TODO: My results for multivariate is different from endtoend in Tisean. Fix it or see why they are different
  *******************************************************************/
 void InputStream::endtoend(){
@@ -407,11 +438,11 @@ void InputStream::endtoend(){
 	int leng=0.0;
 	double offset=0.0;
 	double lost=0.0;
-	double ejump,ejump1;
+	double ejump=0,ejump1=0;
 	double *pejump=&ejump;
-	double eslip,eslip1;
+	double eslip=0,eslip1=0;
 	double *peslip=&eslip;
-	double njump,njump1;
+	double njump=0,njump1=0;
 	double *pnjump=&njump;
 	vector<vector<double>> x(mcmax,vector<double> (nmax));
 	x=origWindow;
@@ -467,7 +498,7 @@ double InputStream::jump(int nmax, int nmaxp, int nx,  vector<vector<double>> x,
 		*pnjump=nj;
 
 	}
-	return etot;
+	return (etot);
 }
 /******************************************************************/
 /*******************************************************************
@@ -477,7 +508,7 @@ double InputStream::xjump(int nmax,vector<double> x){
 	double xjump1=0;
 	double sum=accumulate(x.begin(),x.end(),0.0);
 	double mean=sum/x.size();
-	double std1;
+	double std1=0;
 	for(auto i:x){
 		std1+=pow((i-mean),2);
 	}
@@ -493,7 +524,7 @@ double InputStream::sjump(int nmax,vector<double> x){
 	double sjump1=0;
 	double sum=accumulate(x.begin(),x.end(),0.0);
 	double mean=sum/x.size();
-	double std1;
+	double std1=0;;
 	for(auto i:x){
 		std1+=pow((i-mean),2);
 	}
@@ -519,7 +550,7 @@ fstream& InputStream:: GotoLine(std::fstream& file, unsigned int num){
 	for(unsigned int i=0; i < (num - 1); ++i){
 		file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 	}
-	return file;
+	return (file);
 }
 /******************************************************************/
 

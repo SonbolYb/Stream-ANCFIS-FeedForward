@@ -13,13 +13,13 @@
 #ifndef INPUTVECTOR_H_
 #define INPUTVECTOR_H_
 #include "header.h"
-#include "commandLine.h"
+
 
 class inputVector: public commandLine {
 private:
 
-	std::vector<double> input;
-	std::vector<double> target;
+	std::unique_ptr<std::vector<double>> input;
+	std::unique_ptr<std::vector<double>> target;
 	int inputVL=0;
 /*	std::vector<double> & pinput;
 	std::vector<double> & ptarget;*/
@@ -27,8 +27,9 @@ public:
 
 
 	inputVector();
-	std::vector<double> * const readInput();
-	std::vector<double>* const readTarget();
+	virtual ~inputVector();
+	std::unique_ptr<std::vector<double>>&   readInput();
+	std::unique_ptr<std::vector<double>> & readTarget();
 	void readData(const std::vector<double>&,std::vector<int>*);
 	friend void inputVector_test(std::vector<double> );
 	/*	std::vector<double> & readInput();

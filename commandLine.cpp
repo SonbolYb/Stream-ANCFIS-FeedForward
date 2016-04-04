@@ -198,8 +198,10 @@ void commandLine::calculateOthers(){
 	for_each(numOfMF.begin(),numOfMF.end(),[&](int n){b*=n;});
 	numRule=b;
 	initError=1000;
-	per10=TrainSize*0.1;
-	dmax=per10/2;	//cannot be arbitrary. It depends on the size of the per10
+	per10=TrainSize*0.8;
+	//dmax=per10/2;	//cannot be arbitrary. It depends on the size of the per10
+	//TODO:change dmax
+	dmax=TrainSize*0.1/2;
 	numSetDim=pow(dmax,numVariate);
 }
 /******************************************************************/
@@ -235,8 +237,14 @@ void commandLine::saveParameters(){
 	myfile<<"threshold:\t\t\t"<< threshold<<endl;
 	myfile<<"numofRule:\t\t\t"<<numRule<<endl;
 
-	myfile<<endl<<"numver of core used:\t\t"<<numCore<<endl;
+	myfile<<endl<<"number of core used:\t\t"<<numCore<<endl;
 	myfile<<"lambda for RLs:\t\t\t"<<lambdaRLS<<endl;
+	myfile<<"forget coefficient:\t\t\t"<<forget<<endl;
+	myfile<<"correlation length:\t\t\t"<<corrlength<<endl;
+	myfile<<"TrainSize:\t\t\t"<<TrainSize<<endl;
+	myfile<<"CheckSize:\t\t\t"<<CheckSize<<endl;
+	myfile<<"dmax:\t\t\t"<<dmax<<endl;
+	myfile<<"numSetDim:\t\t\t"<<numSetDim<<endl;
 
 	myfile.close();
 }
@@ -244,8 +252,11 @@ void commandLine::saveParameters(){
 /*******************************************************************
 
  *******************************************************************/
-shared_ptr<vector<vector<int>>> commandLine::ruleStruct()const{
-	shared_ptr<vector<vector<int>>> prule (new vector<vector<int>> (numRule, vector<int> (numVariate)));
+unique_ptr<vector<vector<int>>> commandLine::ruleStruct(){
+//	cout<<"hi8"<<endl;
+//	cout<<"numRul "<<numRule<<"  numVar"<<numVariate<<endl;
+	unique_ptr<vector<vector<int>>> prule;
+	prule.reset(new vector<vector<int>> (numRule, vector<int> (numVariate)));
 
 	int N=numRule;
 	int r=0, c=0;
@@ -263,6 +274,7 @@ shared_ptr<vector<vector<int>>> commandLine::ruleStruct()const{
 		c++;
 		r=0;
 	}
+	//cout<<"hi9"<<endl;
 	return(prule);
 }
 /******************************************************************/
@@ -283,11 +295,16 @@ void commandLine_test()
 	cout<<"threshold= "<< Cl.threshold<<endl;
 	cout<<"numofRule= "<<Cl.numRule<<endl;
 	cout<<"numofOutput="<<Cl.numOutput<<endl;
-	cout<<"Rang of a:"<<endl;
-	cout<<endl<<"numver of core used= "<<Cl.numCore<<endl;
-	cout<<"lambda for RLs= "<<Cl.lambdaRLS;
+	cout<<"number of core used= "<<Cl.numCore<<endl;
+	cout<<"lambda for RLs= "<<Cl.lambdaRLS<<endl;
+	cout<<"forget coefficient= "<<Cl.forget<<endl;
+	cout<<"correlation length= "<<Cl.corrlength<<endl;
+	cout<<"TrainSize= "<<Cl.TrainSize<<endl;
+	cout<<"CheckSize= "<<Cl.CheckSize<<endl;
+	cout<<"dmax= "<<Cl.dmax<<endl;
+	cout<<"numSetDim= "<<Cl.numSetDim<<endl;
 
-	shared_ptr<vector<vector<int>>> prule=Cl.ruleStruct();
+	/*shared_ptr<vector<vector<int>>> prule=Cl.ruleStruct();
 	cout<<"this is rule"<<endl;
 
 	for (auto i:(*(prule))){
@@ -296,6 +313,6 @@ void commandLine_test()
 		}
 		cout<<endl;
 	}
-
+*/
 
 }

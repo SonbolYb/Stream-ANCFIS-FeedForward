@@ -54,7 +54,7 @@ public:
 
 	void saveComLine(int, char **);
 	void saveParameters();
-	std::shared_ptr<std::vector<std::vector<int>>> ruleStruct()const;
+	std::unique_ptr<std::vector<std::vector<int>>> ruleStruct();
 	friend void commandLine_test();
 
 

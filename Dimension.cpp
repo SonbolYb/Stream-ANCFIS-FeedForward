@@ -8,28 +8,32 @@
 #include "Dimension.h"
 using namespace std;
 //using namespace flann;
-Dimension::Dimension(): dimension(numVariate),input(NULL),delay(NULL),vectordim(numSetDim, vector<int> (numVariate)),delayVec(NULL),AllIndices(NULL),errorDV(numSetDim),lengthofVar(numVariate) {
+Dimension::Dimension(): dim(numVariate),del(NULL),vectordim(numSetDim, vector<int> (numVariate)),delayVec(NULL),AllIndices(NULL),errorDV(numSetDim),lengthofVar(numVariate) {
 	// TODO Auto-generated constructor stub
-
+//cout<<"Dimension1"<<endl;
 }
 
 Dimension::~Dimension() {
 	// TODO Auto-generated destructor stub
+	//cout<<"Dimension2"<<endl;
 }
 
-vector<int>* Dimension::getDim(vector<vector<double>> *inp,vector<int> * del){
+vector<int>* Dimension::getDim(vector<vector<double>> *inp,vector<int> * dela){
 	input=inp;
-	delay=del;
-int sumDim=0;
+	del=dela;
+	//int sumDim=0;
 	findDimKDD();
-	for(auto i:dimension){
+
+
+
+	/*for(auto i:dim){
 	lengthofVar.push_back(i);
 			cout<<"dim="<<i<<endl;
 			sumDim+=i;
 	}
 	inputVL=sumDim;
-	numWeight=numRule*inputVL+numRule;
-	return (&dimension);
+	numWeight=numRule*inputVL+numRule;*/
+	return (&dim);
 
 }
 int Dimension::getNumWeight(){
@@ -43,26 +47,26 @@ vector<int>* Dimension::getLengthofVar(){
 }
 void Dimension::findDimKDD(){
 	//cout<<"hello"<<endl;
-//	cout <<per10<<endl;
-//	cout<<numSetDim<<endl;
+	//	cout <<per10<<endl;
+	//	cout<<numSetDim<<endl;
 	vectorDim(); //fill vectordim
 	for(int i=0; i< numSetDim; i++){	//for different sets of dimension
 		/*for(auto l:vectordim[i]){
 				cout<<l<<" ";
 			}
 			cout<<endl;*/
-		delayVec=DV.getDVforDim(input,delay,&(vectordim[i]));
+		delayVec=getDV(input,del,&(vectordim[i]));
 
 		int sum=0;
 		//cout <<"this is vectorDim";
 		for (auto j:vectordim[i]){
 			sum+=j;
-		//	cout << j<< " ";
+			//	cout << j<< " ";
 		}
-	//	cout << endl;
+		//	cout << endl;
 		NNboxwidth=sum;
-		NNboxHeight=DV.getsize();
-		//TODO: start from here
+		NNboxHeight=getsize();
+
 
 		if(NNboxHeight > KNear+1){
 			AllIndices=new int *[NNboxHeight];
@@ -72,13 +76,16 @@ void Dimension::findDimKDD(){
 			find3kd();
 			predict1step();
 			errorDV[i]=errRMSE;	//errRMSE is coming from predict1step and it gives error of a given set of dimension
-
+			for(int i=0; i <NNboxHeight;i++){
+				delete[] AllIndices[i];
+			}
+			delete[] AllIndices;
 		}
 		else{
 			errorDV[i]=1000;
-		//	cout<<errorDV[i]<<endl;
+			//	cout<<errorDV[i]<<endl;
 		}
-	//	cout<<i<<endl;
+		//	cout<<i<<endl;
 		//TODO:Initialize all Indices here.
 		/*AllIndices.resize(NNboxHeight);
 		for(auto i:AllIndices){
@@ -89,10 +96,11 @@ void Dimension::findDimKDD(){
 		//Find 3 nearest neighbors of each delay vector
 		//find one step ahead prediction for each variate in the three neighbors
 		//save results
+
 	}
 
 	findminError();
-	dimension=vectordim[indexofMin];
+	dim=vectordim[indexofMin];
 
 
 
@@ -130,7 +138,7 @@ void Dimension::find3kd(){
 		for (unsigned int i=0; i<query.rows;i++){
 			for (int k=0; k<KNear+1;k++){
 				AllIndices[j][k]=indices[i][k];
-				cout<<AllIndices[j][k]<<" ";
+				//cout<<AllIndices[j][k]<<" ";
 			}
 		}
 		delete[] indices.ptr();
@@ -151,11 +159,11 @@ void Dimension::find3kd(){
 
 
 }
-//TODO:Start from here
+
 void Dimension::predict1step(){
 
 	vector<vector<double>> *output;
-	output=DV.getOutputforDim();		//has output of all the delay vectors so we need to use indices for it
+	output=getOutput();		//has output of all the delay vectors so we need to use indices for it
 	vector<double> finalError(numVariate);
 	double err=0;
 
@@ -167,9 +175,9 @@ void Dimension::predict1step(){
 			for (int i=1; i<KNear+1;i++){
 
 				int kNIndice=AllIndices[k][i];
-			//	cout <<mypoint<<"   "<<kNIndice<<"   ";
+				//	cout <<mypoint<<"   "<<kNIndice<<"   ";
 				sum+=abs((*output)[mypoint][j]-(*output)[kNIndice][j]);
-			//	cout <<(*output)[mypoint][j]<<"   "<<(*output)[kNIndice][j]<<"   ";
+				//	cout <<(*output)[mypoint][j]<<"   "<<(*output)[kNIndice][j]<<"   ";
 
 			}
 
@@ -226,6 +234,65 @@ void Dimension::vectorDim(){	//Give us different set of dimension that we want t
 	}
 }
 
+vector<vector<double>>* Dimension::getDV(vector<vector<double>> * inpt,vector<int>* del, vector<int>* dim){
+
+	delay=del;
+	dimension=dim;
+	input=inpt;
+	findDur();
+	resizeDV();
+	makeDV();
+	return (&delVDim);
+
+
+
+
+}
+/******************************************************************/
+void Dimension::resizeDV(){
+	delVDim.resize(size);
+	output.resize(size);
+	for(int i=0; i <size;i++){
+		delVDim[i].resize(sumDim);
+		output[i].resize(numVariate);
+	}
+}
+/******************************************************************/
+void Dimension::makeDV(){ //It is just for use in the dimension class. Because it does not have prediction in the delay vectors
+	int k=0;
+	int n=0;
+	int h=0;
+
+	for (int i=maxDur; i<size+maxDur;i++){
+
+		n=0;
+		for(int l=0;l<numVariate;l++){
+			for (int j=0; j< (*dimension)[l];j++){
+				//cout << (*input)[l][0];
+				//cout << (*input)[l][2];
+				//cout <<" this"<<i-(*delay)[l]*(j-1)-1;
+				delVDim[k][n]=(*input)[l][i-(*delay)[l]*(j)-1];
+
+				//	cout <<delV[k][n];
+				n++;
+
+			}
+			//TODO:not sure just check it the output if it works
+			output[h][l]=(*input)[l][i];
+
+		}
+		h++;
+		k=k+1;
+
+
+	}
+
+
+}
+/******************************************************************/
+vector<vector<double>> * Dimension::getOutput(){
+	return (&output);
+}
 void DimTest(vector<vector<double>>* input,vector<int>* delay){
 	Dimension dd;
 	vector<int>*dim;

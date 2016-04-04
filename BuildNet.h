@@ -16,6 +16,7 @@ public:
 	std::vector<std::vector<double>>* build(std::vector<std::vector<double>> *, std::vector<std::vector<std::vector<double>>>*,std::vector<int>*,int, int);
 	std::vector<std::vector<double>> * getOutputWeight();
 	std::vector<std::vector<double>>*  updataWeight(std::vector<double>*, std::vector<std::vector<std::vector<double>>>*,std::vector<int>*,int,int);
+	void getStreamParam();
 	inputVecWeight inputVectorWeight;
 	virtual ~BuildNet();
 private:

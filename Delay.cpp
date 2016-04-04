@@ -10,14 +10,116 @@ using namespace std;
 Delay::Delay():commandLine(),delays(numVariate),mutualArray(numVariate, vector<double>(corrlength)),array(NULL),h1(NULL),h11(NULL),h2(NULL),
 		pOrigWindow(numVariate,vector<double> (per10)) {
 	// TODO Auto-generated constructor stub
-
+//cout<<"Delay1"<<endl;
 }
 
 Delay::~Delay() {
 	// TODO Auto-generated destructor stub
+	//cout<<"Delay2"<<endl;
 }
 
 
+
+
+/*******************************************************************
+getDelay: It returns the delay obtained by mutual information
+ *******************************************************************/
+vector<int>*  Delay::getDelay(const vector<vector<double>>* inp){
+	//TODO: Make change in a way that we do not dereference inp into pOrigWindow. The reason that we did was that this class was changing inp
+	pOrigWindow=(*inp);
+	calDelay();
+	return(&delays);
+}
+/******************************************************************/
+/*******************************************************************
+CalDelay: works based on mutual function in Tisean. we just copied
+and paste the code here. In Tisean, the code is based on C
+ *******************************************************************/
+void Delay::calDelay(){
+	//getInput();
+	mutual();
+	findDelay();
+
+}
+/******************************************************************/
+/*******************************************************************
+mutual: It is from Tisean
+ *******************************************************************/
+void Delay::mutual(){
+
+	for(int j=0; j< numVariate;j++){
+
+		double *series=(&(((pOrigWindow)[j])[0]));
+		long tau,i;
+		double min,interval,shannon;
+		FILE *file;
+
+		//  double *series=&(origw1[0]);
+		rescale_data(series, length, &min, &interval);
+		check_alloc(h1=(long *)malloc(sizeof(long)*partitions));
+		check_alloc(h11=(long *)malloc(sizeof(long)*partitions));
+		check_alloc(h2=(long **)malloc(sizeof(long *)*partitions));
+		for (i=0;i<partitions;i++)
+			check_alloc(h2[i]=(long *)malloc(sizeof(long)*partitions));
+		check_alloc(array=(long *)malloc(sizeof(long)*length));
+		for (unsigned i=0;i<length;i++)
+			if (series[i] < 1.0)
+				array[i]=(long)(series[i]*(double)partitions);
+			else
+				array[i]=partitions-1;
+		//TODO: we did not free series
+		// free(series);
+		shannon=make_cond_entropy(0);
+		if ( (unsigned)corrlength >= length)
+			corrlength=length-1;
+		file=fopen("mutual","w");
+		fprintf(file,"#shannon= %e\n",shannon);
+		fprintf(file,"%d %e\n",0,shannon);
+		mutualArray[j][0]=shannon;
+		for (tau=1;tau<=corrlength;tau++) {
+			mutualArray[j][tau]=make_cond_entropy(tau);
+			fprintf(file,"%ld %e\n",tau,make_cond_entropy(tau));
+			fflush(file);
+		}
+		fclose(file);
+		free(h1);
+			for (int j=0;j<partitions;j++){
+				free(h2[j]);
+			}
+			free(h2);
+			free(h11);
+			free(array);
+	}
+	/*for (int j =0 ; j <numVariate;j++){
+		for (int i=0 ; i <20; i++){
+			cout << mutualArray[j][i] <<" ";
+		}
+	}*/
+
+}
+/******************************************************************/
+/*******************************************************************
+ findDelay: find the first min in mutual information of different delay
+ *******************************************************************/
+void Delay::findDelay(){
+
+	for (int j=0 ; j < numVariate; j++){
+		double min=mutualArray[j][0];
+		for(int i=1; i<corrlength;i++){
+			if(mutualArray[j][i] <min){
+				min=mutualArray[j][i];
+			}
+			if(mutualArray[j][i] >min){
+				min=mutualArray[j][i-1];
+				delays[j]=i-1;
+				//cout <<endl <<"min" <<min <<endl;
+				break;
+			}
+		}
+	}
+
+}
+/******************************************************************/
 
 /*******************************************************************
 make_cond_entropy: it is used from Tisean
@@ -58,107 +160,15 @@ double Delay::make_cond_entropy(long t){
 		}
 	}
 
-	return cond_ent;
+	return (cond_ent);
 }
 /******************************************************************/
-/*******************************************************************
-
- *******************************************************************/
-vector<int>*  Delay::getDelay(const vector<vector<double>>* inp){
-	vector<vector<double>> in=*inp;
-	//TODO: Make change in a way that we do not dereference inp into pOrigWindow. The reason that we did was that this class was changing inp
-	pOrigWindow=(*inp);
-	calDelay();
-	return(&delays);
-}
-/******************************************************************/
-/*******************************************************************
-
- *******************************************************************/
-void Delay::calDelay(){
-	//getInput();
-	mutual();
-	findDelay();
-}
-/******************************************************************/
-/*******************************************************************
-mutual: It is from Tisean
- *******************************************************************/
-void Delay::mutual(){ 	//TODO: work with one variate but at the end make it for multivariat. In multivariate, we need to separate variate and consider them separately
-
-	for(int j=0; j< numVariate;j++){
-
-	double *series=(&(((pOrigWindow)[j])[0]));
-	long tau,i;
-	  double min,interval,shannon;
-	  FILE *file;
-
-	//  double *series=&(origw1[0]);
-	  rescale_data(series, length, &min, &interval);
-	  check_alloc(h1=(long *)malloc(sizeof(long)*partitions));
-	    check_alloc(h11=(long *)malloc(sizeof(long)*partitions));
-	    check_alloc(h2=(long **)malloc(sizeof(long *)*partitions));
-	    for (i=0;i<partitions;i++)
-	      check_alloc(h2[i]=(long *)malloc(sizeof(long)*partitions));
-	    check_alloc(array=(long *)malloc(sizeof(long)*length));
-	    for (unsigned i=0;i<length;i++)
-	      if (series[i] < 1.0)
-	        array[i]=(long)(series[i]*(double)partitions);
-	      else
-	        array[i]=partitions-1;
-	    free(series);
-	    shannon=make_cond_entropy(0);
-	      if ( (unsigned)corrlength >= length)
-	        corrlength=length-1;
-	      file=fopen("mutual","w");
-	      fprintf(file,"#shannon= %e\n",shannon);
-	          fprintf(file,"%d %e\n",0,shannon);
-	          mutualArray[j][0]=shannon;
-	          for (tau=1;tau<=corrlength;tau++) {
-	        	  mutualArray[j][tau]=make_cond_entropy(tau);
-	            fprintf(file,"%ld %e\n",tau,make_cond_entropy(tau));
-	            fflush(file);
-	          }
-	          fclose(file);
-	}
-	/*for (int j =0 ; j <numVariate;j++){
-		for (int i=0 ; i <20; i++){
-			cout << mutualArray[j][i] <<" ";
-		}
-	}*/
-
-}
-/******************************************************************/
-/*******************************************************************
-
- *******************************************************************/
-void Delay::findDelay(){
-
-	for (int j=0 ; j < numVariate; j++){
-	double min=mutualArray[j][0];
-	for(int i=1; i<corrlength;i++){
-		if(mutualArray[j][i] <min){
-			min=mutualArray[j][i];
-		}
-		if(mutualArray[j][i] >min){
-			min=mutualArray[j][i-1];
-			delays[j]=i-1;
-			//cout <<endl <<"min" <<min <<endl;
-			break;
-		}
-	}
-	}
-
-}
-/******************************************************************/
-
-
 
 /*******************************************************************
 
  *******************************************************************/
 void testDelay(){
-/*#include "InputStream.h"
+	/*#include "InputStream.h"
 	Delay dl;
 	//dl.calDelay();
 InputStream inS;

@@ -17,9 +17,13 @@ target:						A pointer to targets of an input vector
 checkError:					A 2D vector saving error of each input vector for each variable
 aveError:					A vector saving average error over all the variables in each input vector
  *******************************************************************/
-AncfisChecking::AncfisChecking():commandLine(),checkMatrix(NULL), input(NULL),target(NULL),rpH(pH),checkError(1),
-		aveError(1),weightTrn(NULL),checkingDV(NULL){
+AncfisChecking::AncfisChecking():commandLine(),checkMatrix(NULL),rpH(pH),checkError(1),
+		aveError(1),weightTrn(NULL),checkingDV(NULL),dimension(NULL){
+//	cout<<"AncfisChecking1"<<endl;
 
+}
+AncfisChecking::~AncfisChecking(){
+//	cout<<"AncfisChecking2"<<endl;
 }
 /******************************************************************/
 /*******************************************************************
@@ -40,7 +44,8 @@ Note:
 	3. Getting the final error by RMSE
  *******************************************************************/
 
-void AncfisChecking::output(vector<vector<double>> *weight,vector<int>* delay, vector<int>* dim,vector<vector<vector<double>>>* mfParam){
+void AncfisChecking::output(vector<vector<double>> *weight,vector<int>* delay, vector<int>* dim,vector<vector<vector<double>>>* mfParam,int lengthsurrodata){
+	lengthSurdata=lengthsurrodata;
 dimension=dim;
 	int sumDim=0;
 	for(auto i:*dimension){
@@ -69,10 +74,19 @@ numWeight=numRule*sumDim+numRule;
 
 		double ave=0;
 	//2.2
+
 		for (int nV=0; nV<numOutput; nV++){
 
 			vector<double> &rw=(*weight)[nV];
-			checkError[indexInV][nV]=(*target)[nV]-inVW.Cal_VVS(rw,rpH);
+
+			double result=0;
+
+				for(int i=0;i< numWeight;i++){
+					result+=rw[i]*(*rpH)[i];
+				}
+
+			checkError[indexInV][nV]=(*target)[nV]-result;
+		//	cout<<result<<" ";
 			ave+=pow(checkError[indexInV][nV],2);
 			//cout <<(*target)[nV]<< "  "<<inVW.Cal_VVS(rw,rpH)<<endl;
 		}
@@ -98,11 +112,12 @@ Invariant:
  *******************************************************************/
 void AncfisChecking::buildNet(vector<double> & inputVec, int iter,vector<vector<vector<double>>> * mfParam){
 	inputV.readData(inputVec,dimension);
-	input=inputV.readInput();
-	target=inputV.readTarget();
+	std::unique_ptr<std::vector<double>> input=move(inputV.readInput());
+	target.reset();
+	target=move(inputV.readTarget());
 	firingStrength fS;
-	//TODO:fix it
-	pH=fS.cal_firingStrenght(input,iter,mfParam,dimension,2);
+	pH=fS.cal_firingStrenght(move(input),iter,mfParam,dimension,lengthSurdata);
+
 }
 /******************************************************************/
 /*******************************************************************

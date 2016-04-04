@@ -20,7 +20,7 @@ private:
 
 	//std::vector<std::shared_ptr<std::vector<std::complex<double> >>> mfG;
 	std::vector<std::unique_ptr<std::vector<std::complex<double> >>> mfG;
-	std::shared_ptr<std::vector<std::vector<int>>>  rule;
+	std::unique_ptr<std::vector<std::vector<int>>>  rule;
 	std::vector<std::complex<double>> fsRaw;
 	std::vector<std::complex<double>> fsNorm;
 	double SumNorm;
@@ -31,13 +31,14 @@ private:
 	void dotP();
 	void normalize();
 	double dotOper(std::complex<double> a,std::complex<double> b);
-	void getFinalFs(std::vector<double> * const);
-	void conseq(std::vector<double> * const);
+	void getFinalFs(std::unique_ptr<std::vector<double>> const &);
+	void conseq(std::unique_ptr<std::vector<double>> const &);
 
 	public:
 	firingStrength();
+	virtual ~firingStrength();
 
-	std::unique_ptr<std::vector<double>> cal_firingStrenght(std::vector<double> * const,int,std::vector<std::vector<std::vector<double>>>*,std::vector<int>*,int);
+	std::unique_ptr<std::vector<double>> cal_firingStrenght(std::unique_ptr<std::vector<double>> const &, int ,std::vector<std::vector<std::vector<double>>>*,std::vector<int>*,int);
 	friend void FS_test(firingStrength &);
 };
 void FS_test(firingStrength &);
