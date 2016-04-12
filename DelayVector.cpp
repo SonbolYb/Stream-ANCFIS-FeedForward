@@ -148,7 +148,7 @@ void DelayVector::findNewDV(vector<int>* headEndInx){
 				int eb=end-(*delay)[l];
 
 				for(int j=0; j< eb+1;j++){
-					if(j<(*dimension)[l]-1){
+					if(j <((*dimension)[l]-1)&&(end-(*delay)[l]*(j)-1) >-1){
 						delayVecNew[n]=(*input)[l][end-(*delay)[l]*(j)-1];
 						n++;
 					}
@@ -300,7 +300,7 @@ void DelayVector::makeDV(){
 
 
 	}
-	cout<<"hi"<<endl;
+	//cout<<"hi"<<endl;
 
 
 }
@@ -380,8 +380,8 @@ bool DelayVector::compare(double a,double b){
 
 		for (unsigned int i=0 ; i< query.rows;i++){
 			for (int k=0; k<nn;k++){
-				/*cout << indices[i][j]<< " ";
-				cout <<allIndices[i][j]<<" ";
+				/*cout << indices[i][j]<< " ";*/
+	/*			cout <<allIndices[i][j]<<" ";
 				cout<< *((indices[i])+k)<<" ";
 				allIndices[j][k]=*((indices[i])+k);
 

@@ -54,7 +54,8 @@ dimension=dim;
 numWeight=numRule*sumDim+numRule;
 	weightTrn=weight;
 	//1.
-	checkMatrix=checking.getCheckingN();
+	//checkMatrix=checking.getCheckingN();
+	checkMatrix=checking.getChecking();
 	checkingDV=DV.getDV(checkMatrix,delay,dimension);
 	double aveFinal=0;
 	double aveFinalalter=0;
@@ -190,7 +191,7 @@ void AncfisChecking::saveParams(){
 	}
 	myfile4 <<"******************************************************"<<endl;
 	myfile4.close();
-	cout<<endl<<"this is final error chk=  "<<finalChErrorMain<<endl;
+	cout<<"this is final error chk=  "<<finalChErrorMain<<endl;
 }
 /******************************************************************/
 void output_test(AncfisChecking & AnChk){

@@ -38,26 +38,32 @@ We have implemented a circular array.
 void InputStream::readOrigWindow(){
 
 	if(numpassedInput==0){
-
+	//	cout<<"this is input"<<endl;
 		fstream input;
-		input.exceptions(ifstream::failbit|ifstream::badbit);
-		try{
-			input.open(TrainFile1,ios::in);
-		}
-		catch(fstream::failure &e){
-			cerr << "Exception opening/reading/closing file1\n";
-		}
+				input.exceptions(ifstream::failbit|ifstream::badbit);
+				try{
+					input.open(TrainFile1,ios::in);
+				}
+				catch(fstream::failure &e){
+					cerr << "Exception opening/reading/closing file1\n";
+				}
 		//TODO: This line does not work with CSV files. It works just with delim of space. Make it work for csv with ; as delim
 
 		/*Put per10 of data to the origWindow*/
+
 		for (int i=0; i<per10;i++){
+
 			for(int j=0; j< numVariate; j++){
-				float data=0;
+
+				double data=0;
+
 				if(!input.eof()){
+
 					input >> data;
 					origWindow[j][i]=data;
+
 				}
-				else{
+			else{
 					endoffile=true;
 				}
 			}
@@ -71,6 +77,7 @@ void InputStream::readOrigWindow(){
 		end=&(*end1);
 		headInx=head1-origWindow[0].begin();
 		endInx=end1-origWindow[0].begin();
+		input.close();
 
 	}
 	else{
@@ -165,6 +172,7 @@ vector<vector<double>>* InputStream::getCheckingN(){
 			input >> checking[j][i];
 		}
 	}
+input.close();
 	vector<vector<double>> &p=checking;
 	vector<vector<double>> &p1=checkingN;
 	normalize(p,p1);
@@ -191,6 +199,7 @@ vector<vector<double>>* InputStream::getChecking(){
 			checking[j][i]=data;
 		}
 	}
+	input.close();
 	return(&checking);
 }
 /******************************************************************/
@@ -258,6 +267,8 @@ void InputStream::readNewData(){
 
 
 	}
+	input.close();
+
 
 
 }
@@ -467,6 +478,19 @@ void InputStream::endtoend(){
 	//cout <<"this is lost"<<lost<<endl;
 	//cout << "jump" <<ejump1 <<endl<<"slip"<<eslip1<<endl<<"weighted"<<(etot*100.0)<<endl <<"offset"<<njump1<<endl;
 	endtoendLength=leng;
+	cout<<endl<<"this is endtoendLenght= "<<endtoendLength<<endl;
+	fstream myfile;
+
+		//throw exception if the file cannot be opened
+		myfile.exceptions(ifstream::failbit|ifstream::badbit);
+		try{
+			myfile.open("FinalParams.txt",ios::app|ios::out);
+		}
+		catch(fstream::failure &e){
+			cerr << "Exception opening/reading/closing file\n";
+		}
+		myfile<<endl<<"endtoendLength:\t\t\t"<<endtoendLength<<endl;
+		myfile.close();
 }
 /******************************************************************/
 /*******************************************************************

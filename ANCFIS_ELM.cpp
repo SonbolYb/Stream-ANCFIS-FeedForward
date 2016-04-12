@@ -16,9 +16,16 @@
 //	6. Sequential learning to obtain the output weights
 //	7. Output
 
-// Two commands need to be changed depends on if we want RMSE or MAE.
-//	1. checking.outputRMSE in ANCFIS_ELM
-//  2. inputVectorWeight.calError in AncfisNetRMSE
+//TODO
+/*change the following if you want to work with non-normalized data
+ *
+ * 1. Go to BuildANCFIS
+ * 2. Change InS.getOrigWindowN() to InS.getOrigWindow()
+ * 3. Change InS.moveWindowbyOneNormal(); to InS.moveWindowbyOne();
+ * 4. Change InS.getSurWindowN() to InS.getSurWindow()
+ * 5. Go to Ancfis_Checking
+ * 6. Change checking.getCheckingN() to checking.getChecking()
+ * */
 //============================================================================
 
 #include <iostream>
@@ -51,26 +58,26 @@ int main(int argc, char * argv[]) {
 	BuildANCFIS Ancfis;
 
 	finalWeight=Ancfis.getFinalWeight();
-	cout << endl<<"this is final out weight"<<endl;
+	/*cout << endl<<"this is final out weight"<<endl;
 	for (auto i:(*finalWeight)){
 		for (auto j:i){
 			cout << j<< " ";
 		}
 		cout<<endl;
-	}
+	}*/
 	vector<int>* finalDim=Ancfis.getDimension();
 	vector<int>* finalDelay=Ancfis.getDelay();
 	vector<vector<vector<double>>>* finalMf=Ancfis.getMf();
 	int lengthSurodata=Ancfis.getLengthSurodata();
 	AncfisChecking checking;
 	checking.output(finalWeight,finalDelay,finalDim,finalMf,lengthSurodata);
-	//	commandLine_test();
+	/*	commandLine_test();
 		//InputStream inS;
 	//	testInputStream();
 		//DimTest(inS.getOrigWindowN(),&delay);
 		//DV_test();
 		//testDelay();
-	//	mfparamtest();
+	//	mfparamtest();*/
 	std::cout <<"time= "<< float( clock () - begin ) /  CLOCKS_PER_SEC;
 		return(0);
 }

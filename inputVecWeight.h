@@ -40,11 +40,13 @@ private:
 	std::vector<std::vector<double>>* vectorTrainBestEpoch;
 	std::vector<std::vector<double>>  bestW;
 	std::vector<std::vector<std::vector<double>>> bestPm;
+	std::vector<double> bestFS;
 	double aveFinalMain=0.0;	//average error of training for one epoch
 	double aveFinalalter=0.0;
 	std::vector<std::vector<std::vector<double>>> trainingErrorAll; //for training error of all the input vectors in all the epochs
 	int itera=0;
 	std::vector<double> ErrorStream;
+	//int iterat=0;
 
 	int LengthDVSet=0;
 

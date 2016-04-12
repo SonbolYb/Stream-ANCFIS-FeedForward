@@ -65,13 +65,14 @@ vector<vector<double>>* BuildNet:: build(std::vector<std::vector<double>> * dela
 
 	}
 	inputVectorWeight.saveParams(epochPass);
-	inputVectorWeight.resetValueforUpdateWeight();
+	//inputVectorWeight.resetValueforUpdateWeight();
 
 	return(inputVectorWeight.getWBest());
 }
 vector<vector<double>>* BuildNet::updataWeight(std::vector<double>* NewDelayVector,std::vector<vector<vector<double>>>* MFparam, vector<int>*dim, int lengthSurodata, int lengthDVSet){
 	vector<double> & NewDV=(*NewDelayVector);
-	//inputVectorWeight.resetValueforUpdateWeight();
+	//cout<<"h1";
+	inputVectorWeight.resetValueforUpdateWeight();
 	inputVectorWeight.calculateWeight(NewDV,0,MFparam,dim,lengthSurodata,lengthDVSet);
 	//inputVectorWeight.calErrorTr(0);
 	inputVectorWeight.calErrorStream();

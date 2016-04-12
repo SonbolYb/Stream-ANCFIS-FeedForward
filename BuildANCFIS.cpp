@@ -24,17 +24,20 @@ void BuildANCFIS::findWeight(){
 		/*Original window*/
 	if (InS.numpassedInput==0){
 
-		inputOrigin=InS.getOrigWindowN();
+		//inputOrigin=InS.getOrigWindowN();
+		inputOrigin=InS.getOrigWindow();
 		findDV();
 		findMFParam();
-		finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
+		//finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
+		buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
 
 
 	}
 	if(InS.numpassedInput >= per10){	//for new data coming
 //TODO: by coming new data points min and max can be different which change normalization and can change the all input
 		//newData=InS.getNewDataN();
-		inputOrigin=InS.moveWindowbyOneNormal();
+		//inputOrigin=InS.moveWindowbyOneNormal();
+		inputOrigin=InS.moveWindowbyOne();
 		/*cout<<"this is input by move"<<endl;
 		for(auto i:*inputOrigin){
 			for (auto j:i){
@@ -54,7 +57,7 @@ void BuildANCFIS::findWeight(){
 		for(auto i:*newDV){
 			cout<<i <<" ";
 		}*/
-		delayVectors=DV.getNewDelayVecs(inputOrigin,delay,dimension,headEndInx);
+		//delayVectors=DV.getNewDelayVecs(inputOrigin,delay,dimension,headEndInx);
 		/*cout<<endl<<"this is delayVectors2"<<endl;
 		for(auto i:*delayVectors){
 			for(auto j:i){
@@ -82,6 +85,12 @@ void BuildANCFIS::findDV(){
 
 	delay=del.getDelay(inputOrigin);
 	dimension=dim.getDim(inputOrigin,delay);
+	//vector<int> delay1={11};
+	//vector<int> dimension1={9};
+	//delay=&delay1;
+//	dimension=&dimension1;
+	//*delay={11};
+	//*dimension={9};
 	delayVectors=DV.getDV(inputOrigin,delay,dimension);
 	LengthDVSet=DV.getLengthDVSet();
 
@@ -97,9 +106,11 @@ void BuildANCFIS::findDV(){
 }
 void BuildANCFIS::findMFParam(){
 
-	surodata=InS.getSurWindowN();
+	//surodata=InS.getSurWindowN();
+	surodata=InS.getSurWindow();
 	//	mfPar.findMfparam(surodata);
 	LengthSurodata=((*surodata)[0].size())/2+1;
+	//LengthSurodata=((*surodata)[0].size());
 	mfParam=mfPar.getMfparam(surodata);
 	saveDDMF();
 }

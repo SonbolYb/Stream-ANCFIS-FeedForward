@@ -51,7 +51,8 @@ private:
 	std::vector<std::vector<double>> * finalWeight;
 	int LengthSurodata=0;
 	int LengthDVSet=0;
-
+	std::vector<int> delay1={23};
+	std::vector<int> dimension1={12};
 
 };
 

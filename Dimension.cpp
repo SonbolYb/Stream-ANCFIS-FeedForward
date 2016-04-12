@@ -56,6 +56,13 @@ void Dimension::findDimKDD(){
 			}
 			cout<<endl;*/
 		delayVec=getDV(input,del,&(vectordim[i]));
+		/*cout<<"DV in dimesnion"<<endl;
+		for(auto i:*delayVec){
+			for(auto j:i)
+			cout<<j<<" ";
+			cout<<endl;
+		}
+		cout<<endl;*/
 
 		int sum=0;
 		//cout <<"this is vectorDim";
@@ -66,6 +73,9 @@ void Dimension::findDimKDD(){
 		//	cout << endl;
 		NNboxwidth=sum;
 		NNboxHeight=getsize();
+
+	/*	cout<<"NNboxWidth= "<<sum;
+		cout<<"  NNboxHeight= "<<NNboxHeight<<endl;*/
 
 
 		if(NNboxHeight > KNear+1){
@@ -138,9 +148,11 @@ void Dimension::find3kd(){
 		for (unsigned int i=0; i<query.rows;i++){
 			for (int k=0; k<KNear+1;k++){
 				AllIndices[j][k]=indices[i][k];
-				//cout<<AllIndices[j][k]<<" ";
+			//	cout<<AllIndices[j][k]<<" ";
 			}
+			//cout<<" ";
 		}
+
 		delete[] indices.ptr();
 		delete[] dists.ptr();
 	}
@@ -164,29 +176,41 @@ void Dimension::predict1step(){
 
 	vector<vector<double>> *output;
 	output=getOutput();		//has output of all the delay vectors so we need to use indices for it
+	/*cout<<"output in dimension"<<endl;
+	for(auto i:*output){
+		for(auto j:i){
+			cout<<j<<" ";
+		}
+	}*/
+
 	vector<double> finalError(numVariate);
 	double err=0;
 
 	for (int j=0; j<numVariate;j++){
 		double sum=0;
+
 		for (int k=0; k < NNboxHeight;k++){
 			int mypoint=AllIndices[k][0];
-
+				double sum1=0;
 			for (int i=1; i<KNear+1;i++){
 
 				int kNIndice=AllIndices[k][i];
 				//	cout <<mypoint<<"   "<<kNIndice<<"   ";
-				sum+=abs((*output)[mypoint][j]-(*output)[kNIndice][j]);
+			//	sum+=abs((*output)[mypoint][j]-(*output)[kNIndice][j]);
+				sum1+=((*output)[kNIndice][j]);
 				//	cout <<(*output)[mypoint][j]<<"   "<<(*output)[kNIndice][j]<<"   ";
 
 			}
+			sum+=abs((*output)[mypoint][j]-sum1/KNear);
 
 		}
-		finalError[j]=sum/(KNear*NNboxHeight);
+		//finalError[j]=sum/(KNear*NNboxHeight);
+		finalError[j]=sum/(NNboxHeight);
 		err+=pow(finalError[j],2);
+		//err+=finalError[j];
 
 	}
-	errRMSE=err/numVariate;
+	errRMSE=sqrt(err/numVariate);
 
 	/*for (int j=0; j< numVariate;j++){
 			int sum=0;
@@ -209,6 +233,10 @@ void Dimension::predict1step(){
 
 }
 void Dimension::findminError(){
+	/*cout<<"this is errorDV in dimension"<<endl;
+	for(auto i:errorDV){
+		cout<<i<<" ";
+	}*/
 	auto min=min_element(begin(errorDV),end(errorDV));
 	indexofMin=distance(begin(errorDV),min);
 
@@ -232,6 +260,7 @@ void Dimension::vectorDim(){	//Give us different set of dimension that we want t
 		c++;
 		r=0;
 	}
+
 }
 
 vector<vector<double>>* Dimension::getDV(vector<vector<double>> * inpt,vector<int>* del, vector<int>* dim){

@@ -55,6 +55,7 @@ long commandLine::corrlength;
 int commandLine::dmax;
 int commandLine::numSetDim;
 double commandLine::forget;
+double commandLine::per10Coeff;
 //int commandLine::numWeight;
 //int commandLine::LengthSurrodata;
 //int commandLine::LengthDVSet;
@@ -90,6 +91,7 @@ PreConditions:
 				 -dl= it is the maximum delay that we consider for mutual information for finding delay in Delay class
 				 -dmax= it gives maximum delay considered in Cao's approach to find dimension
 				 -fr= Forgetting coefficient in RLS
+				 -perCf= it is the percentage, we consider for the first window of the train set
 
 Postconditions:
 				All the static member variables are filled
@@ -122,7 +124,7 @@ void commandLine::saveComLine(int argC,char * argV[]){
 			i++;
 		}
 		if(strcmp(argV[i],"-Nout")==0){
-			numOutput=atof(argV[i+1]);
+			numOutput=atoi(argV[i+1]);
 			i++;
 		}
 		if(strcmp(argV[i],"-Ncore")==0){
@@ -158,6 +160,10 @@ void commandLine::saveComLine(int argC,char * argV[]){
 		}
 		if(strcmp(argV[i],"-fr")==0){
 			forget=atof(argV[i+1]);
+			i++;
+		}
+		if(strcmp(argV[i],"-perCf")==0){
+			per10Coeff=atof(argV[i+1]);
 			i++;
 		}
 	}
@@ -198,10 +204,11 @@ void commandLine::calculateOthers(){
 	for_each(numOfMF.begin(),numOfMF.end(),[&](int n){b*=n;});
 	numRule=b;
 	initError=1000;
-	per10=TrainSize*0.8;
+	per10=TrainSize*per10Coeff;
 	//dmax=per10/2;	//cannot be arbitrary. It depends on the size of the per10
-	//TODO:change dmax
-	dmax=TrainSize*0.1/2;
+	//TODO:change dmax: Here I com considering as 15 because the greater dimension that I saw in batch learning was 12
+	//dmax=TrainSize*0.1/2;
+	dmax=15;
 	numSetDim=pow(dmax,numVariate);
 }
 /******************************************************************/
@@ -245,6 +252,7 @@ void commandLine::saveParameters(){
 	myfile<<"CheckSize:\t\t\t"<<CheckSize<<endl;
 	myfile<<"dmax:\t\t\t"<<dmax<<endl;
 	myfile<<"numSetDim:\t\t\t"<<numSetDim<<endl;
+	myfile<<"per10Coeff:\t\t\t"<<per10Coeff<<endl;
 
 	myfile.close();
 }
@@ -253,8 +261,8 @@ void commandLine::saveParameters(){
 
  *******************************************************************/
 unique_ptr<vector<vector<int>>> commandLine::ruleStruct(){
-//	cout<<"hi8"<<endl;
-//	cout<<"numRul "<<numRule<<"  numVar"<<numVariate<<endl;
+	//	cout<<"hi8"<<endl;
+	//	cout<<"numRul "<<numRule<<"  numVar"<<numVariate<<endl;
 	unique_ptr<vector<vector<int>>> prule;
 	prule.reset(new vector<vector<int>> (numRule, vector<int> (numVariate)));
 
@@ -288,7 +296,7 @@ void commandLine_test()
 		cout <<i<<" "<<endl;
 	}
 	cout<<endl;
-	cout<<"lenghtofVariates= "<<endl;
+
 	cout <<"nameofTrain= "<<Cl.TrainFile1<<endl;
 	cout<<"nameofCheck= "<<Cl.CheckFile1<<endl;
 	cout<<"numberofEpoch= "<<Cl.numEpoch<<endl;
@@ -303,6 +311,7 @@ void commandLine_test()
 	cout<<"CheckSize= "<<Cl.CheckSize<<endl;
 	cout<<"dmax= "<<Cl.dmax<<endl;
 	cout<<"numSetDim= "<<Cl.numSetDim<<endl;
+	cout<<"per10Coeff= "<<Cl.per10Coeff<<endl;
 
 	/*shared_ptr<vector<vector<int>>> prule=Cl.ruleStruct();
 	cout<<"this is rule"<<endl;
@@ -313,6 +322,6 @@ void commandLine_test()
 		}
 		cout<<endl;
 	}
-*/
+	 */
 
 }

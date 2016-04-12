@@ -13,7 +13,7 @@
 #include "firingStrength.h"
 #include "commandLine.h"
 #include "InputStream.h"
-#include "inputVecWeight.h"
+//#include "inputVecWeight.h"
 #include "DelayVector.h"
 
 class AncfisChecking: public commandLine {
@@ -21,7 +21,7 @@ class AncfisChecking: public commandLine {
 private:
 	InputStream checking;
 	inputVector inputV;
-	inputVecWeight inVW;
+	//inputVecWeight inVW;
 	DelayVector DV;
 
 	std::vector<std::vector<double>>* checkMatrix;

@@ -161,6 +161,7 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 			double t=0;
 			double teta;
 			double r=0;
+			//double r1=0, r2=0;
 			/*double d=(*pSinMfParam_allVar[i])[j][3];
 			double a=(*pSinMfParam_allVar[i])[j][0];
 			double b=(*pSinMfParam_allVar[i])[j][1];
@@ -168,7 +169,12 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 			complex <double> convSum (0,0);
 			//	t=2*PI/lengthOfVariate[i];
 			//	t=2*M_PI/lengthOfVariate[i];
-			t=2*M_PI*indexFrq/lengthSurodata;
+			//TODO: important: this t was making all the problems that I have. I think because it was sampling sin that was not in a period
+		//	t=2*M_PI*indexFrq/lengthSurodata;
+
+			 t=2*M_PI*indexFrq/lengthofVar[i];
+		//	cout<<"t= "<<t<<"t1= "<<t1;
+			//t=atan(f_imag/f_real);
 		//	cout<<" t= "<<t<<endl;
 			//3.1.
 			for_each(beginV,endV,[&](double data){						//Eq 19
@@ -178,7 +184,10 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 					//TODO: not sure if we need iteration here
 					teta=t*(k+iteration);
 
-					r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
+				r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
+					//r=f_real*cos(teta);//+f_imag*sin(teta);
+				//	r=sqrt(pow(f_real,2)+pow(f_imag,2));
+					//r=f_imag;
 					//TODO: it is been changes						//Eq 14
 					//r=d*sin(a*teta+b)+c;								//Eq 13
 					//r=(*pSinMfParam_allVar[i])[j][3]*sin((*pSinMfParam_allVar[i])[j][0]*teta+(*pSinMfParam_allVar[i])[j][1])+(*pSinMfParam_allVar[i])[j][2];
@@ -186,6 +195,7 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 					//TODO: not sure if we need to get polar in this way. Not sure if teta is working here
 
 					complex<double> out (r*cos(teta), r*sin(teta));		//Eq 15-16
+					//complex<double> out (f_real*cos(teta),f_imag*sin(teta) );
 					convSum=out*data+convSum;
 					/*cout<<"var= "<<i<<endl;
 					cout << "data= "<<data<<endl;

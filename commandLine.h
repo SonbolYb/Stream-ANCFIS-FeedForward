@@ -37,6 +37,7 @@ protected:
 	static int dmax;
 	static int numSetDim;
 	static double forget;
+	static double per10Coeff;
 
 
 	/*These parameters are assigned in Delay vector class after having the delay vectors

@@ -38,7 +38,7 @@ pM_old and pW_old are initialized to their initial values.
  *******************************************************************/
 inputVecWeight::inputVecWeight():commandLine(),rpH(pH),pM_new(numOutput),pM_old(numOutput),G(numOutput,vector<double>(1)),
 		alpha(numOutput,0), pW_old(numOutput),pW_new(numOutput),
-		aveBest(initError),epochBest(0),vectorTrainBestEpoch(NULL),bestW(numOutput, vector<double>(1)),bestPm(numOutput,vector<vector<double>> (1)),ErrorStream(1)
+		aveBest(initError),epochBest(0),vectorTrainBestEpoch(NULL),bestW(numOutput, vector<double>(1)),bestPm(numOutput,vector<vector<double>> (1)),bestFS(numRule),ErrorStream(1)
 		/*trainingErrorAll(numEpoch),vector<vector<double>> (LengthDVSet,vector<double>(numOutput)))*/
 
 {
@@ -266,9 +266,12 @@ void inputVecWeight::calErrorStream(){
 
 		bestW[nV]=(*pW_old[nV]);
 		bestPm[nV]=(*pM_old[nV]);
+
+
 		/*//We cannot have rbestW because Pw_old going out of scope by coming new input vector so the pointers pointing to somewhere unknown so rbestW.
 						rbestW[nV]=(pW_old[nV]).get();*/
 	}
+
 }
 /*******************************************************************/
 
@@ -328,7 +331,7 @@ void inputVecWeight::Replace_Old_New(){
 		*(pM_old[nV])=*(pM_new[nV]);*/
 
 
-	/*	cout<<endl<< "pwold"<<endl;
+		/*cout<<endl<< "pwold"<<endl;
 		for(auto i:*(pW_old[nV])){
 			cout<<i<<" ";
 		}*/
@@ -400,6 +403,7 @@ void inputVecWeight::calError(int ep){
 		bestErrorLastdata=aveErr;
 		aveBest=aveFinalMain;
 		bestaveFinaAlter=aveFinalalter;
+		bestFS=*(pH);
 
 		//vectorTrainBestEpoch=&(trainingErrorAll[epochBest]); //TODO: It should be a pointer
 
@@ -414,7 +418,8 @@ void inputVecWeight::calError(int ep){
 }
 /*******************************************************************/
 void inputVecWeight::calErrorTr(int ep){
-
+	fstream myfile;
+	myfile.open("TrainError.txt",ios::app|ios::out);
 	double aveErr=0;
 	for (int nV=0;nV<numOutput;nV++){
 		double v=0;
@@ -423,23 +428,35 @@ void inputVecWeight::calErrorTr(int ep){
 		aveErr+=pow(v,2);
 		//TODO: it was making problem. Please fix it.
 		//trainingErrorAll[ep][itera][nV]=v;
-
+		myfile<< (*target)[nV]<<"\t"<<Cal_VVS(rb,rpH)<<"\t"<<v<<endl;
 	}
+
+
 
 	aveFinalalter+=sqrt(aveErr/numOutput);
 	aveFinalMain+=aveErr;
+	/*cout<<"inputV"<<" ";
+	for (auto i:*target){
+		cout<<i<<" ";
+	}
+	cout<<"iteration= "<<itera;
+	cout<<"fs in CalculateWieght= "<<endl;
+		for(auto i:*pH){
+			cout<<i<<" ";
+		}
+		cout<<endl;*/
 }
 
 void inputVecWeight::saveStreamParams(){
 	cout<<endl<<"This is the last error= "<<ErrorStream.back()<<endl;
-	cout<<endl<<"this is the best weight"<<endl;
+	/*cout<<endl<<"this is the best weight"<<endl;
 	for (auto i:(bestW)){
 			for (auto j:i){
 				cout << j<< " ";
 
 			}
 			cout<<endl;
-		}
+		}*/
 	fstream myfile;
 	myfile.exceptions(ifstream::failbit|ifstream::badbit);
 		try{
@@ -456,7 +473,7 @@ void inputVecWeight::saveStreamParams(){
 						myfile<<endl;
 					}
 		myfile<<endl<<"FinalErrorStream_Trn:\t\t"<<ErrorStream.back();
-		myfile.close();
+				myfile.close();
 		fstream myfile3;
 			myfile3.exceptions(ifstream::failbit|ifstream::badbit);
 			try{
@@ -502,7 +519,7 @@ void inputVecWeight::saveParams(int epochPass){
 	}*/
 	cout <<endl<<"this is error of last data Trn="<<bestErrorLastdata<<endl;
 
-		cout<<endl<<"this is W of best"<<endl;
+		/*cout<<endl<<"this is W of best"<<endl;
 
 		for(auto i:bestW ){
 			for(auto j:i)
@@ -510,6 +527,7 @@ void inputVecWeight::saveParams(int epochPass){
 			cout<<endl;
 		}
 		cout<<endl;
+*/
 
 	fstream myfile;
 
@@ -522,12 +540,21 @@ void inputVecWeight::saveParams(int epochPass){
 		cerr << "Exception opening/reading/closing file\n";
 	}
 	//myfile<<"----------Results----------"<<endl;
+	myfile<<"numWeight:\t\t"<<numWeight;
 	myfile<<endl<<"WBest_Trn_beforStreaming:"<<endl;
 
 	for(auto i:bestW ){
 		for(auto j:i)
 			myfile<<j<<" ";
 		myfile<<endl;
+	}
+	myfile<<"pM best before streaming:"<<endl;
+	for(auto i:bestPm){
+		for(auto j:i){
+			for(auto k:j){
+				myfile<<k<<" ";
+			}
+		}
 	}
 	myfile<<endl<<"epochPassed:\t\t\t"<<epochPass;
 	myfile<<endl<<"EpochBest_Trn:\t\t\t"<<epochBest;
@@ -538,6 +565,11 @@ void inputVecWeight::saveParams(int epochPass){
 	myfile<<endl<<"AveErrorLastdata:\t\t"<<bestErrorLastdata;
 	myfile<<endl<<"AveErrorBestAlter_Trn:\t\t"<<bestaveFinaAlter;
 	myfile<<endl<<"AveErrorBest_Trn:\t\t"<<aveBest;
+	myfile<<endl<<"firingStrength:\t\t"<<endl;
+			for(auto i:bestFS){
+				myfile<<i<<" ";
+			}
+			myfile<<endl;
 
 
 
@@ -676,7 +708,7 @@ void inputVecWeight::CalPn(){
 
 		double d=0;
 		unique_ptr<vector<vector<double>>> & rpM=pM_old[nV];
-		unique_ptr<vector<vector<double>>> & rpMN=pM_new[nV];
+		//unique_ptr<vector<vector<double>>> & rpMN=pM_new[nV];
 
 		/*cout<<endl<<"ph"<<endl;
 		for(auto i:*pH){
@@ -700,19 +732,35 @@ void inputVecWeight::CalPn(){
 		//	cout<<"hi3"<<endl;
 			d=Cal_VVS(rb,rpH);
 			//cout<<"hi4"<<endl;
+			//cout<<"it is d= "<<d<<endl;
 			denum=d+forget;
+		//	cout<<"it is denum= "<<denum<<endl;
 			//cout<<"hi5"<<endl;
 			Cal_MtoS(rc,denum,re);
+			/*cout<<"rc"<<" ";
+			for(auto i:rc){
+				for(auto j:i){
+					cout<<j<<" ";
+				}
+			}
+			cout<<endl;
+			cout<<" re"<<" ";
+			for(auto i:re){
+							for(auto j:i){
+								cout<<j<<" ";
+							}
+						}
+			cout<<endl;*/
 		//	cout<<"hi6"<<endl;
 			pM_new[nV].reset();
 			pM_new[nV]=(Cal_Msub(rpM,re));
 		//	cout<<"hi7"<<endl;
-		/*	for(auto i:*pM_new[nV]){
+		/*	for(auto i:*rpM){
 				for(auto j:i){
 					cout<<j<<" ";
 				}
-			}*/
-
+			}
+			cout<<endl;*/
 		}
 		else{
 			cout<<endl<<"Error in pointer handling 1"<<endl;
@@ -736,7 +784,7 @@ Invariant:
  *******************************************************************/
 void inputVecWeight::CalGn(){
 
-	/*//unique_ptr<vector<double>>& rpH=pH;
+	//unique_ptr<vector<double>>& rpH=pH;
 
 	for(int nV=0;nV<numOutput;nV++){
 
@@ -751,9 +799,9 @@ void inputVecWeight::CalGn(){
 			exit(1);
 		}
 
-	}*/
+	}
 /*cout<<endl<<"gn"<<endl;*/
-	for(int nV=0;nV<numOutput;nV++){
+	/*for(int nV=0;nV<numOutput;nV++){
 
 			vector<double> &re=G[nV];
 			vector<double> a(numWeight,0);
@@ -771,17 +819,17 @@ void inputVecWeight::CalGn(){
 			denum=d+forget;
 			Cal_VtoS(ra,denum,re);
 				//G[nV]=ra;
-			/*for(auto i:G[nV]){
+			cout<<"G= ";
+			for(auto i:G[nV]){
 				cout<<i<<" ";
-			}*/
+			}
 			}
 			else{
 				cout<<endl<<"Error in pointer handling 2"<<endl;
 				exit(1);
 			}
 
-		}
-
+		}*/
 }
 /*******************************************************************/
 /*******************************************************************
@@ -801,6 +849,7 @@ void inputVecWeight::CalAlpha(){
 		vector<double> &rb=(*pW_old[nV]);
 		if(pW_old[nV] && pH){
 			alpha[nV]=(*target)[nV]-Cal_VVS(rb,rpH);
+		//	alpha[nV]=Cal_VVS(rb,rpH)-(*target)[nV];
 			/*cout<<alpha[nV]<<" ";*/
 		}
 		else{
@@ -827,15 +876,16 @@ void inputVecWeight::CalW(){
 		vector<double>  mul(numWeight,0);
 		vector<double>&  rmul=mul;
 		unique_ptr<vector<double>>& rWold=pW_old[nV];
-		unique_ptr<vector<double>>& rWnew=pW_new[nV];
+		//unique_ptr<vector<double>>& rWnew=pW_new[nV];
 
 		if(pW_old[nV]){
 			//cout<<endl<<"rmul";
 			int j=0;
 			for(auto i:G[nV]){
 				rmul[j]=i*alpha[nV];
-				//cout<<rmul[j]<<" ";
-				//cout<<alpha[nV]<<" ";
+			/*	cout<<"rmul= ";
+				cout<<rmul[j]<<" ";
+				cout<<alpha[nV]<<" ";*/
 				j++;
 			}
 
@@ -1276,7 +1326,8 @@ unique_ptr<vector<vector<double>>>  inputVecWeight::Cal_Msub(unique_ptr<vector<v
 
 			for (int j=0; j<(numWeight);j++){
 				//(*pmNew).at(i).at(j)=0;
-				//cout<<"this is Msub "<<(1/forget)*((*rpM)[i][j]-B[i][j]);
+				//cout<<"this is Msub1 "<<(1/forget)*((*rpM)[i][j]-B[i][j])<<endl;
+			//	cout<<"this is Msub2 "<<((*rpM)[i][j]-B[i][j])<<endl;
 				(*pmNew)[i][j]=(1/forget)*((*rpM)[i][j]-B[i][j]);
 				//(*rpMN)[i][j]=(1/forget)*((*rpM)[i][j]-B[i][j]);
 
