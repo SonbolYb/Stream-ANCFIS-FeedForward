@@ -24,8 +24,8 @@ void BuildANCFIS::findWeight(){
 		/*Original window*/
 	if (InS.numpassedInput==0){
 
-		//inputOrigin=InS.getOrigWindowN();
-		inputOrigin=InS.getOrigWindow();
+		inputOrigin=InS.getOrigWindowN();
+		//inputOrigin=InS.getOrigWindow();
 		findDV();
 		findMFParam();
 		//finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
@@ -36,8 +36,8 @@ void BuildANCFIS::findWeight(){
 	if(InS.numpassedInput >= per10){	//for new data coming
 //TODO: by coming new data points min and max can be different which change normalization and can change the all input
 		//newData=InS.getNewDataN();
-		//inputOrigin=InS.moveWindowbyOneNormal();
-		inputOrigin=InS.moveWindowbyOne();
+		inputOrigin=InS.moveWindowbyOneNormal();
+	//	inputOrigin=InS.moveWindowbyOne();
 		/*cout<<"this is input by move"<<endl;
 		for(auto i:*inputOrigin){
 			for (auto j:i){
@@ -106,8 +106,8 @@ void BuildANCFIS::findDV(){
 }
 void BuildANCFIS::findMFParam(){
 
-	//surodata=InS.getSurWindowN();
-	surodata=InS.getSurWindow();
+	surodata=InS.getSurWindowN();
+	//surodata=InS.getSurWindow();
 	//	mfPar.findMfparam(surodata);
 	LengthSurodata=((*surodata)[0].size())/2+1;
 	//LengthSurodata=((*surodata)[0].size());

@@ -1249,3 +1249,108 @@ EpochBest_Trn:		0
 AveErrorBest_Trn:	8.12517
 FinalErrorStream_Trn:	0
 FinalError_Chk:		4.99982
+******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	1000
+FinalErrorStream_Trn:	0.751003
+FinalError_Chk:		0.623658
+******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	0.00211447
+FinalErrorStream_Trn:	-nan
+FinalError_Chk:		-nan
+******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	0.00211447******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	0.00211447
+FinalErrorStream_Trn:	-nan
+FinalError_Chk:		-nan
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618
+******************************************************
+
+EpochBest_Trn:		99
+AveErrorBest_Trn:	0.100335
+FinalErrorStream_Trn:	0.446702
+FinalError_Chk:		0.594618

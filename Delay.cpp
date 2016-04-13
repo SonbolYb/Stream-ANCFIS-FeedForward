@@ -7,7 +7,7 @@
 
 #include "Delay.h"
 using namespace std;
-Delay::Delay():commandLine(),delays(numVariate),mutualArray(numVariate, vector<double>(corrlength)),array(NULL),h1(NULL),h11(NULL),h2(NULL),
+Delay::Delay():commandLine(),delays(numVariate),mutualArray(numVariate, vector<double>(corrlength+1)),array(NULL),h1(NULL),h11(NULL),h2(NULL),
 		pOrigWindow(numVariate,vector<double> (per10)) {
 	// TODO Auto-generated constructor stub
 //cout<<"Delay1"<<endl;
@@ -81,7 +81,7 @@ void Delay::mutual(){
 			fprintf(file,"%ld %e\n",tau,make_cond_entropy(tau));
 			fflush(file);
 		}
-		fclose(file);
+
 		free(h1);
 			for (int j=0;j<partitions;j++){
 				free(h2[j]);
@@ -89,6 +89,7 @@ void Delay::mutual(){
 			free(h2);
 			free(h11);
 			free(array);
+			fclose(file);
 	}
 	/*for (int j =0 ; j <numVariate;j++){
 		for (int i=0 ; i <20; i++){

@@ -46,7 +46,11 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 			cout<<numOfMF[i]<<endl;
 
 		}
+
 	}
+	int b=1;
+	for_each(numOfMF.begin(),numOfMF.end(),[&](int n){b*=n;});
+	numRule=b;
 
 	fstream myfile;
 

@@ -54,8 +54,8 @@ dimension=dim;
 numWeight=numRule*sumDim+numRule;
 	weightTrn=weight;
 	//1.
-	//checkMatrix=checking.getCheckingN();
-	checkMatrix=checking.getChecking();
+	checkMatrix=checking.getCheckingN();
+//	checkMatrix=checking.getChecking();
 	checkingDV=DV.getDV(checkMatrix,delay,dimension);
 	double aveFinal=0;
 	double aveFinalalter=0;
