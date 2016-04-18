@@ -40,7 +40,7 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 	//TODO: this variable is defined in commandline but I should change it to be added in MFparam because it is kind of global here
 	int	LengthSurrodata=row;
 	for (int i=0; i<numOutput;i++){
-		if(row < numOfMF[i]){
+		if(row <= numOfMF[i]){
 			numOfMF[i]=row-1;
 			cout<<endl<<"number of Membership function is greater than our frequencies, so we have changed it to frequency. The new mfs are"<<endl;
 			cout<<numOfMF[i]<<endl;
@@ -116,7 +116,7 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 		MFparam[i].resize(numOfMF[i]); //We multiply by 2 because we want to size indexes as well
 		MFparam1[i].resize(numOfMF[i]);
 		for (int h=0; h < numOfMF[i];h++){
-			MFparam1[i][h].resize(3); //real, image and index
+			MFparam1[i][h].resize(4); //real, image and index
 		}
 		for (int k=0; k< numOfMF[i];k++){ //index[0] is  for DC power that we ignore it
 			//power[k]=ampltd[index[k+1]];
@@ -125,6 +125,7 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 			MFparam1[i][k][0]=index[k+1];
 			MFparam1[i][k][1]=get<0>(prms[i][index[k+1]]);
 			MFparam1[i][k][2]=get<1>(prms[i][index[k+1]]);
+			MFparam1[i][k][3]=sqrt(power[i][0]);
 
 		}
 

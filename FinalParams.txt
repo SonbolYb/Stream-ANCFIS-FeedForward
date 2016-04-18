@@ -11757,3 +11757,135 @@ WBest_Trn_afterStreaming:
 FinalErrorStream_Trn:		0.446702
 FinalError_Alter_Chk:		0.529356
 FinalError_Chk:			0.594618
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			805
+CheckSize:			402
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			805
+CheckSize:			402
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+
+endtoendLength:			47
+numofMf:			2 ******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+
+endtoendLength:			47
+numofMf:			2 ******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+
+endtoendLength:			47
+numofMf:			2 ******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+
+endtoendLength:			47
+numofMf:			2 ----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+1 -3.64747 10.3824 4.9419 3 -1.19774 -1.22093 4.9419 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+1.41692 -0.498357 0.24012 0.796624 0.287155 -0.316918 
+pM best before streaming:
+24.6299 23.0622 3.33357 -24.8389 -22.8118 -10.0615 23.0622 24.6441 3.19728 -22.8516 -24.896 -9.84009 3.33357 3.19728 0.563807 -3.3038 -3.14281 -1.56522 -24.8389 -22.8516 -3.3038 25.1476 22.5336 10.002 -22.8118 -24.896 -3.14281 22.5336 25.2601 9.7439 -10.0615 -9.84009 -1.56522 10.002 9.7439 4.51101 
+epochPassed:			99
+EpochBest_Trn:			87
+AveErrorLastdata:		0.031288
+AveErrorBestAlter_Trn:		0.0164894
+AveErrorBest_Trn:		0.0164894
+firingStrength:		
+0.471684 0.424216 0.535967 0.408378 0.367281 0.464033 
+
+WBest_Trn_afterStreaming:
+1.41151 -0.491893 0.23666 0.800131 0.281415 -0.31018 
+
+FinalErrorStream_Trn:		0.0319905
+FinalError_Alter_Chk:		0.0163743
+FinalError_Chk:			0.0163743

@@ -150,6 +150,7 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 			int indexFrq=(*MFparam)[i][j][0];
 			double f_real=(*MFparam)[i][j][1];
 			double f_imag=(*MFparam)[i][j][2];
+			double DC=(*MFparam)[i][j][3];
 			//cout<<endl<<"index= "<<indexFrq<<" freal= "<<f_real<<" f_image= "<<f_imag<<endl;
 			//double mf=0;
 			/*
@@ -184,7 +185,7 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 					//TODO: not sure if we need iteration here
 					teta=t*(k+iteration);
 
-				r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
+				r=f_real*cos(teta)-f_imag*sin(teta)+DC; //We are getting the value of inverse of FOurier transform in the position of the point that we have
 					//r=f_real*cos(teta);//+f_imag*sin(teta);
 				//	r=sqrt(pow(f_real,2)+pow(f_imag,2));
 					//r=f_imag;
