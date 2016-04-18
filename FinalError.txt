@@ -1420,3 +1420,9 @@ EpochBest_Trn:		0
 AveErrorBest_Trn:	0.0485256
 FinalErrorStream_Trn:	6.3537e-05
 FinalError_Chk:		0.0394527
+******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	0.0392967
+FinalErrorStream_Trn:	0.000716497
+FinalError_Chk:		0.0312461
