@@ -40,6 +40,9 @@ protected:
 	static double per10Coeff;
 
 	static int numParamMF;
+	static int DDCheck;
+	static std::vector<int> DimCheck;
+	static std::vector<int> DelCheck;
 	//static std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pSinMfParam_allVar;
 
 

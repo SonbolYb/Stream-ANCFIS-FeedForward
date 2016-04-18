@@ -57,6 +57,9 @@ int commandLine::numSetDim;
 double commandLine::forget;
 double commandLine::per10Coeff;
 int commandLine::numParamMF;
+int commandLine::DDCheck;
+vector<int> commandLine::DimCheck;
+vector<int> commandLine::DelCheck;
 //std::vector<std::unique_ptr<std::vector<std::vector<double>>>> commandLine::pSinMfParam_allVar(1);
 //int commandLine::numWeight;
 //int commandLine::LengthSurrodata;
@@ -94,6 +97,10 @@ PreConditions:
 				 -dmax= it gives maximum delay considered in Cao's approach to find dimension
 				 -fr= Forgetting coefficient in RLS
 				 -perCf= it is the percentage, we consider for the first window of the train set
+				 -DD: it is either 1 or zero. if it is 1 that means that we use delay and dimension provided in the paraexplore file otherwise we use the
+				 code to find delay and dimension automatically
+				 -dim: dimension of each variate. We use it if -DD is 1.
+				 -del: delay of each variate. we use it if -DD is 1.
 
 Postconditions:
 				All the static member variables are filled
@@ -167,6 +174,22 @@ void commandLine::saveComLine(int argC,char * argV[]){
 		if(strcmp(argV[i],"-perCf")==0){
 			per10Coeff=atof(argV[i+1]);
 			i++;
+		}
+		if(strcmp(argV[i],"-DD")==0){
+			DDCheck=atoi(argV[i+1]);
+			i++;
+		}
+		if (strcmp(argV[i],"-dim")==0){
+			for (int j=0; j<numVariate; j++){
+				DimCheck.push_back(atoi(argV[i+1]));
+				i++;
+			}
+		}
+		if (strcmp(argV[i],"-del")==0){
+			for (int j=0; j<numVariate; j++){
+				DelCheck.push_back(atoi(argV[i+1]));
+				i++;
+			}
 		}
 	}
 

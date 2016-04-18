@@ -1390,3 +1390,27 @@ EpochBest_Trn:		8
 AveErrorBest_Trn:	0.214316
 FinalErrorStream_Trn:	0.0453878
 FinalError_Chk:		0.230066
+******************************************************
+
+EpochBest_Trn:		72
+AveErrorBest_Trn:	0.24261
+FinalErrorStream_Trn:	0.979435
+FinalError_Chk:		0.256766
+******************************************************
+
+EpochBest_Trn:		10
+AveErrorBest_Trn:	0.138766
+FinalErrorStream_Trn:	0.089301
+FinalError_Chk:		0.176354
+******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	0.0503436
+FinalErrorStream_Trn:	0.00131141
+FinalError_Chk:		0.0378671
+******************************************************
+
+EpochBest_Trn:		0
+AveErrorBest_Trn:	0.05097
+FinalErrorStream_Trn:	0.000605737
+FinalError_Chk:		0.0373255

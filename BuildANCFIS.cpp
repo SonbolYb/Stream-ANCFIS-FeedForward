@@ -10,13 +10,14 @@ using namespace std;
 BuildANCFIS::BuildANCFIS():commandLine(),inputOrigin(NULL),surodata(NULL),delayVectors(NULL),newDV(NULL),mfParam(NULL),dimension(NULL),
 		delay(NULL),newData(NULL),finalWeight(NULL){
 //	cout<<"BuildAncfis1"<<endl;
-	inputOrigin=new vector<vector<double>> (1);
-	surodata=new vector<vector<double>>(1);
-	delayVectors=new vector<vector<double>>(1);
-	newDV=new vector<double> (1);
-	mfParam=new vector<vector<vector<double>>> (1);
-	dimension=new vector<int> (1);
-	delay=new vector<int> (1);
+	inputOrigin=new vector<vector<double>> [1];
+		surodata=new vector<vector<double>>[1];
+		delayVectors=new vector<vector<double>>[1];
+		newDV=new vector<double> [1];
+		mfParam=new vector<vector<vector<double>>> [1];
+		dimension=new vector<int> [numVariate];
+		delay=new vector<int> [numVariate];
+
 
 }
 
@@ -98,8 +99,16 @@ Then use delay and dimension in DelayVector class to obtain delayvectors
  *******************************************************************/
 void BuildANCFIS::findDV(){
 
-	*(delay)=*(del.getDelay(inputOrigin));
-	*dimension=*(dim.getDim(inputOrigin,delay));
+	//This condition gives us the option if we want to get delay and vector automatically or using the one provided in the commandlinr
+	if(DDCheck==1){
+		*delay=DelCheck;
+		*dimension=DimCheck;
+	}else{
+		*(delay)=*(del.getDelay(inputOrigin));
+			*dimension=*(dim.getDim(inputOrigin,delay));
+	}
+
+
 	//vector<int> delay1={11};
 	//vector<int> dimension1={9};
 	//delay=&delay1;
