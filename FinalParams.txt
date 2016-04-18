@@ -11757,3 +11757,49 @@ WBest_Trn_afterStreaming:
 FinalErrorStream_Trn:		0.446702
 FinalError_Alter_Chk:		0.529356
 FinalError_Chk:			0.594618
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+
+endtoendLength:			47
+numofMf:			2 ----------Results----------
+
+Delay:
+1 
+Dimension
+1 
+MfParams
+1 -3.64747 10.3824 3 -1.19774 -1.22093 
+
+numWeight:		4
+WBest_Trn_beforStreaming:
+0.981639 0.0140251 1.01006 -0.0294322 
+pM best before streaming:
+37.0183 8.09603 -39.0149 -26.0475 8.09603 6.46048 -3.24884 -17.1279 -39.0149 -3.24884 48.8269 13.4955 -26.0475 -17.1279 13.4955 47.0133 
+epochPassed:			99
+EpochBest_Trn:			0
+AveErrorLastdata:		0.0677478
+AveErrorBestAlter_Trn:		0.03919
+AveErrorBest_Trn:		0.0521499
+firingStrength:		
+0.270544 0.643816 0.149675 0.356184 
+
+WBest_Trn_afterStreaming:
+1.02846 -0.0605047 0.887738 0.14868 
+
+FinalErrorStream_Trn:		0.00214387
+FinalError_Alter_Chk:		0.0312374
+FinalError_Chk:			0.0373929

@@ -39,6 +39,10 @@ protected:
 	static double forget;
 	static double per10Coeff;
 
+	static int DDCheck;
+	static std::vector<int> DimCheck;
+	static std::vector<int> DelCheck;
+
 
 	/*These parameters are assigned in Delay vector class after having the delay vectors
 	 * */

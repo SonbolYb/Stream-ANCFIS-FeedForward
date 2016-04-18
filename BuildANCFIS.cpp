@@ -7,14 +7,27 @@
 
 #include "BuildANCFIS.h"
 using namespace std;
-BuildANCFIS::BuildANCFIS():commandLine(),inputOrigin(NULL),surodata(NULL),delayVectors(NULL),newDV(NULL),mfParam(NULL),dimension(NULL),
-		delay(NULL),newData(NULL),finalWeight(NULL){
+BuildANCFIS::BuildANCFIS():commandLine(),newData(NULL),finalWeight(NULL){
 //	cout<<"BuildAncfis1"<<endl;
+	inputOrigin=new vector<vector<double>> [1];
+			surodata=new vector<vector<double>>[1];
+			delayVectors=new vector<vector<double>>[1];
+			newDV=new vector<double> [1];
+			mfParam=new vector<vector<vector<double>>> [1];
+			dimension=new vector<int> [numVariate];
+			delay=new vector<int> [numVariate];
 }
 
 BuildANCFIS::~BuildANCFIS() {
 	// TODO Auto-generated destructor stub
 //	cout<<"BuildAncfis2"<<endl;
+	delete [] inputOrigin;
+		delete [] surodata;
+		delete [] delayVectors;
+		delete [] newDV;
+		delete []mfParam;
+		delete [] dimension;
+		delete [] delay;
 }
 
 void BuildANCFIS::findWeight(){
@@ -24,7 +37,7 @@ void BuildANCFIS::findWeight(){
 		/*Original window*/
 	if (InS.numpassedInput==0){
 
-		inputOrigin=InS.getOrigWindowN();
+		*inputOrigin=*(InS.getOrigWindowN());
 		//inputOrigin=InS.getOrigWindow();
 		findDV();
 		findMFParam();
@@ -36,7 +49,7 @@ void BuildANCFIS::findWeight(){
 	if(InS.numpassedInput >= per10){	//for new data coming
 //TODO: by coming new data points min and max can be different which change normalization and can change the all input
 		//newData=InS.getNewDataN();
-		inputOrigin=InS.moveWindowbyOneNormal();
+		*inputOrigin=*(InS.moveWindowbyOneNormal());
 	//	inputOrigin=InS.moveWindowbyOne();
 		/*cout<<"this is input by move"<<endl;
 		for(auto i:*inputOrigin){
@@ -52,7 +65,7 @@ void BuildANCFIS::findWeight(){
 		for(auto i:*headEndInx){
 			cout<<i<<" ";
 		}*/
-		newDV=DV.getNewDV(inputOrigin,delay,dimension,headEndInx);
+		*newDV=*(DV.getNewDV(inputOrigin,delay,dimension,headEndInx));
 		/*cout<<"this is new DV"<<endl;
 		for(auto i:*newDV){
 			cout<<i <<" ";
@@ -83,15 +96,21 @@ Then use delay and dimension in DelayVector class to obtain delayvectors
  *******************************************************************/
 void BuildANCFIS::findDV(){
 
-	delay=del.getDelay(inputOrigin);
-	dimension=dim.getDim(inputOrigin,delay);
+	if(DDCheck==1){
+			*delay=DelCheck;
+			*dimension=DimCheck;
+		}else{
+			*(delay)=*(del.getDelay(inputOrigin));
+				*dimension=*(dim.getDim(inputOrigin,delay));
+		}
+
 	//vector<int> delay1={11};
 	//vector<int> dimension1={9};
 	//delay=&delay1;
 //	dimension=&dimension1;
 	//*delay={11};
 	//*dimension={9};
-	delayVectors=DV.getDV(inputOrigin,delay,dimension);
+	*delayVectors=*(DV.getDV(inputOrigin,delay,dimension));
 	LengthDVSet=DV.getLengthDVSet();
 
 	/*cout<<endl<<"this is delayVectors1 in findDV"<<endl;
@@ -106,12 +125,12 @@ void BuildANCFIS::findDV(){
 }
 void BuildANCFIS::findMFParam(){
 
-	surodata=InS.getSurWindowN();
+	*surodata=*(InS.getSurWindowN());
 	//surodata=InS.getSurWindow();
 	//	mfPar.findMfparam(surodata);
 	LengthSurodata=((*surodata)[0].size())/2+1;
 	//LengthSurodata=((*surodata)[0].size());
-	mfParam=mfPar.getMfparam(surodata);
+	*mfParam=*(mfPar.getMfparam(surodata));
 	saveDDMF();
 }
 void BuildANCFIS::saveDDMF(){
