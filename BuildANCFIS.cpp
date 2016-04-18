@@ -125,7 +125,7 @@ void BuildANCFIS::findDV(){
 }
 void BuildANCFIS::findMFParam(){
 
-	*surodata=*(InS.getSurWindowN());
+	*surodata=*(InS.getSurWindow(inputOrigin));
 	//surodata=InS.getSurWindow();
 	//	mfPar.findMfparam(surodata);
 	LengthSurodata=((*surodata)[0].size())/2+1;
