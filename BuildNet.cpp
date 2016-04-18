@@ -77,12 +77,12 @@ vector<vector<double>>* BuildNet::updataWeight(std::vector<double>* NewDelayVect
 	//inputVectorWeight.calErrorTr(0);
 	inputVectorWeight.calErrorStream();
 	//inputVectorWeight.saveParams(0);
-	cout<<"wbestStream"<<endl;
+	/*cout<<"wbestStream"<<endl;
 	for(auto i:*inputVectorWeight.getWBest()){
 		for(auto j:i){
 			cout<<j<<" ";
 		}
-	}
+	}*/
 	return(inputVectorWeight.getWBest());
 
 }

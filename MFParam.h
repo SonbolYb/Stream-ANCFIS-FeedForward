@@ -21,6 +21,7 @@ private:
 	std::vector<std::vector<std::pair<double,double>>> MFparam;
 	std::vector<std::vector<std::vector<double>>> MFparam1;
 	std::vector<std::vector<double>> power;
+	std::vector<std::vector<double>> powerCheck;
 	void calMFparam(std::vector<std::vector<double>> *);
 friend void mfpramtest();
 };

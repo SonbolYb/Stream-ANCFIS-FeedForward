@@ -32,7 +32,12 @@ private:
 	void findWeight();
 	void findDV();
 	void findMFParam();
+	void findMFParamConceptDrift(std::vector<std::vector<double>> * );
 	void saveDDMF();
+	void saveMFparam(std::vector<std::vector<std::vector<double>>>*,std::vector<std::vector<double>> *);
+	void PowerAnalysis();
+	bool CheckDrift(std::vector<std::vector<double>> *);
+	void comparePower(std::vector<std::vector<double>>*,std::vector<std::vector<double>>*);
 	InputStream InS;
 	DelayVector DV;
 	Delay del;
@@ -44,7 +49,7 @@ private:
 	std::vector<std::vector<double>> * surodata;
 	std::vector<std::vector<double>> * delayVectors;
 	std::vector<double> *newDV;
-	std::vector<std::vector<std::vector<double>>>* mfParam;
+	std::vector<std::vector<std::vector<double>>>*mfParam;
 	std::vector<int>* dimension;
 	std::vector<int>* delay;
 	std::vector<double>* newData;
@@ -53,6 +58,13 @@ private:
 	int LengthDVSet=0;
 	std::vector<int> delay1={23};
 	std::vector<int> dimension1={12};
+	std::vector<std::vector<std::vector<double>>> powerStore;
+	std::vector<std::vector<double>>  oldPower;
+	std::deque<int> checkDrft;
+	std::deque<int> signContainer;
+	std::vector<int> sumSign;
+	std::vector<int> bool1;
+	std::vector<int> bool2;
 
 };
 

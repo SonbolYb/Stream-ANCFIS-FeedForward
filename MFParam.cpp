@@ -8,7 +8,7 @@
 #include "MFParam.h"
 
 using namespace std;
-MFParam::MFParam():commandLine(), prms(numVariate),MFparam(numVariate),MFparam1(numVariate), power(numVariate) {
+MFParam::MFParam():commandLine(), prms(numVariate),MFparam(numVariate),MFparam1(numVariate), power(numVariate),powerCheck(numVariate) {
 	// TODO Auto-generated constructor stub
 	//cout<<"mfParam1"<<endl;
 }
@@ -39,41 +39,31 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 	int row=((*input)[0].size())/2+1;
 	//TODO: this variable is defined in commandline but I should change it to be added in MFparam because it is kind of global here
 	int	LengthSurrodata=row;
-	for (int i=0; i<numOutput;i++){
-		if(row < numOfMF[i]){
-			numOfMF[i]=row-1;
-			cout<<endl<<"number of Membership function is greater than our frequencies, so we have changed it to frequency. The new mfs are"<<endl;
-			cout<<numOfMF[i]<<endl;
 
-		}
 
-	}
-	int b=1;
-	for_each(numOfMF.begin(),numOfMF.end(),[&](int n){b*=n;});
-	numRule=b;
+	vector<int> numOfMFCheck (numOutput);
 
-	fstream myfile;
 
-	//throw exception if the file cannot be opened
-	myfile.exceptions(ifstream::failbit|ifstream::badbit);
-	try{
-		myfile.open("FinalParams.txt",ios::app|ios::out);
-	}
-	catch(fstream::failure &e){
-		cerr << "Exception opening/reading/closing file\n";
-	}
-	myfile <<"numofMf:\t\t\t";
-	for(auto i:numOfMF){
-		myfile <<i<<" ";
-	}
-	myfile.close();
-	for (int i=0 ; i<numVariate;i++){
+
+
+
+
+	/*for (int i=0 ; i<numVariate;i++){
 		prms[i].resize(LengthSurrodata);
-	}
+	}*/
 	//(row, vector<pair<double,double>>(numVariate));//1 is for amplitude and 1 for phase
 
 	//TODO: check mf with lengthsuroo
 	for (int i=0; i< numVariate;i++){ //For each variate an independent fourier transform is taken
+
+		if(row <= numOfMF[i]){
+			numOfMFCheck[i]=LengthSurrodata-1;
+
+		}
+		else{
+			numOfMFCheck[i]=numOfMF[i];
+		}
+		prms[i].resize(LengthSurrodata);
 
 		fftw_plan pln;
 		int N=(*input)[i].size();
@@ -87,7 +77,6 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 		//Getting Fourier Transform
 		pln=fftw_plan_dft_r2c_1d(N,inpt,out,FFTW_ESTIMATE);
 		fftw_execute(pln);
-
 		//Get power for each data point
 		for (int j=0;j< Nout;j++){
 
@@ -96,6 +85,7 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 			double amplitude=sqrt(pow(real,2)+pow(img,2));
 			ampltd[j]=amplitude;
 			power[i][j]=amplitude;
+			//	cout<<"real"<<real<<" "<<img<<" ";
 
 			//double phase=atan2(img,real);
 			prms[i][j]=make_pair(real,img);
@@ -113,18 +103,23 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 		//using lambda to get the index of max power
 		sort(index.begin(),index.end(),[&ampltd](size_t ii, size_t jj){return (ampltd[ii]>ampltd[jj]);});
 
-		MFparam[i].resize(numOfMF[i]); //We multiply by 2 because we want to size indexes as well
-		MFparam1[i].resize(numOfMF[i]);
-		for (int h=0; h < numOfMF[i];h++){
-			MFparam1[i][h].resize(3); //real, image and index
+		MFparam[i].resize(numOfMFCheck[i]); //We multiply by 2 because we want to size indexes as well
+		MFparam1[i].resize(numOfMFCheck[i]);
+		powerCheck[i].resize(numOfMFCheck[i]); //powerCheck saves the greates power
+		for (int h=0; h < numOfMFCheck[i];h++){
+			MFparam1[i][h].resize(4); //real, image and index, DC
 		}
-		for (int k=0; k< numOfMF[i];k++){ //index[0] is  for DC power that we ignore it
-			//power[k]=ampltd[index[k+1]];
+		//	cout<<"mf"<<numOfMF[i]<<" ";
 
+		for (int k=0; k< numOfMFCheck[i];k++){ //index[0] is  for DC power that we ignore it
+			//power[k]=ampltd[index[k+1]];
+			//cout<<"real"<<get<0>(prms[i][index[k+1]])<<" "<<get<1>(prms[i][index[k+1]]);;
 			MFparam[i][k]=(prms[i][index[k+1]]);
+			powerCheck[i][k]=power[i][index[k+1]];
 			MFparam1[i][k][0]=index[k+1];
 			MFparam1[i][k][1]=get<0>(prms[i][index[k+1]]);
 			MFparam1[i][k][2]=get<1>(prms[i][index[k+1]]);
+			MFparam1[i][k][3]=sqrt(power[i][0]);
 
 		}
 
@@ -137,15 +132,15 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 }
 vector<vector<double>>* MFParam::getPower(){
 
-	return(&power);
+	return(&powerCheck);
 }
 void mfparamtest(){
 	InputStream inS;
 	MFParam mfPar;
 	vector<vector<double>> * surodata;
 	vector<vector<vector<double>>> *mfParam;
-	inS.getOrigWindowN();
-	surodata=inS.getSurWindowN();
+
+	surodata=inS.getSurWindow(inS.getOrigWindowN());
 	cout<< "this is surrogate data"<<endl;
 	for (auto i: *surodata){
 		for (auto j:i){

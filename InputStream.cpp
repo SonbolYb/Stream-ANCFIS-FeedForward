@@ -13,7 +13,7 @@ using namespace std;
 InputStream::InputStream():commandLine(),origWindow(numVariate, vector<double>(per10)),
 		origWindowN(numVariate, vector<double>(per10)),surWindow(numVariate),
 		surWindowN(numVariate),newdata(numVariate),newdataN(numVariate),
-		checking(numVariate,vector<double> (CheckSize)),checkingN(numVariate,vector<double> (CheckSize)),max(numVariate),min(numVariate),head(NULL),end(NULL) {
+		checking(numVariate,vector<double> (CheckSize)),checkingN(numVariate,vector<double> (CheckSize)),max(numVariate),min(numVariate),head(NULL),end(NULL),inputWindow(NULL) {
 	// TODO Auto-generated constructor stub
 //cout<<"inputStream1"<<endl;
 }
@@ -311,7 +311,7 @@ void InputStream::readSurData(){
 		int k=per10-endtoendLength;
 		for (int i=0; i< endtoendLength;i++){	//The data cut is from the beginning not from end
 
-			surWindow[j][i]=origWindow[j][k];
+			surWindow[j][i]=(*inputWindow)[j][k];
 			k++;
 		}
 	}
@@ -319,8 +319,9 @@ void InputStream::readSurData(){
 /******************************************************************/
 /*******************************************************************
 readSurDataN: It is for normalized case.
+//TODO://Do not need this one any more because we get input argument
  *******************************************************************/
-void InputStream::readSurDataN(){
+/*void InputStream::readSurDataN(){
 	//TODO: we need to be sure that readOrigWindowN is called once before calling this function.
 
 	//readOrigWindowN();
@@ -333,11 +334,11 @@ void InputStream::readSurDataN(){
 		int k=per10-endtoendLength;
 		for (int i=0; i< endtoendLength;i++){
 
-			surWindowN[j][i]=origWindowN[j][k];
+			surWindowN[j][i]=(*inputWindow)[j][k];
 			k++;
 		}
 	}
-}
+}*/
 /******************************************************************/
 /*******************************************************************
 getOrigWindow: Retrun original window
@@ -371,8 +372,9 @@ vector<vector<double>> * InputStream::getOrigWindowN(){
 /*******************************************************************/
 /*******************************************************************
  *******************************************************************/
-vector<vector<double>> * InputStream::getSurWindow(){
+vector<vector<double>> * InputStream::getSurWindow(vector<vector<double>> * inputWin){
 	//read1stInput();
+	inputWindow=inputWin;
 	readSurData();
 
 	vector<vector<double>> * pSurWindow= &surWindow;
@@ -382,15 +384,16 @@ vector<vector<double>> * InputStream::getSurWindow(){
 /*******************************************************************
 
  *******************************************************************/
-vector<vector<double>> * InputStream::getSurWindowN(){
+/*vector<vector<double>> * InputStream::getSurWindowN(vector<vector<double>> *inputWin){
 	//read1stInput();
 	//readOrigWindowN();
+	inputWindow=inputWin;
 	readSurDataN();
 
 	vector<vector<double>> * pOrigWindow= &surWindowN;
 
 	return (pOrigWindow);
-}
+}*/
 /*******************************************************************
 getNewData:Return new data
  *******************************************************************/
@@ -400,6 +403,9 @@ vector<double>* InputStream::getNewData(){
 
 }
 /******************************************************************/
+int InputStream::getNumpassedWindow(){
+	return(numpassedInput-per10+1); //number of windows that we have
+}
 /*******************************************************************
 
  *******************************************************************/
@@ -439,7 +445,7 @@ endtoend: Based on Fortran code in Tisean
  *******************************************************************/
 void InputStream::endtoend(){
 
-	int nmax=(origWindow[0]).size();
+	int nmax=(*inputWindow)[0].size();
 	double wjump=0.5;
 	int mcmax=numVariate;
 	int nmaxp=nmax;
@@ -456,7 +462,7 @@ void InputStream::endtoend(){
 	double njump=0,njump1=0;
 	double *pnjump=&njump;
 	vector<vector<double>> x(mcmax,vector<double> (nmax));
-	x=origWindow;
+	x=*inputWindow;
 
 	do{
 		etot=jump(nmax,nmaxp,nx,x,mcmax,wjump,pejump, peslip,pnjump);
@@ -478,7 +484,7 @@ void InputStream::endtoend(){
 	//cout <<"this is lost"<<lost<<endl;
 	//cout << "jump" <<ejump1 <<endl<<"slip"<<eslip1<<endl<<"weighted"<<(etot*100.0)<<endl <<"offset"<<njump1<<endl;
 	endtoendLength=leng;
-	cout<<endl<<"this is endtoendLenght= "<<endtoendLength<<endl;
+	//cout<<endl<<"this is endtoendLenght= "<<endtoendLength<<endl;
 	fstream myfile;
 
 		//throw exception if the file cannot be opened
@@ -605,7 +611,7 @@ void testInputStream(){
 	}
 	cout << endl;
 	cout<<"This is surogate window"<<endl;
-	for (auto i: *inS.getSurWindow()){
+	for (auto i: *inS.getSurWindow(inS.getOrigWindow())){
 		for (auto j: i){
 			cout << j << " ";
 		}
@@ -613,15 +619,15 @@ void testInputStream(){
 
 	}
 	cout << endl;
-	cout<<"This is surogate Normalize window"<<endl;
-	for (auto i: *inS.getSurWindowN()){
+	/*cout<<"This is surogate Normalize window"<<endl;
+	for (auto i: *inS.getSurWindowN(inS.getOrigWindowN())){
 		for (auto j: i){
 			cout << j << " ";
 		}
 		cout << "   ";
 
 	}
-
+*/
 	cout << "this is endtoend length"<<inS.endtoendLength<<endl;
 	//	inS.getOrigWindowN();
 }

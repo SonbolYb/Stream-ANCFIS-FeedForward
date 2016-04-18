@@ -17,8 +17,8 @@ public:
 	std::vector<std::vector<double>> * getOrigWindowN();
 
 	std::vector<std::vector<double>> * getOrigWindow();
-	std::vector<std::vector<double>> *  getSurWindow();
-	std::vector<std::vector<double>> *  getSurWindowN();
+	std::vector<std::vector<double>> *  getSurWindow(std::vector<std::vector<double>> *);
+	//std::vector<std::vector<double>> *  getSurWindowN(std::vector<std::vector<double>> *); //Do not need this one any more because we get input argument
 	//TODO: write this two methods
 	std::vector<double>* getNewData();
 	std::vector<double>* getNewDataN();
@@ -28,6 +28,7 @@ public:
 	bool EndofFile();
 	std::vector<std::vector<double>> * getCheckingN();
 	std::vector<std::vector<double>> * getChecking();
+	int getNumpassedWindow();
 
 	std::vector<std::vector<double>> origWindow;
 	std::vector<std::vector<double>> origWindowN;
@@ -46,7 +47,7 @@ private:
 	void readNewData();
 	void readSurData();			//Reading surogate data
 	void endtoend();
-	void readSurDataN();
+	//void readSurDataN();
 	void readOrigWindowN();
 	int nless(int);
 	double jump(int nmax, int nmaxp, int nx,  std::vector<std::vector<double>> x, int mcmax,  double wjump, double * pejump,double * peslip, double *pnjump);
@@ -64,6 +65,7 @@ private:
 	int endInx=0;
 	std::vector<int> headEndInx;
 	std::fstream& GotoLine(std::fstream& file, unsigned int num);
+	std::vector<std::vector<double>> * inputWindow;
 	//int per10=35;
 
 	//int numVar=1;

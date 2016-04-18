@@ -22,9 +22,9 @@
  * 1. Go to BuildANCFIS
  * 2. Change InS.getOrigWindowN() to InS.getOrigWindow()
  * 3. Change InS.moveWindowbyOneNormal(); to InS.moveWindowbyOne();
- * 4. Change InS.getSurWindowN() to InS.getSurWindow()
- * 5. Go to Ancfis_Checking
- * 6. Change checking.getCheckingN() to checking.getChecking()
+ *
+ * 4. Go to Ancfis_Checking
+ * 5. Change checking.getCheckingN() to checking.getChecking()
  * */
 //============================================================================
 
@@ -67,7 +67,7 @@ int main(int argc, char * argv[]) {
 	}*/
 	vector<int>* finalDim=Ancfis.getDimension();
 	vector<int>* finalDelay=Ancfis.getDelay();
-	vector<vector<vector<double>>>* finalMf=Ancfis.getMf();
+	vector<vector<vector<double>>>*finalMf=Ancfis.getMf();
 	int lengthSurodata=Ancfis.getLengthSurodata();
 	AncfisChecking checking;
 	checking.output(finalWeight,finalDelay,finalDim,finalMf,lengthSurodata);
