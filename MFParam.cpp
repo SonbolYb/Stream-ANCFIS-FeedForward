@@ -40,7 +40,7 @@ void MFParam::calMFparam(std::vector<std::vector<double>> * input){
 	//TODO: this variable is defined in commandline but I should change it to be added in MFparam because it is kind of global here
 	int	LengthSurrodata=row;
 	for (int i=0; i<numOutput;i++){
-		if(row < numOfMF[i]){
+		if(row <= numOfMF[i]){
 			numOfMF[i]=row-1;
 			cout<<endl<<"number of Membership function is greater than our frequencies, so we have changed it to frequency. The new mfs are"<<endl;
 			cout<<numOfMF[i]<<endl;
