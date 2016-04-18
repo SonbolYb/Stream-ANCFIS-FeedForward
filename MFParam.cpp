@@ -239,8 +239,8 @@ void mfparamtest(){
 	MFParam mfPar;
 	vector<vector<double>> * surodata;
 	vector<vector<vector<double>>> *mfParam;
-	inS.getOrigWindowN();
-	surodata=inS.getSurWindowN();
+
+	surodata=inS.getSurWindow(inS.getOrigWindowN());
 	cout<< "this is surrogate data"<<endl;
 	for (auto i: *surodata){
 		for (auto j:i){
