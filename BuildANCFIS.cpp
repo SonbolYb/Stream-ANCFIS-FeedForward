@@ -98,8 +98,13 @@ Then use delay and dimension in DelayVector class to obtain delayvectors
  *******************************************************************/
 void BuildANCFIS::findDV(){
 
-	*delay=*(del.getDelay(inputOrigin));
-	*dimension=*(dim.getDim(inputOrigin,delay));
+	if(DDCheck==1){
+			*delay=DelCheck;
+			*dimension=DimCheck;
+		}else{
+			*(delay)=*(del.getDelay(inputOrigin));
+				*dimension=*(dim.getDim(inputOrigin,delay));
+		}
 	//vector<int> delay1={11};
 	//vector<int> dimension1={9};
 	//delay=&delay1;
