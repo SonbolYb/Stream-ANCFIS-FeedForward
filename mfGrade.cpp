@@ -147,9 +147,9 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 		//3.
 		for(int j=0; j < numOfMF[i]; j++){
 
-			int indexFrq=(*MFparam)[i][j][0];
+		/*	int indexFrq=(*MFparam)[i][j][0];
 			double f_real=(*MFparam)[i][j][1];
-			double f_imag=(*MFparam)[i][j][2];
+			double f_imag=(*MFparam)[i][j][2];*/
 			//cout<<endl<<"index= "<<indexFrq<<" freal= "<<f_real<<" f_image= "<<f_imag<<endl;
 			//double mf=0;
 			/*
@@ -162,17 +162,17 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 			double teta;
 			double r=0;
 			//double r1=0, r2=0;
-			/*double d=(*pSinMfParam_allVar[i])[j][3];
-			double a=(*pSinMfParam_allVar[i])[j][0];
-			double b=(*pSinMfParam_allVar[i])[j][1];
-			double c=(*pSinMfParam_allVar[i])[j][2];*/
+			double d=(*MFparam)[i][j][3];
+			double a=(*MFparam)[i][j][0];
+			double b=(*MFparam)[i][j][1];
+			double c=(*MFparam)[i][j][2];
 			complex <double> convSum (0,0);
 			//	t=2*PI/lengthOfVariate[i];
-			//	t=2*M_PI/lengthOfVariate[i];
+				t=2*M_PI/lengthofVar[i];
 			//TODO: important: this t was making all the problems that I have. I think because it was sampling sin that was not in a period
 		//	t=2*M_PI*indexFrq/lengthSurodata;
 
-			 t=2*M_PI*indexFrq/lengthofVar[i];
+			// t=2*M_PI*indexFrq/lengthofVar[i];
 		//	cout<<"t= "<<t<<"t1= "<<t1;
 			//t=atan(f_imag/f_real);
 		//	cout<<" t= "<<t<<endl;
@@ -184,14 +184,14 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 					//TODO: not sure if we need iteration here
 					teta=t*(k+iteration);
 
-				r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
+				//r=f_real*cos(teta)-f_imag*sin(teta); //We are getting the value of inverse of FOurier transform in the position of the point that we have
 					//r=f_real*cos(teta);//+f_imag*sin(teta);
 				//	r=sqrt(pow(f_real,2)+pow(f_imag,2));
 					//r=f_imag;
 					//TODO: it is been changes						//Eq 14
-					//r=d*sin(a*teta+b)+c;								//Eq 13
+					r=d*sin(a*teta+b)+c;								//Eq 13
 					//r=(*pSinMfParam_allVar[i])[j][3]*sin((*pSinMfParam_allVar[i])[j][0]*teta+(*pSinMfParam_allVar[i])[j][1])+(*pSinMfParam_allVar[i])[j][2];
-					//r=d*sin(a*teta+b)+c;
+
 					//TODO: not sure if we need to get polar in this way. Not sure if teta is working here
 
 					complex<double> out (r*cos(teta), r*sin(teta));		//Eq 15-16

@@ -39,6 +39,10 @@ protected:
 	static double forget;
 	static double per10Coeff;
 
+	static int numParamMF;
+	//static std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pSinMfParam_allVar;
+
+
 
 	/*These parameters are assigned in Delay vector class after having the delay vectors
 	 * */

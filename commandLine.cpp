@@ -56,6 +56,8 @@ int commandLine::dmax;
 int commandLine::numSetDim;
 double commandLine::forget;
 double commandLine::per10Coeff;
+int commandLine::numParamMF;
+//std::vector<std::unique_ptr<std::vector<std::vector<double>>>> commandLine::pSinMfParam_allVar(1);
 //int commandLine::numWeight;
 //int commandLine::LengthSurrodata;
 //int commandLine::LengthDVSet;
@@ -210,6 +212,9 @@ void commandLine::calculateOthers(){
 	//dmax=TrainSize*0.1/2;
 	dmax=15;
 	numSetDim=pow(dmax,numVariate);
+
+	numParamMF=4;
+	//pSinMfParam_allVar.resize(numVariate);
 }
 /******************************************************************/
 /*******************************************************************

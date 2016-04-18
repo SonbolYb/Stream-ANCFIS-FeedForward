@@ -8,7 +8,7 @@
 #include "MFParam.h"
 
 using namespace std;
-MFParam::MFParam():commandLine(), prms(numVariate),MFparam(numVariate),MFparam1(numVariate), power(numVariate) {
+MFParam::MFParam():commandLine(), prms(numVariate),MFparam(numVariate),MFparam1(numVariate), power(numVariate),pSinMfParam_allVar(numVariate) {
 	// TODO Auto-generated constructor stub
 	//cout<<"mfParam1"<<endl;
 }
@@ -139,6 +139,101 @@ vector<vector<double>>* MFParam::getPower(){
 
 	return(&power);
 }
+
+std::vector<std::vector<std::vector<double>>> * MFParam::initialMf(){
+
+	for (int i=0; i<numVariate;i++){
+		pSinMfParam_allVar[i].resize(numOfMF[i],vector<double>(numParamMF));
+			//unique_ptr<vector <vector <double> > > pmfParam_foreach_Variate(new vector< vector <double> > (numOfMF[i], vector<double>(numParamMF)));
+			for (int j=0; j< numOfMF[i];j++){
+
+				initiateA();
+				initiateB();
+				initiateCD();
+				(pSinMfParam_allVar)[i][j]={aS,bS,cS,dS};
+
+			}
+			//pSinMfParam_allVar[i]=move(pmfParam_foreach_Variate);
+		}
+	return(&pSinMfParam_allVar);
+}
+/******************************************************************
+initiateA()
+
+Use:				Initialize a in (mf) d*sin(a*teta+b)+c by using a random number generator mt19937 and over uniform distribution
+Out:				Random value for a between ...
+Status:				Private and called from initialMf()
+PreConditions:
+Postconditions:
+Invariant:
+ ******************************************************************/
+void MFParam::initiateA(){
+
+
+
+	random_device rd;			//seed
+	mt19937_64 mt(rd());			//using mt19937 random generator
+	//TODO: change it in a meaningful way
+	uniform_real_distribution<double> dist(-per10/2,per10/2);		//a between 0-10 by uniform distribution
+	aS=dist(mt);
+	//	a=5;
+
+
+}
+/*****************************************************************/
+/******************************************************************
+initiateB()
+
+Use:				Initialize b in (mf) d*sin(a*teta+b)+c by using a random number generator mt19937 and over uniform distribution
+Out:				A random value for b between ...
+Status:				Private and called from initialMf()
+PreConditions:
+Postconditions:
+Invariant:
+ ******************************************************************/
+void MFParam::initiateB(){
+
+	/*random_device rd;			//seed
+	mt19937_64 mt(rd());			//using mt19937 random generator
+	uniform_real_distribution<double> dist(bRange[0],bRange[1]);		//b between 0-100 by uniform distribution
+	bS=dist(mt);*/
+	//b=90;
+	random_device rd;			//seed
+	mt19937_64 mt(rd());			//using mt19937 random generator
+	uniform_real_distribution<double> dist(0,nextafter (1,DBL_MAX));
+	bS=dist(mt)*2*PI;
+}
+/*****************************************************************/
+/******************************************************************
+initiateCD()
+
+Use:				Initialize c and d in (mf) d*sin(a*teta+b)+c by using a random number generator mt19937 and over uniform distribution
+Out:				Random values between 0-1 (inclusive)
+Status:				Private and called from initialMf()
+PreConditions:
+Postconditions:		0 =< d+c =< 1
+					1 >= c >= d> >=0
+Invariant:
+ ******************************************************************/
+void MFParam::initiateCD(){
+
+	random_device rd;			//seed
+	mt19937_64 mt(rd());			//using mt19937 random generator
+	uniform_real_distribution<double> dist(0,nextafter (1,DBL_MAX));
+
+	/* Initialize c and d to satisfy one of the condition and go to the while loop
+	 * because we have multiple calls to initiateCD*/
+	cS=0;
+	dS=0.1;
+	while ((0 > cS+dS  || cS+dS > 1) || (cS < dS)){
+		dS=dist(mt);
+		cS=dist(mt);
+
+	}
+
+
+}
+/*****************************************************************/
 void mfparamtest(){
 	InputStream inS;
 	MFParam mfPar;

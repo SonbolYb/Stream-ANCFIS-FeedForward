@@ -11757,3 +11757,299 @@ WBest_Trn_afterStreaming:
 FinalErrorStream_Trn:		0.446702
 FinalError_Alter_Chk:		0.529356
 FinalError_Chk:			0.594618
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+15.5336 3.81406 0.102751 0.066939 10.9708 3.42083 0.300258 0.135498 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+0.656619 -0.0159854 0.00813569 1.44032 -0.192936 0.0433102 
+pM best before streaming:
+0.0524627 -0.0380649 -0.00752584 -0.0115156 0.00779938 0.00187241 -0.0380649 0.0535404 -0.0093761 0.007985 -0.0114805 0.0019335 -0.00752584 -0.0093761 0.0125681 0.0018328 0.00197668 -0.00272785 -0.0115156 0.007985 0.0018328 0.0155857 -0.0107615 -0.00293628 0.00779938 -0.0114805 0.00197668 -0.0107615 0.0159443 -0.00211879 0.00187241 0.0019335 -0.00272785 -0.00293628 -0.00211879 0.00357208 
+epochPassed:			99
+EpochBest_Trn:			86
+AveErrorLastdata:		0.156601
+AveErrorBestAlter_Trn:		0.173703
+AveErrorBest_Trn:		0.258305
+firingStrength:		
+0.217629 0.18868 0.220197 0.770709 0.668188 0.779803 
+
+WBest_Trn_afterStreaming:
+0.724376 -0.0692936 0.0177654 1.43777 -0.189364 0.042423 
+
+FinalErrorStream_Trn:		0.0665913
+FinalError_Alter_Chk:		0.216735
+FinalError_Chk:			0.303141
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+6.81132 2.24725 0.404892 0.12127 8.63764 2.99104 0.191614 0.0285837 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+1.67386 -0.23879 0.00666981 -0.2071 -0.65364 0.22593 
+pM best before streaming:
+0.959477 -0.644004 -0.16801 -1.09842 0.465662 0.312793 -0.644004 0.941429 -0.130221 0.330429 -0.522531 0.103012 -0.16801 -0.130221 0.206469 0.420944 -0.0391518 -0.279658 -1.09842 0.330429 0.420944 13.6958 -8.60187 -4.04747 0.465662 -0.522531 -0.0391518 -8.60187 9.42896 0.904125 0.312793 0.103012 -0.279658 -4.04747 0.904125 2.49757 
+epochPassed:			99
+EpochBest_Trn:			0
+AveErrorLastdata:		0.0837734
+AveErrorBestAlter_Trn:		0.127794
+AveErrorBest_Trn:		0.190129
+firingStrength:		
+0.17651 0.376663 0.420044 -0.0521193 -0.11122 -0.124029 
+
+WBest_Trn_afterStreaming:
+1.37785 -0.0913417 -4.66776e-06 -0.223722 -0.589972 0.184499 
+
+FinalErrorStream_Trn:		0.0346059
+FinalError_Alter_Chk:		0.176611
+FinalError_Chk:			0.27337
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+-19.2604 2.19588 0.412864 0.294653 24.091 4.94772 0.463567 0.0653253 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+1.25736 -0.215634 0.0388648 0.0279123 0.294436 -0.0329419 
+pM best before streaming:
+0.00594077 -0.00413562 -0.00105831 -0.00551481 0.00383627 0.00142517 -0.00413562 0.00608282 -0.00087281 0.00410311 -0.00655874 0.000800301 -0.00105831 -0.00087281 0.00137569 0.0013579 0.000882104 -0.00160128 -0.00551481 0.00410311 0.0013579 0.43114 -0.284062 -0.0949607 0.00383627 -0.00655874 0.000882104 -0.284062 0.368543 -0.0413573 0.00142517 0.000800301 -0.00160128 -0.0949607 -0.0413573 0.10439 
+epochPassed:			99
+EpochBest_Trn:			79
+AveErrorLastdata:		0.100275
+AveErrorBestAlter_Trn:		0.0474822
+AveErrorBest_Trn:		0.0812209
+firingStrength:		
+0.862761 0.893754 0.962125 -0.0111273 -0.0115271 -0.0124089 
+
+WBest_Trn_afterStreaming:
+1.24846 -0.209734 0.0380146 0.044133 0.283406 -0.0308521 
+
+FinalErrorStream_Trn:		0.0199169
+FinalError_Alter_Chk:		0.0658444
+FinalError_Chk:			0.124351
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+21.2377 0.726874 0.496712 0.23458 -21.1409 5.70811 0.585568 0.222318 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+1.76787 -0.548355 0.114768 0.691221 0.0624228 -0.00908626 
+pM best before streaming:
+0.301918 -0.201678 -0.0543896 -0.141541 0.0908375 0.0269346 -0.201678 0.30174 -0.0439172 0.0914082 -0.13915 0.0198454 -0.0543896 -0.0439172 0.0681281 0.0269561 0.0198585 -0.0318191 -0.141541 0.0914082 0.0269561 0.246473 -0.181308 -0.0397345 0.0908375 -0.13915 0.0198585 -0.181308 0.260381 -0.0325728 0.0269346 0.0198454 -0.0318191 -0.0397345 -0.0325728 0.051343 
+epochPassed:			99
+EpochBest_Trn:			11
+AveErrorLastdata:		0.0976858
+AveErrorBestAlter_Trn:		0.21838
+AveErrorBest_Trn:		0.336794
+firingStrength:		
+0.0198467 0.0544128 0.141431 -0.012425 -0.0340652 -0.0885429 
+
+WBest_Trn_afterStreaming:
+2.32744 -0.554538 0.113924 0.276237 0.0563098 -0.0154048 
+
+FinalErrorStream_Trn:		0.871214
+FinalError_Alter_Chk:		0.327654
+FinalError_Chk:			0.43539
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+9.10823 2.53412 0.743732 0.177355 20.7691 5.90138 0.294602 0.134964 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+1.37762 -0.266773 0.0377245 0.961199 -0.143841 0.0592343 
+pM best before streaming:
+0.0306858 -0.0240824 -0.00403869 -0.0197312 0.0168959 0.00192842 -0.0240824 0.0323141 -0.00348569 0.0168374 -0.021997 0.00192165 -0.00403869 -0.00348569 0.00549095 0.0019114 0.00193426 -0.00282973 -0.0197312 0.0168374 0.0019114 0.0427613 -0.0339149 -0.00576749 0.0168959 -0.021997 0.00193426 -0.0339149 0.046287 -0.00472264 0.00192842 0.00192165 -0.00282973 -0.00576749 -0.00472264 0.00758897 
+epochPassed:			99
+EpochBest_Trn:			91
+AveErrorLastdata:		0.184769
+AveErrorBestAlter_Trn:		0.227931
+AveErrorBest_Trn:		0.358982
+firingStrength:		
+0.282029 0.00913208 0.606563 -0.0479072 -0.00155123 -0.103034 
+
+WBest_Trn_afterStreaming:
+1.33913 -0.260127 0.0348188 1.00879 -0.147827 0.0623485 
+
+FinalErrorStream_Trn:		0.926156
+FinalError_Alter_Chk:		0.255559
+FinalError_Chk:			0.383401
+******************************************************
+numVaraite:			1
+numofMf:			2 
+numberofEpoch:			100
+threshold:			0.001
+numofRule:			2
+
+number of core used:		1
+lambda for RLs:			0.01
+forget coefficient:			1
+correlation length:			10
+TrainSize:			500
+CheckSize:			500
+dmax:			15
+numSetDim:			15
+per10Coeff:			0.1
+----------Results----------
+
+Delay:
+6 
+Dimension
+2 
+MfParams
+-20.0665 1.85098 0.198535 0.0781283 16.3313 4.19652 0.629234 0.0945815 
+
+numWeight:		6
+WBest_Trn_beforStreaming:
+0.796539 -0.105031 0.049741 1.40669 -0.260293 0.0429685 
+pM best before streaming:
+0.547667 -0.410459 -0.072187 -0.0514335 0.0343698 0.011066 -0.410459 0.630783 -0.1097 0.034929 -0.0518312 0.00570237 -0.072187 -0.1097 0.126296 0.010472 0.00649975 -0.0117323 -0.0514335 0.034929 0.010472 0.0890934 -0.0582808 -0.018234 0.0343698 -0.0518312 0.00649975 -0.0582808 0.0867901 -0.0130386 0.011066 0.00570237 -0.0117323 -0.018234 -0.0130386 0.0224335 
+epochPassed:			99
+EpochBest_Trn:			8
+AveErrorLastdata:		0.0380251
+AveErrorBestAlter_Trn:		0.133819
+AveErrorBest_Trn:		0.214316
+firingStrength:		
+0.294404 0.264777 0.334527 0.585658 0.52672 0.665473 
+
+WBest_Trn_afterStreaming:
+1.04667 -0.155093 0.0356982 1.39219 -0.262297 0.0452673 
+
+FinalErrorStream_Trn:		0.0453878
+FinalError_Alter_Chk:		0.156013
+FinalError_Chk:			0.230066
