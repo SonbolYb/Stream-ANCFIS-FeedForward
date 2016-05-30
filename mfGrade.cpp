@@ -27,11 +27,11 @@ variable is different and we save it in a vector numOfMF. So, what we can do her
 in the vector is a unique_ptr to the mfs of one variable. So, we do not worry about that # of mf is different
  *******************************************************************/
 mfGrade::mfGrade():commandLine(),pConvolution(numVariate),pNormalize(numVariate),lengthofVar(numVariate){
-//cout<<"mfGrad1"<<endl;
+	//cout<<"mfGrad1"<<endl;
 }
 
 mfGrade::~mfGrade(){
-//	cout<<"mfGrad2"<<endl;
+	//	cout<<"mfGrad2"<<endl;
 }
 /*******************************************************************
 MemFungrade()
@@ -124,6 +124,15 @@ The function works as:
 				0.convSum=convsum1+convSum2+...+convSumn
  *******************************************************************/
 void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,std::vector<std::vector<std::vector<double>>>* MFparam){
+	/*cout<<"ji";
+	for(auto i:(*MFparam)){
+		for(auto j:i){
+			for(auto k:j){
+				cout<<k<<" ";
+			}
+		}
+	}
+	cout<<endl;*/
 
 	auto beginV=inputVector->begin();
 	auto endV=inputVector->begin();
@@ -139,7 +148,7 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 			beginV=endV;
 			endV=beginV+lengthofVar[i];
 		}
-	//	cout<<endl<<"begin="<<*(beginV)<<endl<<"endl="<<*(endV)<<endl<<"lV"<<lengthofVar[i]<<endl;;
+		//	cout<<endl<<"begin="<<*(beginV)<<endl<<"endl="<<*(endV)<<endl<<"lV"<<lengthofVar[i]<<endl;;
 
 		//2.
 		unique_ptr<vector<complex<double>>> pmFEachVar(new vector<complex<double>>(numOfMF[i]));
@@ -171,12 +180,12 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 			//	t=2*PI/lengthOfVariate[i];
 			//	t=2*M_PI/lengthOfVariate[i];
 			//TODO: important: this t was making all the problems that I have. I think because it was sampling sin that was not in a period
-		//	t=2*M_PI*indexFrq/lengthSurodata;
+			//	t=2*M_PI*indexFrq/lengthSurodata;
 
-			 t=2*M_PI*indexFrq/lengthofVar[i];
-		//	cout<<"t= "<<t<<"t1= "<<t1;
+			t=2*M_PI*indexFrq/lengthofVar[i];
+			//	cout<<"t= "<<t<<"t1= "<<t1;
 			//t=atan(f_imag/f_real);
-		//	cout<<" t= "<<t<<endl;
+			//	cout<<" t= "<<t<<endl;
 			//3.1.
 			for_each(beginV,endV,[&](double data){						//Eq 19
 
@@ -185,9 +194,9 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 					//TODO: not sure if we need iteration here
 					teta=t*(k+iteration);
 
-				r=f_real*cos(teta)-f_imag*sin(teta)+DC; //We are getting the value of inverse of FOurier transform in the position of the point that we have
+					r=f_real*cos(teta)-f_imag*sin(teta)+DC; //We are getting the value of inverse of FOurier transform in the position of the point that we have
 					//r=f_real*cos(teta);//+f_imag*sin(teta);
-				//	r=sqrt(pow(f_real,2)+pow(f_imag,2));
+					//	r=sqrt(pow(f_real,2)+pow(f_imag,2));
 					//r=f_imag;
 					//TODO: it is been changes						//Eq 14
 					//r=d*sin(a*teta+b)+c;								//Eq 13
@@ -205,7 +214,7 @@ void  mfGrade::convolutionFn(unique_ptr<std::vector<double>> const &inputVector,
 					cout << "r= "<<r<<endl;
 					cout << "out= "<<out<<endl;
 					cout<<"conSum= "<<convSum<<endl;
-*/
+					 */
 				}
 			});
 

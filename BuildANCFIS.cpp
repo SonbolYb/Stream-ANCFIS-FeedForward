@@ -35,23 +35,28 @@ void BuildANCFIS::findWeight(){
 		if (InS.numpassedInput==0){
 
 			*inputOrigin=*(InS.getOrigWindowN());
-			//inputOrigin=InS.getOrigWindow();
 			findDV();
 			findMFParam();
-			//finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
 			buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
-
-
-
 		}
+
+		//TODO: here instead of sliding window, I will work with the whole window moved not the sliding window for comparing windows for power spectral
 		if(InS.numpassedInput >= per10){	//for new data coming
 			//TODO: by coming new data points min and max can be different which change normalization and can change the all input
-			//newData=InS.getNewDataN();
 
 			*(inputOrigin)=*(InS.moveWindowbyOneNormal());
-			findMFParamConceptDrift(inputOrigin);
+			//		findMFParamConceptDrift(inputOrigin);
+			if(winCouter==per10-1){//We have a new non-overlapping window
+				//	cout<<"# of data passed"<<InS.numpassedInput<<endl;
+				findMFParamConceptDrift(inputOrigin);
+				winCouter=0;
+			}
+			winCouter++;
+			vector<int> * headEndInx=InS.getHeadEndInx();
+			*newDV=*(DV.getNewDV(inputOrigin,delay,dimension,headEndInx));
+			finalWeight=buildNet.updataWeight(newDV,mfParam,dimension,LengthSurodata,LengthDVSet);
 			//	inputOrigin=InS.moveWindowbyOne();
-			/*cout<<"this is input by move"<<endl;
+			/*cout<<"this is input by move"<<endl;-
 		for(auto i:*inputOrigin){
 			for (auto j:i){
 				cout <<j <<" ";
@@ -60,17 +65,17 @@ void BuildANCFIS::findWeight(){
 		}
 		cout<<endl;*/
 			//	DV.addNewDV(newData);
-			vector<int> * headEndInx=InS.getHeadEndInx();
+
 			/*cout << "this is headEndInx"<<endl;
 		for(auto i:*headEndInx){
 			cout<<i<<" ";
 		}*/
-			*newDV=*(DV.getNewDV(inputOrigin,delay,dimension,headEndInx));
+
 			/*cout<<"this is new DV"<<endl;
 		for(auto i:*newDV){
 			cout<<i <<" ";
 		}*/
-			//delayVectors=DV.getNewDelayVecs(inputOrigin,delay,dimension,headEndInx);
+			//delayVectors=DV.getNewDelayVe/cs(inputOrigin,delay,dimension,headEndInx);
 			/*cout<<endl<<"this is delayVectors2"<<endl;
 		for(auto i:*delayVectors){
 			for(auto j:i){
@@ -81,10 +86,17 @@ void BuildANCFIS::findWeight(){
 		cout<<endl;*/
 			//TODO: Ask Scott which one we should use
 			//finalWeight=buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
-			finalWeight=buildNet.updataWeight(newDV,mfParam,dimension,LengthSurodata,LengthDVSet);
-
+			/*for(auto i:(*mfParam)){
+				for(auto j:i){
+					for(auto k:j){
+						cout<<k<<" ";
+					}
+				}
+			}
+			cout<<endl;*/
 		}
 	}
+	closeParamFile();
 	buildNet.getStreamParam();
 	PowerAnalysis();
 }
@@ -150,23 +162,28 @@ void BuildANCFIS::findMFParam(){
 	for(auto i:numOfMF){
 		myfile <<i<<" ";
 	}
+	myfile<<endl;
 	myfile.close();
 
 	*mfParam=*(mfPar.getMfparam(surodata));
+	//*mfParam=*(mfPar.getMfparam(inputOrigin));
 	saveDDMF();
 	oldPower=*(mfPar.getPower());
 	//cout<<" oldpower="<<(oldPower)[0][0];
 	saveMFparam(mfParam,mfPar.getPower());
 }
 void BuildANCFIS::findMFParamConceptDrift(vector<vector<double>>* inputWin){
+
 	vector<vector<double>> *surodataCheck=InS.getSurWindow(inputWin);
 	vector<vector<vector<double>>> mfParamCheck=*mfPar.getMfparam(surodataCheck);
 
+	//vector<vector<vector<double>>> mfParamCheck=*mfPar.getMfparam(inputWin);
+
 
 	vector<vector<double>> *power=mfPar.getPower();
-	//cout<<"power="<<(*power)[0][0];
-	saveMFparam(&mfParamCheck,power);
-	if(CheckDrift(power)){
+
+
+	if(CheckDrift2(power)){
 		/*
 		for(auto i:(*mfParam)){
 						for(auto j:i){
@@ -177,14 +194,21 @@ void BuildANCFIS::findMFParamConceptDrift(vector<vector<double>>* inputWin){
 					}
 					cout<<endl;*/
 		*mfParam=mfParamCheck;
+		oldPower=*power;
+		saveMFparam(&mfParamCheck,power);
+		/*for(auto i:oldPower){
+			for(auto j:i){
+				cout<<"oldpower= "<<j<<endl;
+			}
+		}*/
 		/*for(auto i:(*mfParam)){
-								for(auto j:i){
-									for(auto k:j){
-										cout<<k<<" ";
-									}
-								}
-							}
-							cout<<endl;*/
+			for(auto j:i){
+				for(auto k:j){
+					cout<<k<<" ";
+				}
+			}
+		}
+		cout<<endl;*/
 	}
 }
 void BuildANCFIS::saveDDMF(){
@@ -196,7 +220,7 @@ void BuildANCFIS::saveDDMF(){
 	for(auto i:*dimension){
 		cout<<i<<" ";
 	}
-	cout<<endl<<"this is MF params"<<endl;
+	/*cout<<endl<<"this is MF params"<<endl;
 	for(auto i: *mfParam){
 		for(auto j:i){
 			for(auto k:j){
@@ -205,7 +229,7 @@ void BuildANCFIS::saveDDMF(){
 
 		}
 	}
-	cout<<endl;
+	cout<<endl;*/
 	fstream myfile;
 
 	//throw exception if the file cannot be opened
@@ -216,7 +240,7 @@ void BuildANCFIS::saveDDMF(){
 	catch(fstream::failure &e){
 		cerr << "Exception opening/reading/closing file\n";
 	}
-	myfile<<"----------Results----------"<<endl;
+
 	myfile<<endl<<"Delay:"<<endl;
 	for(auto i:*delay){
 		myfile<<i<<" ";
@@ -225,7 +249,7 @@ void BuildANCFIS::saveDDMF(){
 	for(auto i:*dimension){
 		myfile<<i<<" ";
 	}
-	myfile<<endl<<"MfParams"<<endl;
+	/*myfile<<endl<<"MfParams"<<endl;
 	for(auto i:*mfParam){
 		for(auto j:i){
 			for(auto k:j){
@@ -234,12 +258,66 @@ void BuildANCFIS::saveDDMF(){
 
 		}
 		myfile<<endl;
-	}
+	}*/
 	myfile<<endl;
 	myfile.close();
 
 
 
+}
+bool BuildANCFIS::CheckDrift2(vector<vector<double>> * power){
+
+	fstream myfile,myfile2;
+	myfile.exceptions(fstream::badbit|fstream::failbit);
+	try{
+		myfile.open("FinalParams.txt",ios::app|ios::out);
+	}
+	catch(fstream::failure &e){
+		cerr << "Exception opening/reading/closing file\n";
+	}
+	myfile2.exceptions(fstream::badbit|fstream::failbit);
+	try{
+		myfile2.open("MFparams.txt",ios::app|ios::out);
+	}
+	catch(fstream::failure &e){
+		cerr << "Exception opening/reading/closing file\n";
+	}
+
+	bool out2=false;
+	for (int j=0; j<numVariate;j++){
+		if((*power)[j][0] < 0.5*(oldPower)[j][0]){
+
+			myfile<<"concept of Drift1"<<endl;
+			myfile<<"variate= "<<j<<endl;
+			myfile<<"# of data passed:\t"<<InS.numpassedInput<<endl;
+			myfile<<"number of window passed:\t"<<InS.numpassedInput/per10<<endl;
+			myfile2<<"concept of Drift1"<<endl;
+			myfile2<<"variate= "<<j<<endl;
+			myfile2<<"# of data passed:\t"<<InS.numpassedInput<<endl;
+			myfile2<<"number of window passed:\t"<<InS.numpassedInput/per10<<endl;
+
+			out2=true;
+		}
+		else if ((*power)[j][0]*0.5> (oldPower)[j][0]){
+			myfile<<"concept of Drift2"<<endl;
+			myfile<<"variate= "<<j<<endl;
+			myfile<<"# of data passed:\t"<<InS.numpassedInput<<endl;
+			myfile<<"number of window passed:\t"<<InS.numpassedInput/per10<<endl;
+			myfile2<<"concept of Drift2"<<endl;
+			myfile2<<"variate= "<<j<<endl;
+			myfile2<<"# of data passed:\t"<<InS.numpassedInput<<endl;
+			myfile2<<"number of window passed:\t"<<InS.numpassedInput/per10<<endl;
+
+			out2=true;
+		}
+		else{
+			out2=false;
+		}
+
+
+	}
+	myfile.close();
+	return(out2);
 }
 bool BuildANCFIS::CheckDrift(vector<vector<double>> * power){
 	int m=50;
@@ -284,7 +362,7 @@ bool BuildANCFIS::CheckDrift(vector<vector<double>> * power){
 					else{
 						bool1[k]=0;
 					}
-				//	cout<<bool1[k]<<" ";
+					//	cout<<bool1[k]<<" ";
 				}
 
 			}
@@ -310,7 +388,7 @@ bool BuildANCFIS::CheckDrift(vector<vector<double>> * power){
 
 
 			if(InS.numpassedInput <11+m/2-1+per10){
-			//	cout<<checkDrft[0]<<" "<<checkDrft[1]<<" "<<checkDrft[2]<<" "<<checkDrft[3]<<" "<<checkDrft[4]<<" "<<checkDrft[5]<<" "<<checkDrft[6]<<" "<<checkDrft[7]<<" "<<checkDrft[8]<<" "<<  endl;
+				//	cout<<checkDrft[0]<<" "<<checkDrft[1]<<" "<<checkDrft[2]<<" "<<checkDrft[3]<<" "<<checkDrft[4]<<" "<<checkDrft[5]<<" "<<checkDrft[6]<<" "<<checkDrft[7]<<" "<<checkDrft[8]<<" "<<  endl;
 				for(int k=0;k<m/2+1;k++){
 					if(k==0){
 						bool2[k]=1;
@@ -343,15 +421,15 @@ bool BuildANCFIS::CheckDrift(vector<vector<double>> * power){
 			int sum3=0;
 			for (auto it=bool2.begin()+1; it!=bool2.begin()+m/2+1;it++){
 				//cout<<*it<<" ";
-							if(*it ==1){
-								sum3++;
-							}}
-							if(sum3==m/2){
-								cout<<"real pulse drift333"<<endl;
-													out=true;
-							}
+				if(*it ==1){
+					sum3++;
+				}}
+			if(sum3==m/2){
+				cout<<"real pulse drift333"<<endl;
+				out=true;
+			}
 			//	cout<<checkDrft[0]<<" "<<checkDrft[1]<<" "<<checkDrft[2]<<" "<<checkDrft[3]<<" "<<checkDrft[4]<<" "<<checkDrft[5]<<" "<<checkDrft[6]<<" "<<checkDrft[7]<<" "<<checkDrft[8]<<" "<<  endl;
-	/*		if(checkDrft[0]==0&&checkDrft[1]==0&&checkDrft[2]==0&&checkDrft[3]==0&&(checkDrft[4]==1||checkDrft[4]==-1)&&checkDrft[5]==0&&checkDrft[6]==0&&checkDrft[7]==0&&checkDrft[8]==0){
+			/*		if(checkDrft[0]==0&&checkDrft[1]==0&&checkDrft[2]==0&&checkDrft[3]==0&&(checkDrft[4]==1||checkDrft[4]==-1)&&checkDrft[5]==0&&checkDrft[6]==0&&checkDrft[7]==0&&checkDrft[8]==0){
 				cout<<"real pulse drift1"<<endl;
 				out=true;
 			}
@@ -479,7 +557,18 @@ void BuildANCFIS::PowerAnalysis(){
 void BuildANCFIS::saveMFparam(vector<vector<vector<double>>> * mfPar,vector<vector<double>>* power){
 	//TODO: Find a better way to do instead of push_back because it is time consuming
 	powerStore.push_back(*power);
-	fstream myfile2;
+
+	cout<<endl<<"this is MF params"<<endl;
+	for(auto i: *mfParam){
+		for(auto j:i){
+			for(auto k:j){
+				cout<<k<<" ";
+			}
+
+		}
+	}
+	cout<<endl;
+	fstream myfile,myfile2;
 	myfile2.exceptions(ifstream::failbit|ifstream::badbit);
 	try{
 		myfile2.open("MFparams.txt",ios::app|ios::out);
@@ -487,22 +576,37 @@ void BuildANCFIS::saveMFparam(vector<vector<vector<double>>> * mfPar,vector<vect
 	catch(fstream::failure &e){
 		cerr << "Exception opening/reading/closing file\n";
 	}
+	myfile.exceptions(ifstream::failbit|ifstream::badbit);
+	try{
+		myfile.open("FinalParams.txt",ios::app|ios::out);
+	}
+	catch(fstream::failure &e){
+		cerr << "Exception opening/reading/closing file\n";
+	}
 	myfile2<<"MF Params:"<<endl;
+	myfile<<"MF Params:"<<endl;
 	for(auto i:*mfPar){
 		for(auto j:i){
 			for(auto k:j){
 				myfile2<<k<<" ";
+				myfile<<k<<" ";
 			}
 		}
 
 	}
+	myfile<<endl;
 	myfile2<<endl<<"Power:"<<endl;
 	for(auto i:*power){
 		for (auto j:i){
 			myfile2<<j<<" ";
 		}
 	}
-	myfile2<<endl<<"****************************"<<endl;
+	myfile2<<endl;
+	/*myfile2<<"number of data passed:"<<endl;
+	myfile2<<InS.numpassedInput<<endl;*/
+	/*myfile2<<"number of window passed:"<<endl;
+	myfile2<<InS.numpassedInput/per10<<endl;*/
+
 	myfile2.close();
 }
 std::vector<std::vector<double>> * BuildANCFIS::getFinalWeight(){
@@ -519,6 +623,18 @@ vector<int>*  BuildANCFIS::getDelay(){
 vector<vector<vector<double>>>*  BuildANCFIS::getMf(){
 	return(mfParam);
 
+}
+void BuildANCFIS::closeParamFile(){
+	fstream myfile1;
+	myfile1.exceptions(ifstream::failbit|ifstream::badbit);
+	try {
+		myfile1.open("MFparams.txt",ios::app|ios::out);
+	}
+	catch (fstream::failure &e){
+		cerr << "Exception opening/reading/closing file\n";
+	}
+	myfile1 <<"***************************************"<<endl;
+	myfile1.close();
 }
 int BuildANCFIS::getLengthSurodata(){
 	return(LengthSurodata);

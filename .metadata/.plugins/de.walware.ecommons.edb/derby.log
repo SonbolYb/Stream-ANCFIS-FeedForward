@@ -1,0 +1,19 @@
+----------------------------------------------------------------
+Thu May 12 15:15:49 MDT 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0154-a6d3-579e-0000431438db 
+on database directory /home/sonbol/ANCFIS_ELM_Stream/.metadata/.plugins/de.walware.statet.r.core/db with class loader org.eclipse.osgi.internal.loader.EquinoxClassLoader@4e4bf46a[de.walware.3rdparty-org.apache.derby.core:10.10.2000000.b201407171807E43sw(id=439)] 
+Loaded from file:/opt/eclipse/plugins/de.walware.3rdparty-org.apache.derby.core_10.10.2000000.b201407171807E43sw.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_95-b00
+user.dir=/home/sonbol
+os.name=Linux
+os.arch=amd64
+os.version=3.13.0-77-generic
+derby.system.home=/home/sonbol/ANCFIS_ELM_Stream/.metadata/.plugins/de.walware.ecommons.edb
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu May 12 15:16:30 MDT 2016: Shutting down Derby engine
+----------------------------------------------------------------
+Thu May 12 15:16:33 MDT 2016:
+Shutting down instance a816c00e-0154-a6d3-579e-0000431438db on database directory /home/sonbol/ANCFIS_ELM_Stream/.metadata/.plugins/de.walware.statet.r.core/db with class loader org.eclipse.osgi.internal.loader.EquinoxClassLoader@4e4bf46a[de.walware.3rdparty-org.apache.derby.core:10.10.2000000.b201407171807E43sw(id=439)] 
+----------------------------------------------------------------

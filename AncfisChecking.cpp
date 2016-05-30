@@ -118,6 +118,10 @@ void AncfisChecking::buildNet(vector<double> & inputVec, int iter,vector<vector<
 	target=move(inputV.readTarget());
 	firingStrength fS;
 	pH=fS.cal_firingStrenght(move(input),iter,mfParam,dimension,lengthSurdata);
+	/*for(auto i:*pH){
+			cout<<i<<" ";
+		}
+		cout<<endl;*/
 
 }
 /******************************************************************/

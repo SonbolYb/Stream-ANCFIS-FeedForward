@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Debug_ANCFIS_ELM_Stream</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>ANCFIS_ELM_Stream</name>
+			<type>1</type>
+			<location>/home/sonbol/ANCFIS_ELM_Stream/Debug/ANCFIS_ELM_Stream</location>
+		</link>
+	</linkedResources>
+</projectDescription>

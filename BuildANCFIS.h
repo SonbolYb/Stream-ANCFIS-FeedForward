@@ -37,7 +37,9 @@ private:
 	void saveMFparam(std::vector<std::vector<std::vector<double>>>*,std::vector<std::vector<double>> *);
 	void PowerAnalysis();
 	bool CheckDrift(std::vector<std::vector<double>> *);
+	bool CheckDrift2(std::vector<std::vector<double>> *);
 	void comparePower(std::vector<std::vector<double>>*,std::vector<std::vector<double>>*);
+	void closeParamFile();
 	InputStream InS;
 	DelayVector DV;
 	Delay del;
@@ -65,6 +67,7 @@ private:
 	std::vector<int> sumSign;
 	std::vector<int> bool1;
 	std::vector<int> bool2;
+	int winCouter=0;
 
 };
 

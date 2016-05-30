@@ -58,13 +58,13 @@ int main(int argc, char * argv[]) {
 	BuildANCFIS Ancfis;
 
 	finalWeight=Ancfis.getFinalWeight();
-	/*cout << endl<<"this is final out weight"<<endl;
+	cout << endl<<"this is final out weight"<<endl;
 	for (auto i:(*finalWeight)){
 		for (auto j:i){
 			cout << j<< " ";
 		}
 		cout<<endl;
-	}*/
+	}
 	vector<int>* finalDim=Ancfis.getDimension();
 	vector<int>* finalDelay=Ancfis.getDelay();
 	vector<vector<vector<double>>>*finalMf=Ancfis.getMf();

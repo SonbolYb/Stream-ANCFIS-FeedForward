@@ -1,0 +1,13 @@
+!SESSION 2016-05-12 15:05:44.258 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.7.0_95
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.cdt.core 1 0 2016-05-12 15:09:16.343
+!MESSAGE Indexed 'Debug_ANCFIS_ELM_Stream' (0 sources, 0 headers) in 0.003 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2016-05-12 15:16:29.113
+!MESSAGE Indexed 'ANCFIS-ELM_2nd' (9 sources, 186 headers) in 24.9 sec: 17,542 declarations; 34,559 references; 0 unresolved inclusions; 1 syntax errors; 266 unresolved names (0.51%)

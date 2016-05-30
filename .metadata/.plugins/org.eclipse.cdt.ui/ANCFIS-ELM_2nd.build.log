@@ -1,0 +1,263 @@
+15:16:07 **** Build of configuration Debug for project ANCFIS-ELM_2nd ****
+make all 
+Building file: ../src/ANCFIS_ELM.cpp
+Invoking: Cross G++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/ANCFIS_ELM.d" -MT"src/ANCFIS_ELM.d" -o "src/ANCFIS_ELM.o" "../src/ANCFIS_ELM.cpp"
+In file included from /usr/include/c++/4.8/unordered_map:35:0,
+                 from ../src/header.h:16,
+                 from ../src/ANCFIS_ELM.cpp:21:
+/usr/include/c++/4.8/bits/c++0x_warning.h:32:2: error: #error This file requires compiler and library support for the ISO C++ 2011 standard. This support is currently experimental, and must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+ #error This file requires compiler and library support for the \
+  ^
+In file included from ../src/header.h:27:0,
+                 from ../src/ANCFIS_ELM.cpp:21:
+../src/commandLine.h:41:21: error: ‘unique_ptr’ is not a member of ‘std’
+  static std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pSinMfParam_allVar;
+                     ^
+../src/commandLine.h:41:21: error: ‘unique_ptr’ is not a member of ‘std’
+../src/commandLine.h:41:67: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  static std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pSinMfParam_allVar;
+                                                                   ^
+../src/commandLine.h:41:72: error: ‘pSinMfParam_allVar’ was not declared in this scope
+  static std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pSinMfParam_allVar;
+                                                                        ^
+../src/commandLine.h:41:72: error: template argument 1 is invalid
+../src/commandLine.h:41:72: error: template argument 2 is invalid
+../src/commandLine.h:41:14: error: a storage class can only be specified for objects and functions
+  static std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pSinMfParam_allVar;
+              ^
+../src/commandLine.h:50:29: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<int>> rule;
+                             ^
+../src/commandLine.h:60:2: error: ‘shared_ptr’ in namespace ‘std’ does not name a type
+  std::shared_ptr<std::vector<std::vector<int>>> ruleStruct()const;
+  ^
+In file included from ../src/ANCFIS_ELM.cpp:22:0:
+../src/mfGrade.h:17:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> pConvolution;
+              ^
+../src/mfGrade.h:17:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/mfGrade.h:17:63: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> pConvolution;
+                                                               ^
+../src/mfGrade.h:17:63: error: template argument 1 is invalid
+../src/mfGrade.h:17:63: error: template argument 2 is invalid
+../src/mfGrade.h:17:65: error: expected unqualified-id before ‘>’ token
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> pConvolution;
+                                                                 ^
+../src/mfGrade.h:18:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>>  pNormalize;
+              ^
+../src/mfGrade.h:18:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/mfGrade.h:18:63: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>>  pNormalize;
+                                                               ^
+../src/mfGrade.h:18:63: error: template argument 1 is invalid
+../src/mfGrade.h:18:63: error: template argument 2 is invalid
+../src/mfGrade.h:18:65: error: expected unqualified-id before ‘>’ token
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>>  pNormalize;
+                                                                 ^
+../src/mfGrade.h:26:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> MemFungrade( std::vector<double> * const inputVector);
+              ^
+../src/mfGrade.h:26:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/mfGrade.h:26:63: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> MemFungrade( std::vector<double> * const inputVector);
+                                                               ^
+../src/mfGrade.h:26:63: error: template argument 1 is invalid
+../src/mfGrade.h:26:63: error: template argument 2 is invalid
+../src/mfGrade.h:26:65: error: expected unqualified-id before ‘>’ token
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> MemFungrade( std::vector<double> * const inputVector);
+                                                                 ^
+In file included from ../src/ANCFIS_ELM.cpp:25:0:
+../src/timeSeries.h:18:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> trainingSet;
+                                ^
+../src/timeSeries.h:19:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> checkingSet; //TODO: Call file in the directory
+                                ^
+../src/timeSeries.h:29:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> * const getTraining();
+                                ^
+../src/timeSeries.h:30:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> * const getChecking();
+                                ^
+../src/timeSeries.h:32:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>>* const shuffleTraining();
+                                ^
+In file included from ../src/inputVecWeight.h:12:0,
+                 from ../src/AncfisNet.h:13,
+                 from ../src/ANCFIS_ELM.cpp:27:
+../src/firingStrength.h:19:2: error: ‘unique_ptr’ in namespace ‘std’ does not name a type
+  std::unique_ptr<std::vector<double>> pFS;
+  ^
+../src/firingStrength.h:21:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> mfG;
+              ^
+../src/firingStrength.h:21:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/firingStrength.h:21:63: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> mfG;
+                                                               ^
+../src/firingStrength.h:21:63: error: template argument 1 is invalid
+../src/firingStrength.h:21:63: error: template argument 2 is invalid
+../src/firingStrength.h:21:65: error: expected unqualified-id before ‘>’ token
+  std::vector<std::unique_ptr<std::vector<std::complex<double> >>> mfG;
+                                                                 ^
+../src/firingStrength.h:22:2: error: ‘shared_ptr’ in namespace ‘std’ does not name a type
+  std::shared_ptr<std::vector<std::vector<int>>>  rule;
+  ^
+../src/firingStrength.h:23:33: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::complex<double>> fsRaw;
+                                 ^
+../src/firingStrength.h:24:33: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::complex<double>> fsNorm;
+                                 ^
+../src/firingStrength.h:38:2: error: ‘unique_ptr’ in namespace ‘std’ does not name a type
+  std::unique_ptr<std::vector<double>> cal_firingStrenght(std::vector<double> * const);
+  ^
+In file included from ../src/AncfisNet.h:13:0,
+                 from ../src/ANCFIS_ELM.cpp:27:
+../src/inputVecWeight.h:21:2: error: ‘unique_ptr’ in namespace ‘std’ does not name a type
+  std::unique_ptr<std::vector<double>> pH;
+  ^
+../src/inputVecWeight.h:22:2: error: ‘unique_ptr’ in namespace ‘std’ does not name a type
+  std::unique_ptr<std::vector<double>>& rpH;
+  ^
+../src/inputVecWeight.h:23:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pM_new;
+              ^
+../src/inputVecWeight.h:23:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/inputVecWeight.h:23:60: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pM_new;
+                                                            ^
+../src/inputVecWeight.h:23:65: error: ‘pM_new’ was not declared in this scope
+  std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pM_new;
+                                                                 ^
+../src/inputVecWeight.h:23:65: error: template argument 1 is invalid
+../src/inputVecWeight.h:23:65: error: template argument 2 is invalid
+../src/inputVecWeight.h:24:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pM_old;
+              ^
+../src/inputVecWeight.h:24:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/inputVecWeight.h:24:60: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pM_old;
+                                                            ^
+../src/inputVecWeight.h:24:65: error: ‘pM_old’ was not declared in this scope
+  std::vector<std::unique_ptr<std::vector<std::vector<double>>>> pM_old;
+                                                                 ^
+../src/inputVecWeight.h:24:65: error: template argument 1 is invalid
+../src/inputVecWeight.h:24:65: error: template argument 2 is invalid
+../src/inputVecWeight.h:25:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> G;
+                                ^
+../src/inputVecWeight.h:27:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<double>>> pW_old;
+              ^
+../src/inputVecWeight.h:27:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/inputVecWeight.h:27:48: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<double>>> pW_old;
+                                                ^
+../src/inputVecWeight.h:27:48: error: template argument 1 is invalid
+../src/inputVecWeight.h:27:48: error: template argument 2 is invalid
+../src/inputVecWeight.h:27:50: error: expected unqualified-id before ‘>’ token
+  std::vector<std::unique_ptr<std::vector<double>>> pW_old;
+                                                  ^
+../src/inputVecWeight.h:28:14: error: ‘unique_ptr’ is not a member of ‘std’
+  std::vector<std::unique_ptr<std::vector<double>>> pW_new;
+              ^
+../src/inputVecWeight.h:28:14: error: ‘unique_ptr’ is not a member of ‘std’
+../src/inputVecWeight.h:28:48: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::unique_ptr<std::vector<double>>> pW_new;
+                                                ^
+../src/inputVecWeight.h:28:48: error: template argument 1 is invalid
+../src/inputVecWeight.h:28:48: error: template argument 2 is invalid
+../src/inputVecWeight.h:28:50: error: expected unqualified-id before ‘>’ token
+  std::vector<std::unique_ptr<std::vector<double>>> pW_new;
+                                                  ^
+../src/inputVecWeight.h:31:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> errorEpoch;
+                                ^
+../src/inputVecWeight.h:36:39: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  double numWeight=numRule*inputlength+numRule;
+                                       ^
+../src/inputVecWeight.h:39:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>>  bestW;
+                                ^
+../src/inputVecWeight.h:48:19: error: ‘std::unique_ptr’ has not been declared
+  void Cal_MV(std::unique_ptr<std::vector<std::vector<double>>> &,std::unique_ptr<std::vector<double>>&,std::vector<double> &);
+                   ^
+../src/inputVecWeight.h:48:29: error: expected ‘,’ or ‘...’ before ‘<’ token
+  void Cal_MV(std::unique_ptr<std::vector<std::vector<double>>> &,std::unique_ptr<std::vector<double>>&,std::vector<double> &);
+                             ^
+../src/inputVecWeight.h:49:19: error: ‘std::unique_ptr’ has not been declared
+  void Cal_VM(std::unique_ptr<std::vector<double>>&,std::unique_ptr<std::vector<std::vector<double>>> &,std::vector<double> &);
+                   ^
+../src/inputVecWeight.h:49:29: error: expected ‘,’ or ‘...’ before ‘<’ token
+  void Cal_VM(std::unique_ptr<std::vector<double>>&,std::unique_ptr<std::vector<std::vector<double>>> &,std::vector<double> &);
+                             ^
+../src/inputVecWeight.h:50:90: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  void Cal_VVM(std::vector<double> &,std::vector<double> &, std::vector<std::vector<double>> &);
+                                                                                          ^
+../src/inputVecWeight.h:52:46: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  void Cal_MtoS(std::vector<std::vector<double>> &,double,std::vector<std::vector<double>> &);
+                                              ^
+../src/inputVecWeight.h:52:88: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  void Cal_MtoS(std::vector<std::vector<double>> &,double,std::vector<std::vector<double>> &);
+                                                                                        ^
+../src/inputVecWeight.h:53:21: error: ‘std::unique_ptr’ has not been declared
+  void Cal_Msub(std::unique_ptr<std::vector<std::vector<double>>> &,std::vector<std::vector<double>> &,std::unique_ptr<std::vector<std::vector<double>>> &);
+                     ^
+../src/inputVecWeight.h:53:31: error: expected ‘,’ or ‘...’ before ‘<’ token
+  void Cal_Msub(std::unique_ptr<std::vector<std::vector<double>>> &,std::vector<std::vector<double>> &,std::unique_ptr<std::vector<std::vector<double>>> &);
+                               ^
+In file included from ../src/AncfisNet.h:13:0,
+                 from ../src/ANCFIS_ELM.cpp:27:
+../src/inputVecWeight.h:59:22: error: ‘std::unique_ptr’ has not been declared
+  void Cal_Vadd( std::unique_ptr<std::vector<double>>&,std::vector<double> &,std::unique_ptr<std::vector<double>>&);
+                      ^
+../src/inputVecWeight.h:59:32: error: expected ‘,’ or ‘...’ before ‘<’ token
+  void Cal_Vadd( std::unique_ptr<std::vector<double>>&,std::vector<double> &,std::unique_ptr<std::vector<double>>&);
+                                ^
+../src/inputVecWeight.h:64:44: error: ‘std::unique_ptr’ has not been declared
+  double Cal_VVS(std::vector<double> &,std::unique_ptr<std::vector<double>>&);
+                                            ^
+../src/inputVecWeight.h:64:54: error: expected ‘,’ or ‘...’ before ‘<’ token
+  double Cal_VVS(std::vector<double> &,std::unique_ptr<std::vector<double>>&);
+                                                      ^
+../src/inputVecWeight.h:69:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> * getWBest();
+                                ^
+In file included from ../src/ANCFIS_ELM.cpp:27:0:
+../src/AncfisNet.h:23:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>>* trainMatrix;
+                                ^
+../src/AncfisNet.h:27:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>>* Cal_outputWeight();
+                                ^
+In file included from ../src/ANCFIS_ELM.cpp:29:0:
+../src/AncfisChecking.h:25:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>>* checkMatrix;
+                                ^
+../src/AncfisChecking.h:28:2: error: ‘unique_ptr’ in namespace ‘std’ does not name a type
+  std::unique_ptr<std::vector<double>> pH;
+  ^
+../src/AncfisChecking.h:29:2: error: ‘unique_ptr’ in namespace ‘std’ does not name a type
+  std::unique_ptr<std::vector<double>> & rpH;
+  ^
+../src/AncfisChecking.h:30:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> checkError;
+                                ^
+../src/AncfisChecking.h:33:32: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  std::vector<std::vector<double>> *weightTrn;
+                                ^
+../src/AncfisChecking.h:39:45: error: ‘>>’ should be ‘> >’ within a nested template argument list
+  void output (std::vector<std::vector<double>>*);
+                                             ^
+../src/ANCFIS_ELM.cpp: In function ‘int main(int, char**)’:
+../src/ANCFIS_ELM.cpp:46:33: error: ‘>>’ should be ‘> >’ within a nested template argument list
+   std::vector<std::vector<double>>*finalWeight;
+                                 ^
+make: *** [src/ANCFIS_ELM.o] Error 1
+
+15:16:08 Build Finished (took 1s.592ms)
+
