@@ -258,9 +258,9 @@ void inputVecWeight::calErrorStream(){
 		v=((*target)[nV]-Cal_VVS(rb,rpH));
 		//	errorEpoch[ep][nV]=sqrt(0.5*pow(v,2)+0.5*lambdaRLS*norm);
 		errorEpoch1[nV]=abs(v);
-		aveErr+=pow(v,2);
+		aveErr+=abs(v);
 	}
-	ErrorStream.push_back(sqrt(aveErr/numOutput));
+	ErrorStream.push_back((aveErr/numOutput));
 //	cout<<endl<<"this is error stream= "<<ErrorStream<<endl;
 	for (int nV=0;nV<numOutput;nV++){
 
@@ -386,14 +386,14 @@ void inputVecWeight::calError(int ep){
 		v=((*target)[nV]-Cal_VVS(rb,rpH));
 		//	errorEpoch[ep][nV]=sqrt(0.5*pow(v,2)+0.5*lambdaRLS*norm);
 		errorEpoch1[nV]=abs(v);
-		aveErr+=pow(v,2);
+		aveErr+=abs(v);
 	}
 	errorEpochLastdata.push_back(errorEpoch1);
 
-	aveErr=sqrt(aveErr/numOutput);
+	aveErr=(aveErr/numOutput);
 	aveErrorLastdata.push_back(aveErr);
 	aveFinalalter=aveFinalalter/LengthDVSet;
-	aveFinalMain=sqrt(aveFinalMain/(LengthDVSet*numVariate));
+	aveFinalMain=(aveFinalMain/(LengthDVSet*numVariate));
 	aveErrorEpoch.push_back(aveFinalMain);
 
 	//aveBest=aveFinalMain;
@@ -425,7 +425,7 @@ void inputVecWeight::calErrorTr(int ep){
 		double v=0;
 		vector<double> &rb=(*pW_old[nV]);
 		v=((*target)[nV]-Cal_VVS(rb,rpH));
-		aveErr+=pow(v,2);
+		aveErr+=abs(v);
 		//TODO: it was making problem. Please fix it.
 		//trainingErrorAll[ep][itera][nV]=v;
 		myfile<< (*target)[nV]<<"\t"<<Cal_VVS(rb,rpH)<<"\t"<<v<<endl;
@@ -433,7 +433,7 @@ void inputVecWeight::calErrorTr(int ep){
 
 
 
-	aveFinalalter+=sqrt(aveErr/numOutput);
+	aveFinalalter+=(aveErr/numOutput);
 	aveFinalMain+=aveErr;
 	/*cout<<"inputV"<<" ";
 	for (auto i:*target){

@@ -88,15 +88,15 @@ numWeight=numRule*sumDim+numRule;
 
 			checkError[indexInV][nV]=(*target)[nV]-result;
 		//	cout<<result<<" ";
-			ave+=pow(checkError[indexInV][nV],2);
+			ave+=abs(checkError[indexInV][nV]);
 			//cout <<(*target)[nV]<< "  "<<inVW.Cal_VVS(rw,rpH)<<endl;
 		}
-		aveError[indexInV]=sqrt(ave/numOutput);
+		aveError[indexInV]=(ave/numOutput);
 		aveFinal+=ave;
 		aveFinalalter+=aveError[indexInV];
 	}
 	//3.
-	finalChErrorMain=sqrt(aveFinal/(numOfInVecChecking*numOutput));
+	finalChErrorMain=(aveFinal/(numOfInVecChecking*numOutput));
 	finalChErroralter=aveFinalalter/numOfInVecChecking;
 	saveParams();
 }

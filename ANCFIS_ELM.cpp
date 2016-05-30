@@ -26,7 +26,11 @@
 
  * 5. Go to Ancfis_Checking
  * 6. Change checking.getCheckingN() to checking.getChecking()
+ *
+ * For change to MAE, we should make changes in inputVecWeight and AncfisChecking
+ * remove sqrt and replace pow with abs
  * */
+
 
 //============================================================================
 
