@@ -17,15 +17,17 @@
 //	7. Output
 
 //TODO
-/*change the following if you want to work with non-normalized data
+
+ /*change the following if you want to work with non-normalized data
  *
  * 1. Go to BuildANCFIS
  * 2. Change InS.getOrigWindowN() to InS.getOrigWindow()
  * 3. Change InS.moveWindowbyOneNormal(); to InS.moveWindowbyOne();
- *
- * 4. Go to Ancfis_Checking
- * 5. Change checking.getCheckingN() to checking.getChecking()
+
+ * 5. Go to Ancfis_Checking
+ * 6. Change checking.getCheckingN() to checking.getChecking()
  * */
+
 //============================================================================
 
 #include <iostream>

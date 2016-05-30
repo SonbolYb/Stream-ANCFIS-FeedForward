@@ -34,7 +34,8 @@ void BuildANCFIS::findWeight(){
 		/*Original window*/
 		if (InS.numpassedInput==0){
 
-			*inputOrigin=*(InS.getOrigWindowN());
+			//*inputOrigin=*(InS.getOrigWindowN());
+			*inputOrigin=*(InS.getOrigWindow());
 			findDV();
 			findMFParam();
 			buildNet.build(delayVectors, mfParam,dimension,LengthSurodata,LengthDVSet);
@@ -44,7 +45,8 @@ void BuildANCFIS::findWeight(){
 		if(InS.numpassedInput >= per10){	//for new data coming
 			//TODO: by coming new data points min and max can be different which change normalization and can change the all input
 
-			*(inputOrigin)=*(InS.moveWindowbyOneNormal());
+			//*(inputOrigin)=*(InS.moveWindowbyOneNormal());
+			*(inputOrigin)=*(InS.moveWindowbyOne());
 			//		findMFParamConceptDrift(inputOrigin);
 			if(winCouter==per10-1){//We have a new non-overlapping window
 				//	cout<<"# of data passed"<<InS.numpassedInput<<endl;
@@ -130,6 +132,7 @@ void BuildANCFIS::findDV(){
 
 }
 void BuildANCFIS::findMFParam(){
+
 
 	*surodata=*(InS.getSurWindow(inputOrigin));
 	//surodata=InS.getSurWindow();
