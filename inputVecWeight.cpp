@@ -207,9 +207,12 @@ void inputVecWeight::resetVectors(){
 		pM_new[i]=unique_ptr<vector<vector<double>>> (new vector<vector<double>> (numWeight, vector<double> (numWeight,1)));
 
 	}
-	for(int j=0;j<numOutput;j++)
+	for(int j=0;j<numOutput;j++){
+
 	for(int i=0; i<numWeight;i++){
 		bestPm[j][i].resize(numWeight);
+	}
+
 	}
 	identityM();
 	//TODO: lots of loop here.
